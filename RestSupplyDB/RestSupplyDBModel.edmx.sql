@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/06/2018 18:45:23
+-- Date Created: 10/06/2018 21:06:08
 -- Generated from EDMX file: C:\workspace\rest_supply_project\RestSupplyWPFUI\RestSupplyDB\RestSupplyDBModel.edmx
 -- --------------------------------------------------
 
@@ -41,9 +41,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_KitchensKitchenIngredients]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[KitchenIngredientsSet] DROP CONSTRAINT [FK_KitchensKitchenIngredients];
 GO
-IF OBJECT_ID(N'[dbo].[FK_UserType]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UsersSet] DROP CONSTRAINT [FK_UserType];
-GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -75,9 +72,6 @@ IF OBJECT_ID(N'[dbo].[KitchensSet]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[KitchenIngredientsSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[KitchenIngredientsSet];
-GO
-IF OBJECT_ID(N'[dbo].[UserTypesSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserTypesSet];
 GO
 
 -- --------------------------------------------------

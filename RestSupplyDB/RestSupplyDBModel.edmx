@@ -15,6 +15,7 @@
     <EntitySet Name="MenuIngredientsSet" EntityType="RestSupplyDBModel.Store.MenuIngredientsSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="KitchensSet" EntityType="RestSupplyDBModel.Store.KitchensSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="KitchenIngredientsSet" EntityType="RestSupplyDBModel.Store.KitchenIngredientsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserTypesSet" EntityType="RestSupplyDBModel.Store.UserTypesSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_OrderHistoryOrderIngredients" Association="RestSupplyDBModel.Store.FK_OrderHistoryOrderIngredients">
       <End Role="OrderHistory" EntitySet="OrdersSet" />
       <End Role="OrderIngredients" EntitySet="OrderIngredientsSet" />
@@ -47,6 +48,10 @@
       <End Role="Kitchens" EntitySet="KitchensSet" />
       <End Role="KitchenIngredients" EntitySet="KitchenIngredientsSet" />
     </AssociationSet>
+    <AssociationSet Name="FK_UserType" Association="RestSupplyDBModel.Store.FK_UserType">
+      <End Role="UserTypes" EntitySet="UserTypesSet" />
+      <End Role="Users" EntitySet="UsersSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="IngredientsSet">
     <Key>
@@ -56,7 +61,7 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Unit" Type="nvarchar(max)" Nullable="false" />
     <Property Name="SupplierId" Type="int" Nullable="false" />
-    <Property Name="PricePerUnit" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PricePerUnit" Type="float" Nullable="false" />
   </EntityType>
   <EntityType Name="UsersSet">
     <Key>
@@ -64,6 +69,8 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserTypesId" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="SuppliersSet">
     <Key>
@@ -94,7 +101,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="OrderId" Type="int" Nullable="true" />
     <Property Name="IngredientId" Type="int" Nullable="true" />
-    <Property Name="IngredientPrice" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IngredientPrice" Type="float" Nullable="false" />
     <Property Name="SupplierId" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="MenuIngredientsSet">
@@ -102,11 +109,11 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Valid" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Valid" Type="bit" Nullable="false" />
     <Property Name="IngredientName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="IngredientId" Type="int" Nullable="true" />
     <Property Name="MenuItemId" Type="int" Nullable="true" />
-    <Property Name="Quantity" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Quantity" Type="float" Nullable="false" />
   </EntityType>
   <EntityType Name="KitchensSet">
     <Key>
@@ -120,11 +127,19 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Valid" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Valid" Type="bit" Nullable="false" />
     <Property Name="KitchenId" Type="int" Nullable="false" />
     <Property Name="IngredientId" Type="int" Nullable="false" />
-    <Property Name="MinimalQuantity" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="CurrentQuantity" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MinimalQuantity" Type="float" Nullable="false" />
+    <Property Name="CurrentQuantity" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserTypesSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TypeName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AccessLevel" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_OrderHistoryOrderIngredients">
     <End Role="OrderHistory" Type="RestSupplyDBModel.Store.OrdersSet" Multiplicity="0..1" />
@@ -219,6 +234,18 @@
       </Principal>
       <Dependent Role="KitchenIngredients">
         <PropertyRef Name="KitchenId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserType">
+    <End Role="UserTypes" Type="RestSupplyDBModel.Store.UserTypesSet" Multiplicity="0..1" />
+    <End Role="Users" Type="RestSupplyDBModel.Store.UsersSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="UserTypesId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -510,6 +537,8 @@
         <MappingFragment StoreEntitySet="UsersSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserTypesId" ColumnName="UserTypesId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -578,6 +607,15 @@
           <ScalarProperty Name="IngredientId" ColumnName="IngredientId" />
           <ScalarProperty Name="MinimalQuantity" ColumnName="MinimalQuantity" />
           <ScalarProperty Name="CurrentQuantity" ColumnName="CurrentQuantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTypesSet">
+      <EntityTypeMapping TypeName="IsTypeOf(RestSupplyDBModel.UserTypes)">
+        <MappingFragment StoreEntitySet="UserTypesSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+          <ScalarProperty Name="AccessLevel" ColumnName="AccessLevel" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

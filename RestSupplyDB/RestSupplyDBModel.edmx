@@ -1,0 +1,606 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RestSupplyDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="RestSupplyDBModelStoreContainer">
+    <EntitySet Name="IngredientsSet" EntityType="RestSupplyDBModel.Store.IngredientsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UsersSet" EntityType="RestSupplyDBModel.Store.UsersSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SuppliersSet" EntityType="RestSupplyDBModel.Store.SuppliersSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MenuItemsSet" EntityType="RestSupplyDBModel.Store.MenuItemsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OrdersSet" EntityType="RestSupplyDBModel.Store.OrdersSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OrderIngredientsSet" EntityType="RestSupplyDBModel.Store.OrderIngredientsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MenuIngredientsSet" EntityType="RestSupplyDBModel.Store.MenuIngredientsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="KitchensSet" EntityType="RestSupplyDBModel.Store.KitchensSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="KitchenIngredientsSet" EntityType="RestSupplyDBModel.Store.KitchenIngredientsSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_OrderHistoryOrderIngredients" Association="RestSupplyDBModel.Store.FK_OrderHistoryOrderIngredients">
+      <End Role="OrderHistory" EntitySet="OrdersSet" />
+      <End Role="OrderIngredients" EntitySet="OrderIngredientsSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_IngredientsOrderIngredients" Association="RestSupplyDBModel.Store.FK_IngredientsOrderIngredients">
+      <End Role="Ingredients" EntitySet="IngredientsSet" />
+      <End Role="OrderIngredients" EntitySet="OrderIngredientsSet" />
+    </AssociationSet>
+    <AssociationSet Name="SuppliersOrderIngredients" Association="RestSupplyDBModel.Store.SuppliersOrderIngredients">
+      <End Role="Suppliers" EntitySet="SuppliersSet" />
+      <End Role="OrderIngredients" EntitySet="OrderIngredientsSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_IngredientsMenuIngredients" Association="RestSupplyDBModel.Store.FK_IngredientsMenuIngredients">
+      <End Role="Ingredients" EntitySet="IngredientsSet" />
+      <End Role="MenuIngredients" EntitySet="MenuIngredientsSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MenuItemsMenuIngredients" Association="RestSupplyDBModel.Store.FK_MenuItemsMenuIngredients">
+      <End Role="MenuItems" EntitySet="MenuItemsSet" />
+      <End Role="MenuIngredients" EntitySet="MenuIngredientsSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SuppliersIngredients" Association="RestSupplyDBModel.Store.FK_SuppliersIngredients">
+      <End Role="Suppliers" EntitySet="SuppliersSet" />
+      <End Role="Ingredients" EntitySet="IngredientsSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_IngredientsKitchenIngredients" Association="RestSupplyDBModel.Store.FK_IngredientsKitchenIngredients">
+      <End Role="Ingredients" EntitySet="IngredientsSet" />
+      <End Role="KitchenIngredients" EntitySet="KitchenIngredientsSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_KitchensKitchenIngredients" Association="RestSupplyDBModel.Store.FK_KitchensKitchenIngredients">
+      <End Role="Kitchens" EntitySet="KitchensSet" />
+      <End Role="KitchenIngredients" EntitySet="KitchenIngredientsSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="IngredientsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Unit" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SupplierId" Type="int" Nullable="false" />
+    <Property Name="PricePerUnit" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SuppliersSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MenuItemsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OrdersSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Time" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OrderIngredientsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderId" Type="int" Nullable="true" />
+    <Property Name="IngredientId" Type="int" Nullable="true" />
+    <Property Name="IngredientPrice" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SupplierId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="MenuIngredientsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Valid" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IngredientName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IngredientId" Type="int" Nullable="true" />
+    <Property Name="MenuItemId" Type="int" Nullable="true" />
+    <Property Name="Quantity" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="KitchensSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="KitchenIngredientsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Valid" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="KitchenId" Type="int" Nullable="false" />
+    <Property Name="IngredientId" Type="int" Nullable="false" />
+    <Property Name="MinimalQuantity" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CurrentQuantity" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_OrderHistoryOrderIngredients">
+    <End Role="OrderHistory" Type="RestSupplyDBModel.Store.OrdersSet" Multiplicity="0..1" />
+    <End Role="OrderIngredients" Type="RestSupplyDBModel.Store.OrderIngredientsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderHistory">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderIngredients">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_IngredientsOrderIngredients">
+    <End Role="Ingredients" Type="RestSupplyDBModel.Store.IngredientsSet" Multiplicity="0..1" />
+    <End Role="OrderIngredients" Type="RestSupplyDBModel.Store.OrderIngredientsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ingredients">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderIngredients">
+        <PropertyRef Name="IngredientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SuppliersOrderIngredients">
+    <End Role="Suppliers" Type="RestSupplyDBModel.Store.SuppliersSet" Multiplicity="0..1" />
+    <End Role="OrderIngredients" Type="RestSupplyDBModel.Store.OrderIngredientsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Suppliers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderIngredients">
+        <PropertyRef Name="SupplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_IngredientsMenuIngredients">
+    <End Role="Ingredients" Type="RestSupplyDBModel.Store.IngredientsSet" Multiplicity="0..1" />
+    <End Role="MenuIngredients" Type="RestSupplyDBModel.Store.MenuIngredientsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ingredients">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MenuIngredients">
+        <PropertyRef Name="IngredientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MenuItemsMenuIngredients">
+    <End Role="MenuItems" Type="RestSupplyDBModel.Store.MenuItemsSet" Multiplicity="0..1" />
+    <End Role="MenuIngredients" Type="RestSupplyDBModel.Store.MenuIngredientsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MenuItems">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MenuIngredients">
+        <PropertyRef Name="MenuItemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SuppliersIngredients">
+    <End Role="Suppliers" Type="RestSupplyDBModel.Store.SuppliersSet" Multiplicity="1" />
+    <End Role="Ingredients" Type="RestSupplyDBModel.Store.IngredientsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Suppliers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ingredients">
+        <PropertyRef Name="SupplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_IngredientsKitchenIngredients">
+    <End Role="Ingredients" Type="RestSupplyDBModel.Store.IngredientsSet" Multiplicity="1" />
+    <End Role="KitchenIngredients" Type="RestSupplyDBModel.Store.KitchenIngredientsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ingredients">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="KitchenIngredients">
+        <PropertyRef Name="IngredientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_KitchensKitchenIngredients">
+    <End Role="Kitchens" Type="RestSupplyDBModel.Store.KitchensSet" Multiplicity="1" />
+    <End Role="KitchenIngredients" Type="RestSupplyDBModel.Store.KitchenIngredientsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kitchens">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="KitchenIngredients">
+        <PropertyRef Name="KitchenId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="RestSupplyDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="RestSupplyDBModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="IngredientsSet" EntityType="RestSupplyDBModel.Ingredients" />
+          <EntitySet Name="UsersSet" EntityType="RestSupplyDBModel.Users" />
+          <EntitySet Name="SuppliersSet" EntityType="RestSupplyDBModel.Suppliers" />
+          <EntitySet Name="MenuItemsSet" EntityType="RestSupplyDBModel.MenuItems" />
+          <EntitySet Name="OrdersSet" EntityType="RestSupplyDBModel.Orders" />
+          <EntitySet Name="OrderIngredientsSet" EntityType="RestSupplyDBModel.OrderIngredients" />
+          <AssociationSet Name="FK_OrderHistoryOrderIngredients" Association="RestSupplyDBModel.FK_OrderHistoryOrderIngredients">
+            <End Role="OrderHistory" EntitySet="OrdersSet" />
+            <End Role="OrderIngredients" EntitySet="OrderIngredientsSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IngredientsOrderIngredients" Association="RestSupplyDBModel.FK_IngredientsOrderIngredients">
+            <End Role="Ingredients" EntitySet="IngredientsSet" />
+            <End Role="OrderIngredients" EntitySet="OrderIngredientsSet" />
+          </AssociationSet>
+          <AssociationSet Name="SuppliersOrderIngredients" Association="RestSupplyDBModel.SuppliersOrderIngredients">
+            <End Role="Suppliers" EntitySet="SuppliersSet" />
+            <End Role="OrderIngredients" EntitySet="OrderIngredientsSet" />
+          </AssociationSet>
+          <EntitySet Name="MenuIngredientsSet" EntityType="RestSupplyDBModel.MenuIngredients" />
+          <AssociationSet Name="FK_IngredientsMenuIngredients" Association="RestSupplyDBModel.FK_IngredientsMenuIngredients">
+            <End Role="Ingredients" EntitySet="IngredientsSet" />
+            <End Role="MenuIngredients" EntitySet="MenuIngredientsSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuItemsMenuIngredients" Association="RestSupplyDBModel.FK_MenuItemsMenuIngredients">
+            <End Role="MenuItems" EntitySet="MenuItemsSet" />
+            <End Role="MenuIngredients" EntitySet="MenuIngredientsSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppliersIngredients" Association="RestSupplyDBModel.FK_SuppliersIngredients">
+            <End Role="Suppliers" EntitySet="SuppliersSet" />
+            <End Role="Ingredients" EntitySet="IngredientsSet" />
+          </AssociationSet>
+          <EntitySet Name="KitchensSet" EntityType="RestSupplyDBModel.Kitchens" />
+          <EntitySet Name="KitchenIngredientsSet" EntityType="RestSupplyDBModel.KitchenIngredients" />
+          <AssociationSet Name="FK_IngredientsKitchenIngredients" Association="RestSupplyDBModel.FK_IngredientsKitchenIngredients">
+            <End Role="Ingredients" EntitySet="IngredientsSet" />
+            <End Role="KitchenIngredients" EntitySet="KitchenIngredientsSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_KitchensKitchenIngredients" Association="RestSupplyDBModel.FK_KitchensKitchenIngredients">
+            <End Role="Kitchens" EntitySet="KitchensSet" />
+            <End Role="KitchenIngredients" EntitySet="KitchenIngredientsSet" />
+          </AssociationSet>
+          <EntitySet Name="UserTypesSet" EntityType="RestSupplyDBModel.UserTypes" />
+          <AssociationSet Name="FK_UserType" Association="RestSupplyDBModel.FK_UserType">
+            <End Role="UserTypes" EntitySet="UserTypesSet" />
+            <End Role="Users" EntitySet="UsersSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Ingredients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="OrderIngredients" Relationship="RestSupplyDBModel.FK_IngredientsOrderIngredients" FromRole="Ingredients" ToRole="OrderIngredients" />
+          <NavigationProperty Name="MenuIngredients" Relationship="RestSupplyDBModel.FK_IngredientsMenuIngredients" FromRole="Ingredients" ToRole="MenuIngredients" />
+          <Property Name="Unit" Type="String" Nullable="false" />
+          <NavigationProperty Name="Suppliers" Relationship="RestSupplyDBModel.FK_SuppliersIngredients" FromRole="Ingredients" ToRole="Suppliers" />
+          <Property Name="SupplierId" Type="Int32" Nullable="false" />
+          <Property Name="PricePerUnit" Type="Double" Nullable="false" />
+          <NavigationProperty Name="KitchenIngredients" Relationship="RestSupplyDBModel.FK_IngredientsKitchenIngredients" FromRole="Ingredients" ToRole="KitchenIngredients" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
+          <NavigationProperty Name="UserTypes" Relationship="RestSupplyDBModel.FK_UserType" FromRole="Users" ToRole="UserTypes" />
+          <Property Name="UserTypesId" Type="Int32" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Suppliers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="OrderIngredients" Relationship="RestSupplyDBModel.SuppliersOrderIngredients" FromRole="Suppliers" ToRole="OrderIngredients" />
+          <NavigationProperty Name="Ingredients" Relationship="RestSupplyDBModel.FK_SuppliersIngredients" FromRole="Suppliers" ToRole="Ingredients" />
+        </EntityType>
+        <EntityType Name="MenuItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="MenuIngredients" Relationship="RestSupplyDBModel.FK_MenuItemsMenuIngredients" FromRole="MenuItems" ToRole="MenuIngredients" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="String" Nullable="false" />
+          <Property Name="Time" Type="String" Nullable="false" />
+          <NavigationProperty Name="OrderIngredients" Relationship="RestSupplyDBModel.FK_OrderHistoryOrderIngredients" FromRole="OrderHistory" ToRole="OrderIngredients" />
+        </EntityType>
+        <EntityType Name="OrderIngredients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Orders" Relationship="RestSupplyDBModel.FK_OrderHistoryOrderIngredients" FromRole="OrderIngredients" ToRole="OrderHistory" />
+          <Property Name="OrderId" Type="Int32" Nullable="true" />
+          <NavigationProperty Name="Ingredients" Relationship="RestSupplyDBModel.FK_IngredientsOrderIngredients" FromRole="OrderIngredients" ToRole="Ingredients" />
+          <Property Name="IngredientId" Type="Int32" Nullable="true" />
+          <Property Name="IngredientPrice" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Suppliers" Relationship="RestSupplyDBModel.SuppliersOrderIngredients" FromRole="OrderIngredients" ToRole="Suppliers" />
+          <Property Name="SupplierId" Type="Int32" Nullable="true" />
+        </EntityType>
+        <Association Name="FK_OrderHistoryOrderIngredients">
+          <End Type="RestSupplyDBModel.Orders" Role="OrderHistory" Multiplicity="0..1" />
+          <End Type="RestSupplyDBModel.OrderIngredients" Role="OrderIngredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderHistory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderIngredients">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IngredientsOrderIngredients">
+          <End Type="RestSupplyDBModel.Ingredients" Role="Ingredients" Multiplicity="0..1" />
+          <End Type="RestSupplyDBModel.OrderIngredients" Role="OrderIngredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingredients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderIngredients">
+              <PropertyRef Name="IngredientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SuppliersOrderIngredients">
+          <End Type="RestSupplyDBModel.Suppliers" Role="Suppliers" Multiplicity="0..1" />
+          <End Type="RestSupplyDBModel.OrderIngredients" Role="OrderIngredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderIngredients">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MenuIngredients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Valid" Type="Boolean" Nullable="false" />
+          <Property Name="IngredientName" Type="String" Nullable="false" />
+          <NavigationProperty Name="Ingredients" Relationship="RestSupplyDBModel.FK_IngredientsMenuIngredients" FromRole="MenuIngredients" ToRole="Ingredients" />
+          <Property Name="IngredientId" Type="Int32" Nullable="true" />
+          <NavigationProperty Name="MenuItems" Relationship="RestSupplyDBModel.FK_MenuItemsMenuIngredients" FromRole="MenuIngredients" ToRole="MenuItems" />
+          <Property Name="MenuItemId" Type="Int32" Nullable="true" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_IngredientsMenuIngredients">
+          <End Type="RestSupplyDBModel.Ingredients" Role="Ingredients" Multiplicity="0..1" />
+          <End Type="RestSupplyDBModel.MenuIngredients" Role="MenuIngredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingredients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MenuIngredients">
+              <PropertyRef Name="IngredientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuItemsMenuIngredients">
+          <End Type="RestSupplyDBModel.MenuItems" Role="MenuItems" Multiplicity="0..1" />
+          <End Type="RestSupplyDBModel.MenuIngredients" Role="MenuIngredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuItems">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MenuIngredients">
+              <PropertyRef Name="MenuItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppliersIngredients">
+          <End Type="RestSupplyDBModel.Suppliers" Role="Suppliers" Multiplicity="1" />
+          <End Type="RestSupplyDBModel.Ingredients" Role="Ingredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Ingredients">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Kitchens">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="KitchenIngredients" Relationship="RestSupplyDBModel.FK_KitchensKitchenIngredients" FromRole="Kitchens" ToRole="KitchenIngredients" />
+        </EntityType>
+        <EntityType Name="KitchenIngredients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Valid" Type="Boolean" Nullable="false" />
+          <Property Name="KitchenId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ingredients" Relationship="RestSupplyDBModel.FK_IngredientsKitchenIngredients" FromRole="KitchenIngredients" ToRole="Ingredients" />
+          <Property Name="IngredientId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kitchens" Relationship="RestSupplyDBModel.FK_KitchensKitchenIngredients" FromRole="KitchenIngredients" ToRole="Kitchens" />
+          <Property Name="MinimalQuantity" Type="Double" Nullable="false" />
+          <Property Name="CurrentQuantity" Type="Double" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_IngredientsKitchenIngredients">
+          <End Type="RestSupplyDBModel.Ingredients" Role="Ingredients" Multiplicity="1" />
+          <End Type="RestSupplyDBModel.KitchenIngredients" Role="KitchenIngredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingredients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="KitchenIngredients">
+              <PropertyRef Name="IngredientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_KitchensKitchenIngredients">
+          <End Type="RestSupplyDBModel.Kitchens" Role="Kitchens" Multiplicity="1" />
+          <End Type="RestSupplyDBModel.KitchenIngredients" Role="KitchenIngredients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kitchens">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="KitchenIngredients">
+              <PropertyRef Name="KitchenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeName" Type="String" Nullable="false" />
+          <Property Name="AccessLevel" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="RestSupplyDBModel.FK_UserType" FromRole="UserTypes" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_UserType">
+          <End Type="RestSupplyDBModel.UserTypes" Role="UserTypes" Multiplicity="0..1" />
+          <End Type="RestSupplyDBModel.Users" Role="Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserTypesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="RestSupplyDBModelStoreContainer" CdmEntityContainer="RestSupplyDBModelContainer">
+    <EntitySetMapping Name="IngredientsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(RestSupplyDBModel.Ingredients)">
+        <MappingFragment StoreEntitySet="IngredientsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+          <ScalarProperty Name="PricePerUnit" ColumnName="PricePerUnit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsersSet">
+      <EntityTypeMapping TypeName="IsTypeOf(RestSupplyDBModel.Users)">
+        <MappingFragment StoreEntitySet="UsersSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SuppliersSet">
+      <EntityTypeMapping TypeName="IsTypeOf(RestSupplyDBModel.Suppliers)">
+        <MappingFragment StoreEntitySet="SuppliersSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MenuItemsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(RestSupplyDBModel.MenuItems)">
+        <MappingFragment StoreEntitySet="MenuItemsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrdersSet">
+      <EntityTypeMapping TypeName="IsTypeOf(RestSupplyDBModel.Orders)">
+        <MappingFragment StoreEntitySet="OrdersSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderIngredientsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(RestSupplyDBModel.OrderIngredients)">
+        <MappingFragment StoreEntitySet="OrderIngredientsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="IngredientId" ColumnName="IngredientId" />
+          <ScalarProperty Name="IngredientPrice" ColumnName="IngredientPrice" />
+          <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MenuIngredientsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(RestSupplyDBModel.MenuIngredients)">
+        <MappingFragment StoreEntitySet="MenuIngredientsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Valid" ColumnName="Valid" />
+          <ScalarProperty Name="IngredientName" ColumnName="IngredientName" />
+          <ScalarProperty Name="IngredientId" ColumnName="IngredientId" />
+          <ScalarProperty Name="MenuItemId" ColumnName="MenuItemId" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="KitchensSet">
+      <EntityTypeMapping TypeName="IsTypeOf(RestSupplyDBModel.Kitchens)">
+        <MappingFragment StoreEntitySet="KitchensSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="KitchenIngredientsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(RestSupplyDBModel.KitchenIngredients)">
+        <MappingFragment StoreEntitySet="KitchenIngredientsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Valid" ColumnName="Valid" />
+          <ScalarProperty Name="KitchenId" ColumnName="KitchenId" />
+          <ScalarProperty Name="IngredientId" ColumnName="IngredientId" />
+          <ScalarProperty Name="MinimalQuantity" ColumnName="MinimalQuantity" />
+          <ScalarProperty Name="CurrentQuantity" ColumnName="CurrentQuantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

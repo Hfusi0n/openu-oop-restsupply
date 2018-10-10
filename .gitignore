@@ -259,3 +259,16 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+RestSupplyWPFUI/Window1.xaml.cs
+RestSupplyWPFUI/Window1.xaml
+RestSupplyWPFUI/RestSupplyWPFUI.csproj
+RestSupplyWPFUI/Properties/Settings.settings
+RestSupplyWPFUI/Properties/Settings.Designer.cs
+RestSupplyWPFUI/Properties/Resources.resx
+RestSupplyWPFUI/Properties/Resources.Designer.cs
+RestSupplyWPFUI/Properties/AssemblyInfo.cs
+RestSupplyWPFUI/MainWindow.xaml.cs
+RestSupplyWPFUI/MainWindow.xaml
+RestSupplyWPFUI/App.xaml.cs
+RestSupplyWPFUI/App.xaml
+RestSupplyWPFUI/App.config

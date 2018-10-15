@@ -15,6 +15,7 @@ namespace RestSupplyMVC.Controllers
             using (RestSupplyDBModelContainer db = new RestSupplyDBModelContainer())
             {
 
+                ViewBag.menuItems = db.MenuItemsSet.ToList();
             }
                 return View();
         }

@@ -17,11 +17,17 @@ namespace RestSupplyMVC
                 "menuitems/{action}",
                 new {controller = "MenuItems", action = "Create"});
 
+            
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Navigation", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute("Suppliers",
+                "{controller}/{action}",
+                new { controller = "Suppliers", action = "Index" });
+
         }
     }
 }

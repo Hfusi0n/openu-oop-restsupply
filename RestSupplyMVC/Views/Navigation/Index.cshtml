@@ -9,12 +9,17 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6"><a href="#" class="btn btn-primary btn-large btn-block"><span class="glyphicon glyphicon-glass"></span> תפריט</a></div>
-    <div class="col-md-6"><a href="#" class="btn btn-primary btn-large btn-block"><span class="glyphicon glyphicon-adjust"></span> מלאי</a></div>
-    <div class="col-md-6"><a href="#" class="btn btn-primary btn-large btn-block"><span class="glyphicon glyphicon-user"></span> ספקים</a></div>
-    <div class="col-md-6"><a href="#" class="btn btn-primary btn-large btn-block"><span class="glyphicon glyphicon-cutlery"></span> הזמנת לקוח</a></div>
-    <div class="col-md-6"><a href="#" class="btn btn-primary btn-large btn-block"><span class="glyphicon glyphicon-shopping-cart"></span> הזמנת ספק</a></div>
-    <div class="col-md-6"><a href="#" class="btn btn-primary btn-large btn-block"><span class="glyphicon glyphicon-warning-sign"></span> התרעות</a></div>
+    @*<div class="col-md-6"><a href="#" class="btn btn-primary btn-large btn-block"><span class="glyphicon glyphicon-glass"></span> תפריט</a></div>*@
+
+    @Html.ActionLink(" ספקים ", "Index", "Suppliers", null, new { @class = "btn btn-primary btn-large btn-block glyphicon glyphicon-user" })
+
+    @Html.ActionLink(" הזמנת לקוחות ", "Index", "MenuOrders", null, new { @class = "btn btn-primary btn-large btn-block glyphicon glyphicon-cutlery" })
+
+    @Html.ActionLink(" מלאי ", "Index", "KitchenIngredients", null, new { @class = "btn btn-primary btn-large btn-block glyphicon glyphicon-adjust" })
+    @Html.ActionLink(" הזמנת ספק   ", "Index", "MenuOrders", null, new { @class = " btn btn-primary btn-large btn-block glyphicon glyphicon-shopping-cart" })
+    @Html.ActionLink(" התרעות  ", "Index", "Notifications", null, new { @class = "btn btn-primary btn-large btn-block glyphicon glyphicon-warning-sign" })
+    @Html.ActionLink(" תפריט  ", "Index", "MenuItems", null, new { @class = "btn btn-primary btn-large btn-block glyphicon glyphicon-glass" })
+
 
 
 </div>

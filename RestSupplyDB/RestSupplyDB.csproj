@@ -37,13 +37,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <EntityDeploy Include="RestSupplyDBModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RestSupplyDBModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="RestSupplyDBModel.edmx.diagram">
-      <DependentUpon>RestSupplyDBModel.edmx</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -51,6 +44,12 @@
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -60,67 +59,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ingredients.cs">
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="KitchenIngredients.cs">
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Kitchens.cs">
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MenuIngredients.cs">
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MenuItems.cs">
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="OrderIngredients.cs">
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Orders.cs">
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RestSupplyDBModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RestSupplyDBModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RestSupplyDBModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RestSupplyDBModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RestSupplyDBModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Suppliers.cs">
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Users.cs">
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserTypes.cs">
-      <DependentUpon>RestSupplyDBModel.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="RestSupplyDBModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>RestSupplyDBModel.Context.cs</LastGenOutput>
-      <DependentUpon>RestSupplyDBModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="RestSupplyDBModel.edmx.sql" />
-    <Content Include="RestSupplyDBModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>RestSupplyDBModel.cs</LastGenOutput>
-      <DependentUpon>RestSupplyDBModel.edmx</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\IngredientsSet.cs" />
+    <Compile Include="Models\KitchenIngredientsSet.cs" />
+    <Compile Include="Models\KitchensSet.cs" />
+    <Compile Include="Models\MenuIngredientsSet.cs" />
+    <Compile Include="Models\MenuItemsSet.cs" />
+    <Compile Include="Models\OrderIngredientsSet.cs" />
+    <Compile Include="Models\OrdersSet.cs" />
+    <Compile Include="Models\RolesSet.cs" />
+    <Compile Include="RestSupplyDBModel.cs" />
+    <Compile Include="Models\SuppliersSet.cs" />
+    <Compile Include="Models\UsersSet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

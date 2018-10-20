@@ -70,7 +70,12 @@
     <Compile Include="Migrations\201810201256269_version_upgrade_2.Designer.cs">
       <DependentUpon>201810201256269_version_upgrade_2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810201521057_version_upgrade_3.cs" />
+    <Compile Include="Migrations\201810201521057_version_upgrade_3.Designer.cs">
+      <DependentUpon>201810201521057_version_upgrade_3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CustomerDetailOrdersSet.cs" />
     <Compile Include="Models\CustomerOrdersSet.cs" />
     <Compile Include="Models\IngredientsSet.cs" />
     <Compile Include="Models\KitchenIngredientsSet.cs" />
@@ -90,6 +95,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810201256269_version_upgrade_2.resx">
       <DependentUpon>201810201256269_version_upgrade_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810201521057_version_upgrade_3.resx">
+      <DependentUpon>201810201521057_version_upgrade_3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

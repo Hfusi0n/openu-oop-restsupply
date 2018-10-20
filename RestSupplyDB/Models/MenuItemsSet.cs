@@ -13,18 +13,16 @@ namespace RestSupplyDB.Models
         public MenuItemsSet()
         {
             MenuIngredientsSet = new HashSet<MenuIngredientsSet>();
+            CustomerDetailOrdersSet = new HashSet<CustomerDetailOrdersSet>();
         }
 
         public int Id { get; set; }
 
         [Required]
         public string Name { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        
         public virtual ICollection<MenuIngredientsSet> MenuIngredientsSet { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CustomerOrdersSet> CustomerOrdersSet { get; set; }
-
+        
+        public virtual ICollection<CustomerDetailOrdersSet> CustomerDetailOrdersSet { get; set; }
     }
 }

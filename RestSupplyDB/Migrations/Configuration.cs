@@ -9,7 +9,7 @@ namespace RestSupplyDB.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(RestSupplyDB.RestSupplyDBModel context)

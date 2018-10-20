@@ -62,18 +62,35 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\201810201218160_version_upgrade_1.cs" />
+    <Compile Include="Migrations\201810201218160_version_upgrade_1.Designer.cs">
+      <DependentUpon>201810201218160_version_upgrade_1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810201256269_version_upgrade_2.cs" />
+    <Compile Include="Migrations\201810201256269_version_upgrade_2.Designer.cs">
+      <DependentUpon>201810201256269_version_upgrade_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CustomerOrdersSet.cs" />
     <Compile Include="Models\IngredientsSet.cs" />
     <Compile Include="Models\KitchenIngredientsSet.cs" />
     <Compile Include="Models\KitchensSet.cs" />
     <Compile Include="Models\MenuIngredientsSet.cs" />
     <Compile Include="Models\MenuItemsSet.cs" />
-    <Compile Include="Models\OrderIngredientsSet.cs" />
-    <Compile Include="Models\OrdersSet.cs" />
+    <Compile Include="Models\IngredientListOrdersSet.cs" />
+    <Compile Include="Models\IngredientOrdersSet.cs" />
     <Compile Include="Models\RolesSet.cs" />
     <Compile Include="RestSupplyDBModel.cs" />
     <Compile Include="Models\SuppliersSet.cs" />
     <Compile Include="Models\UsersSet.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201810201218160_version_upgrade_1.resx">
+      <DependentUpon>201810201218160_version_upgrade_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810201256269_version_upgrade_2.resx">
+      <DependentUpon>201810201256269_version_upgrade_2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

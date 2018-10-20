@@ -12,7 +12,7 @@ namespace RestSupplyDB.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public IngredientOrdersSet()
         {
-            OrderIngredientsSet = new HashSet<IngredientListOrdersSet>();
+            IngredientListOrdersSet = new HashSet<IngredientListOrdersSet>();
         }
 
         public int Id { get; set; }
@@ -28,6 +28,6 @@ namespace RestSupplyDB.Models
         public virtual SuppliersSet SuppliersSet { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<IngredientListOrdersSet> OrderIngredientsSet { get; set; }
+        public virtual ICollection<IngredientListOrdersSet> IngredientListOrdersSet { get; set; }
     }
 }

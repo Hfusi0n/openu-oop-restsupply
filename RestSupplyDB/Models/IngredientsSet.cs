@@ -14,7 +14,7 @@ namespace RestSupplyDB.Models
         {
             KitchenIngredientsSet = new HashSet<KitchenIngredientsSet>();
             MenuIngredientsSet = new HashSet<MenuIngredientsSet>();
-            OrderIngredientsSet = new HashSet<IngredientListOrdersSet>();
+            IngredientListOrdersSet = new HashSet<IngredientListOrdersSet>();
         }
 
         public int Id { get; set; }
@@ -38,7 +38,7 @@ namespace RestSupplyDB.Models
         public virtual ICollection<MenuIngredientsSet> MenuIngredientsSet { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<IngredientListOrdersSet> OrderIngredientsSet { get; set; }
+        public virtual ICollection<IngredientListOrdersSet> IngredientListOrdersSet { get; set; }
 
     }
 }

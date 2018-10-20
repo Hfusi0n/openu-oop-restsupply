@@ -19,8 +19,8 @@ namespace RestSupplyDB
         public virtual DbSet<KitchensSet> KitchensSet { get; set; }
         public virtual DbSet<MenuIngredientsSet> MenuIngredientsSet { get; set; }
         public virtual DbSet<MenuItemsSet> MenuItemsSet { get; set; }
-        public virtual DbSet<OrderIngredientsSet> OrderIngredientsSet { get; set; }
-        public virtual DbSet<OrdersSet> OrdersSet { get; set; }
+        public virtual DbSet<IngredientListOrdersSet> OrderIngredientsSet { get; set; }
+        public virtual DbSet<IngredientOrdersSet> OrdersSet { get; set; }
         public virtual DbSet<SuppliersSet> SuppliersSet { get; set; }
         public virtual DbSet<UsersSet> UsersSet { get; set; }
         public virtual DbSet<RolesSet> RolesSet { get; set; }
@@ -57,7 +57,7 @@ namespace RestSupplyDB
                 .WithOptional(e => e.MenuItemsSet)
                 .HasForeignKey(e => e.MenuItemId);
 
-            modelBuilder.Entity<OrdersSet>()
+            modelBuilder.Entity<IngredientOrdersSet>()
                 .HasMany(e => e.OrderIngredientsSet)
                 .WithOptional(e => e.OrdersSet)
                 .HasForeignKey(e => e.OrderId);

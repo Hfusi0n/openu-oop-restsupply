@@ -6,8 +6,8 @@ namespace RestSupplyDB.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("OrderIngredientsSet")]
-    public partial class OrderIngredientsSet
+    [Table("IngredientListOrdersSet")]
+    public partial class IngredientListOrdersSet
     {
         public int Id { get; set; }
 
@@ -17,12 +17,9 @@ namespace RestSupplyDB.Models
 
         public double IngredientPrice { get; set; }
 
-        public int? SupplierId { get; set; }
-
         public virtual IngredientsSet IngredientsSet { get; set; }
 
-        public virtual OrdersSet OrdersSet { get; set; }
+        public virtual IngredientOrdersSet OrdersSet { get; set; }
 
-        public virtual SuppliersSet SuppliersSet { get; set; }
     }
 }

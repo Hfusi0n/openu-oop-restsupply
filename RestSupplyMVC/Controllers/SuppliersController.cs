@@ -7,12 +7,13 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RestSupplyDB;
+using RestSupplyDB.Models;
 
 namespace RestSupplyMVC.Controllers
 {
     public class SuppliersController : Controller
     {
-        private RestSupplyDBModelContainer db = new RestSupplyDBModelContainer();
+        private RestSupplyDBModel db = new RestSupplyDBModel();
 
         // GET: Suppliers
         public ActionResult Index()
@@ -27,7 +28,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Suppliers suppliers = db.SuppliersSet.Find(id);
+            SuppliersSet suppliers = db.SuppliersSet.Find(id);
             if (suppliers == null)
             {
                 return HttpNotFound();
@@ -46,7 +47,7 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Suppliers suppliers)
+        public ActionResult Create([Bind(Include = "Id,Name")] SuppliersSet suppliers)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +66,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Suppliers suppliers = db.SuppliersSet.Find(id);
+            SuppliersSet suppliers = db.SuppliersSet.Find(id);
             if (suppliers == null)
             {
                 return HttpNotFound();
@@ -78,7 +79,7 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] Suppliers suppliers)
+        public ActionResult Edit([Bind(Include = "Id,Name")] SuppliersSet suppliers)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +97,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Suppliers suppliers = db.SuppliersSet.Find(id);
+            SuppliersSet suppliers = db.SuppliersSet.Find(id);
             if (suppliers == null)
             {
                 return HttpNotFound();
@@ -109,7 +110,7 @@ namespace RestSupplyMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Suppliers suppliers = db.SuppliersSet.Find(id);
+            SuppliersSet suppliers = db.SuppliersSet.Find(id);
             db.SuppliersSet.Remove(suppliers);
             db.SaveChanges();
             return RedirectToAction("Index");

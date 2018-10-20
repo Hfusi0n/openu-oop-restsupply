@@ -12,7 +12,7 @@ namespace RestSupplyMVC.Controllers
         // GET: MenuItems
         public ActionResult Index()
         {
-            using (RestSupplyDBModelContainer db = new RestSupplyDBModelContainer())
+            using (RestSupplyDBModel db = new RestSupplyDBModel())
             {
 
                 ViewBag.menuItems = db.MenuItemsSet.ToList();

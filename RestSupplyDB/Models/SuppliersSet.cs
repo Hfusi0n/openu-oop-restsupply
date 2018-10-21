@@ -20,11 +20,9 @@ namespace RestSupplyDB.Models
 
         [Required]
         public string Name { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        
         public virtual ICollection<IngredientsSet> IngredientsSet { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        
         public virtual ICollection<IngredientOrdersSet> IngredientOrdersSet { get; set; }
     }
 }

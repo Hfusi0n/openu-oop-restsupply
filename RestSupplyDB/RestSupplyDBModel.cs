@@ -22,6 +22,7 @@ namespace RestSupplyDB
         public virtual DbSet<IngredientListOrdersSet> IngredientListOrdersSet { get; set; }
         public virtual DbSet<IngredientOrdersSet> IngredientOrdersSet { get; set; }
         public virtual DbSet<CustomerOrdersSet> CustomerOrdersSet { get; set; }
+        public virtual DbSet<CustomerDetailOrdersSet> CustomerDetailOrdersSet { get; set; }
         public virtual DbSet<SuppliersSet> SuppliersSet { get; set; }
         public virtual DbSet<UsersSet> UsersSet { get; set; }
         public virtual DbSet<RolesSet> RolesSet { get; set; }
@@ -40,50 +41,47 @@ namespace RestSupplyDB
             modelBuilder.Entity<IngredientsSet>()
                 .HasMany(e => e.MenuIngredientsSet)
                 .WithOptional(e => e.IngredientsSet)
-                .HasForeignKey(e => e.IngredientId);
+                .HasForeignKey(e => e.IngredientId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<IngredientsSet>()
                 .HasMany(e => e.IngredientListOrdersSet)
                 .WithRequired(e => e.IngredientsSet)
-                .HasForeignKey(e => e.IngredientId);
+                .HasForeignKey(e => e.IngredientId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<KitchensSet>()
                 .HasMany(e => e.KitchenIngredientsSet)
                 .WithRequired(e => e.KitchensSet)
-                .HasForeignKey(e => e.KitchenId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.KitchenId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<KitchensSet>()
                 .HasMany(e => e.CustomerOrdersSet)
                 .WithRequired(e => e.KitchensSet)
-                .HasForeignKey(e => e.KitchenId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.KitchenId);
 
             modelBuilder.Entity<MenuItemsSet>()
                 .HasMany(e => e.MenuIngredientsSet)
                 .WithOptional(e => e.MenuItemsSet)
-                .HasForeignKey(e => e.MenuItemId);
+                .HasForeignKey(e => e.MenuItemId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<MenuItemsSet>()
-                .HasMany(e => e.CustomerOrdersSet)
+                .HasMany(e => e.CustomerDetailOrdersSet)
                 .WithRequired(e => e.MenuItemsSet)
-                .HasForeignKey(e => e.MenuItemId);
-
+                .HasForeignKey(e => e.MenuItemId).WillCascadeOnDelete(false);
+            
             modelBuilder.Entity<IngredientOrdersSet>()
                 .HasMany(e => e.IngredientListOrdersSet)
                 .WithRequired(e => e.OrdersSet)
-                .HasForeignKey(e => e.OrderId);
+                .HasForeignKey(e => e.OrderId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<SuppliersSet>()
                 .HasMany(e => e.IngredientsSet)
                 .WithRequired(e => e.SuppliersSet)
-                .HasForeignKey(e => e.SupplierId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.SupplierId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<SuppliersSet>()
                 .HasMany(e => e.IngredientOrdersSet)
                 .WithRequired(e => e.SuppliersSet)
-                .HasForeignKey(e => e.SupplierId);
+                .HasForeignKey(e => e.SupplierId).WillCascadeOnDelete(false);
         }
     }
 }

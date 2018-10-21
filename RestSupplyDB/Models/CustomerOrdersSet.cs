@@ -17,11 +17,7 @@ namespace RestSupplyDB.Models
         [Required]
         public string Time { get; set; }
 
-        public int MenuItemId { get; set; }
-
         public int KitchenId { get; set; }
-
-        public virtual MenuItemsSet MenuItemsSet { get; set; }
 
         public virtual KitchensSet KitchensSet { get; set; }        
     }

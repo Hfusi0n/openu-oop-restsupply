@@ -13,6 +13,10 @@ namespace RestSupplyDB
             : base("name=RestSupplyDBModel")
         {
         }
+        public static RestSupplyDBModel Create()
+        {
+            return new RestSupplyDBModel();
+        }
 
         public virtual DbSet<IngredientsSet> IngredientsSet { get; set; }
         public virtual DbSet<KitchenIngredientsSet> KitchenIngredientsSet { get; set; }

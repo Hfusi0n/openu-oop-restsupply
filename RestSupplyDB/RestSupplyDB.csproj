@@ -62,17 +62,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201810201218160_version_upgrade_1.cs" />
-    <Compile Include="Migrations\201810201218160_version_upgrade_1.Designer.cs">
-      <DependentUpon>201810201218160_version_upgrade_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810201256269_version_upgrade_2.cs" />
-    <Compile Include="Migrations\201810201256269_version_upgrade_2.Designer.cs">
-      <DependentUpon>201810201256269_version_upgrade_2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810201521057_version_upgrade_3.cs" />
-    <Compile Include="Migrations\201810201521057_version_upgrade_3.Designer.cs">
-      <DependentUpon>201810201521057_version_upgrade_3.cs</DependentUpon>
+    <Compile Include="Migrations\201812061800285_Initial.cs" />
+    <Compile Include="Migrations\201812061800285_Initial.Designer.cs">
+      <DependentUpon>201812061800285_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CustomerDetailOrdersSet.cs" />
@@ -90,14 +82,8 @@
     <Compile Include="Models\UsersSet.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201810201218160_version_upgrade_1.resx">
-      <DependentUpon>201810201218160_version_upgrade_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810201256269_version_upgrade_2.resx">
-      <DependentUpon>201810201256269_version_upgrade_2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810201521057_version_upgrade_3.resx">
-      <DependentUpon>201810201521057_version_upgrade_3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201812061800285_Initial.resx">
+      <DependentUpon>201812061800285_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

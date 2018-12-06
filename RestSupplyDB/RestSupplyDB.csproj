@@ -66,6 +66,10 @@
     <Compile Include="Migrations\201812061800285_Initial.Designer.cs">
       <DependentUpon>201812061800285_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812061813434_remove_roles.cs" />
+    <Compile Include="Migrations\201812061813434_remove_roles.Designer.cs">
+      <DependentUpon>201812061813434_remove_roles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CustomerDetailOrdersSet.cs" />
     <Compile Include="Models\CustomerOrdersSet.cs" />
@@ -76,7 +80,6 @@
     <Compile Include="Models\MenuItemsSet.cs" />
     <Compile Include="Models\IngredientListOrdersSet.cs" />
     <Compile Include="Models\IngredientOrdersSet.cs" />
-    <Compile Include="Models\RolesSet.cs" />
     <Compile Include="RestSupplyDBModel.cs" />
     <Compile Include="Models\SuppliersSet.cs" />
     <Compile Include="Models\UsersSet.cs" />
@@ -84,6 +87,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201812061800285_Initial.resx">
       <DependentUpon>201812061800285_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812061813434_remove_roles.resx">
+      <DependentUpon>201812061813434_remove_roles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

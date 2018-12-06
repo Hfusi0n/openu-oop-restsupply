@@ -20,9 +20,10 @@ namespace RestSupplyMVC
         {
             app.CreatePerOwinContext(() => new RestSupplyDBModel());
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
-            app.CreatePerOwinContext<RoleManager<RolesSet>>((options, context) =>
+            // TODO betty - Create Context for Roles
+            /*app.CreatePerOwinContext<RoleManager<RolesSet>>((options, context) =>
                 new RoleManager<RolesSet>(
-                    new RoleStore<RolesSet>(context.Get<RestSupplyDBModel>())));
+                    new RoleStore<RolesSet>(context.Get<RestSupplyDBModel>())));*/
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {

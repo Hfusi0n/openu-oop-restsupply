@@ -7,11 +7,15 @@ namespace RestSupplyDB
     using Microsoft.AspNet.Identity.EntityFramework;
     using RestSupplyDB.Models;
 
-    public partial class RestSupplyDBModel : IdentityDbContext
+    public partial class RestSupplyDBModel : IdentityDbContext<UsersSet>
     {
         public RestSupplyDBModel()
             : base("name=RestSupplyDBModel")
         {
+        }
+        public static RestSupplyDBModel Create()
+        {
+            return new RestSupplyDBModel();
         }
 
         public virtual DbSet<IngredientsSet> IngredientsSet { get; set; }

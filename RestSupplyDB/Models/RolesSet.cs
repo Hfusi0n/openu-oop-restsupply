@@ -7,5 +7,7 @@ namespace RestSupplyDB.Models
     [Table("RolesSet")]
     public partial class RolesSet : IdentityRole
     {
+        public RolesSet() : base() { }
+        public RolesSet(string name) : base(name) { }
     }
 }

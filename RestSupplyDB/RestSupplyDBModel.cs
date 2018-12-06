@@ -28,8 +28,8 @@ namespace RestSupplyDB
         public virtual DbSet<CustomerOrdersSet> CustomerOrdersSet { get; set; }
         public virtual DbSet<CustomerDetailOrdersSet> CustomerDetailOrdersSet { get; set; }
         public virtual DbSet<SuppliersSet> SuppliersSet { get; set; }
-        public virtual DbSet<UsersSet> UsersSet { get; set; }
-        public virtual DbSet<RolesSet> RolesSet { get; set; }
+        /*public virtual DbSet<UsersSet> UsersSet { get; set; }
+        public virtual DbSet<RolesSet> RolesSet { get; set; }*/
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

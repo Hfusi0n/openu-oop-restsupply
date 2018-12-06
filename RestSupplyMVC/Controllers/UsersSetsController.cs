@@ -19,7 +19,7 @@ namespace RestSupplyMVC.Controllers
         // GET: UsersSets
         public async Task<ActionResult> Index()
         {
-            return View(await db.GetUsers().ToListAsync());
+            return View(await db.Users.ToListAsync());
         }
 
         // GET: UsersSets/Details/5
@@ -29,7 +29,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UsersSet usersSet = db.GetUsers().Find(id);
+            UsersSet usersSet = db.Users.Find(id);
             if (usersSet == null)
             {
                 return HttpNotFound();
@@ -52,7 +52,7 @@ namespace RestSupplyMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.GetUsers().Add(usersSet);
+                db.Users.Add(usersSet);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -67,7 +67,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UsersSet usersSet = db.GetUsers().Find(id);
+            UsersSet usersSet = db.Users.Find(id);
             if (usersSet == null)
             {
                 return HttpNotFound();
@@ -98,7 +98,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UsersSet usersSet = db.GetUsers().Find(id);
+            UsersSet usersSet = db.Users.Find(id);
             if (usersSet == null)
             {
                 return HttpNotFound();
@@ -111,8 +111,8 @@ namespace RestSupplyMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            UsersSet usersSet = db.GetUsers().Find(id);
-            db.GetUsers().Remove(usersSet);
+            UsersSet usersSet = db.Users.Find(id);
+            db.Users.Remove(usersSet);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

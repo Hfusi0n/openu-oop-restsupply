@@ -7,7 +7,7 @@ namespace RestSupplyDB
     using Microsoft.AspNet.Identity.EntityFramework;
     using RestSupplyDB.Models;
 
-    public partial class RestSupplyDBModel : IdentityDbContext<UsersSet>
+    public partial class RestSupplyDBModel : IdentityDbContext<UsersSet, RoleSet, string, UserLoginSet, UserRoleSet, UserClaimSet>
     {
         public RestSupplyDBModel()
             : base("name=RestSupplyDBModel")
@@ -28,13 +28,20 @@ namespace RestSupplyDB
         public virtual DbSet<CustomerOrdersSet> CustomerOrdersSet { get; set; }
         public virtual DbSet<CustomerDetailOrdersSet> CustomerDetailOrdersSet { get; set; }
         public virtual DbSet<SuppliersSet> SuppliersSet { get; set; }
-        /*public virtual DbSet<UsersSet> UsersSet { get; set; }
-        public virtual DbSet<RolesSet> RolesSet { get; set; }*/
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UsersSet>().ToTable("dbo.Users");
+            modelBuilder.Entity<RoleSet>().ToTable("dbo.Roles");
+            modelBuilder.Entity<UserClaimSet>().ToTable("UserClaims");
+            modelBuilder.Entity<UserLoginSet>().ToTable("UserLogins");
+            modelBuilder.Entity<UserRoleSet>().ToTable("UserRoles");
+
+            modelBuilder.Entity<UsersSet>().Property(r => r.Id);
+            modelBuilder.Entity<UserClaimSet>().Property(r => r.Id);
+            modelBuilder.Entity<RoleSet>().Property(r => r.Id);
 
             modelBuilder.Entity<IngredientsSet>()
                 .HasMany(e => e.KitchenIngredientsSet)

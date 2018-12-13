@@ -70,19 +70,27 @@
     <Compile Include="Migrations\201812061813434_remove_roles.Designer.cs">
       <DependentUpon>201812061813434_remove_roles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812131651324_customize_identity_models.cs" />
+    <Compile Include="Migrations\201812131651324_customize_identity_models.Designer.cs">
+      <DependentUpon>201812131651324_customize_identity_models.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\CustomerDetailOrdersSet.cs" />
-    <Compile Include="Models\CustomerOrdersSet.cs" />
-    <Compile Include="Models\IngredientsSet.cs" />
-    <Compile Include="Models\KitchenIngredientsSet.cs" />
-    <Compile Include="Models\KitchensSet.cs" />
-    <Compile Include="Models\MenuIngredientsSet.cs" />
-    <Compile Include="Models\MenuItemsSet.cs" />
-    <Compile Include="Models\IngredientListOrdersSet.cs" />
-    <Compile Include="Models\IngredientOrdersSet.cs" />
+    <Compile Include="Models\Customer\CustomerDetailOrdersSet.cs" />
+    <Compile Include="Models\Customer\CustomerOrdersSet.cs" />
+    <Compile Include="Models\Ingredient\IngredientsSet.cs" />
+    <Compile Include="Models\Kitchen\KitchenIngredientsSet.cs" />
+    <Compile Include="Models\Kitchen\KitchensSet.cs" />
+    <Compile Include="Models\Menu\MenuIngredientsSet.cs" />
+    <Compile Include="Models\Menu\MenuItemsSet.cs" />
+    <Compile Include="Models\Ingredient\IngredientListOrdersSet.cs" />
+    <Compile Include="Models\Ingredient\IngredientOrdersSet.cs" />
+    <Compile Include="Models\User\RoleSet.cs" />
+    <Compile Include="Models\User\UserClaimSet.cs" />
+    <Compile Include="Models\User\UserLoginSet.cs" />
+    <Compile Include="Models\User\UserRoleSet.cs" />
     <Compile Include="RestSupplyDBModel.cs" />
-    <Compile Include="Models\SuppliersSet.cs" />
-    <Compile Include="Models\UsersSet.cs" />
+    <Compile Include="Models\Supplier\SuppliersSet.cs" />
+    <Compile Include="Models\User\UsersSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201812061800285_Initial.resx">
@@ -90,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812061813434_remove_roles.resx">
       <DependentUpon>201812061813434_remove_roles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812131651324_customize_identity_models.resx">
+      <DependentUpon>201812131651324_customize_identity_models.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

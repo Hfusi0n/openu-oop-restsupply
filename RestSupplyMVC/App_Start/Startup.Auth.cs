@@ -4,13 +4,11 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
-using AuthTest.Models;
 using RestSupplyDB;
 using RestSupplyDB.Models;
-using RestSupplyMVC.Models;
 using RestSupplyMVC;
 
-namespace AuthTest
+namespace RestSupplyMVC
 {
     public partial class Startup
     {

@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security.Cookies;
-using Owin;
-using Microsoft.Owin;
+using Microsoft.AspNet.Identity.Owin;
 using RestSupplyDB;
 using RestSupplyDB.Models;
-using RestSupplyMVC.Models;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System;
+using Microsoft.Owin;
+using Owin;
 
 namespace RestSupplyMVC
 {
@@ -20,10 +19,9 @@ namespace RestSupplyMVC
         {
             app.CreatePerOwinContext(() => new RestSupplyDBModel());
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
-            // TODO betty - Create Context for Roles
-            /*app.CreatePerOwinContext<RoleManager<RolesSet>>((options, context) =>
-                new RoleManager<RolesSet>(
-                    new RoleStore<RolesSet>(context.Get<RestSupplyDBModel>())));*/
+            app.CreatePerOwinContext<RoleManager<RoleSet>>((options, context) =>
+                new RoleManager<RoleSet>(
+                    new RoleStore<RoleSet,string,UserRoleSet>(context.Get<RestSupplyDBModel>())));
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -53,16 +51,16 @@ namespace RestSupplyMVC
         }
     }
 
-    public class AppUserManager : UserManager<UsersSet>
+    public class AppUserManager : UserManager<UsersSet,string>
     {
-        public AppUserManager(IUserStore<UsersSet> store)
+        public AppUserManager(IUserStore<UsersSet,string> store)
             : base(store)
         {
         }
 
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
-            var manager = new AppUserManager(new UserStore<UsersSet>(context.Get<RestSupplyDBModel>()));
+            var manager = new AppUserManager(new UserStore<UsersSet,RoleSet,string,UserLoginSet,UserRoleSet,UserClaimSet>(context.Get<RestSupplyDBModel>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<UsersSet>(manager)
             {

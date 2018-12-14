@@ -4,6 +4,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.AspNet.Identity.Owin;
 using RestSupplyDB;
 using RestSupplyDB.Models;
+using RestSupplyDB.Models.AppUser;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -19,9 +20,9 @@ namespace RestSupplyMVC
         {
             app.CreatePerOwinContext(() => new RestSupplyDBModel());
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
-            app.CreatePerOwinContext<RoleManager<RoleSet>>((options, context) =>
-                new RoleManager<RoleSet>(
-                    new RoleStore<RoleSet,string,UserRoleSet>(context.Get<RestSupplyDBModel>())));
+            app.CreatePerOwinContext<RoleManager<AppRole>>((options, context) =>
+                new RoleManager<AppRole>(
+                    new RoleStore<AppRole,string,AppUserRole>(context.Get<RestSupplyDBModel>())));
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -33,14 +34,14 @@ namespace RestSupplyMVC
 
 
     // Configure the application sign-in manager which is used in this application.
-    public class ApplicationSignInManager : SignInManager<UsersSet, string>
+    public class ApplicationSignInManager : SignInManager<AppUser, string>
     {
         public ApplicationSignInManager(AppUserManager userManager, IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         {
         }
 
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(UsersSet user)
+        public override Task<ClaimsIdentity> CreateUserIdentityAsync(AppUser user)
         {
             return user.GenerateUserIdentityAsync((AppUserManager)UserManager);
         }
@@ -51,18 +52,18 @@ namespace RestSupplyMVC
         }
     }
 
-    public class AppUserManager : UserManager<UsersSet,string>
+    public class AppUserManager : UserManager<AppUser,string>
     {
-        public AppUserManager(IUserStore<UsersSet,string> store)
+        public AppUserManager(IUserStore<AppUser,string> store)
             : base(store)
         {
         }
 
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
-            var manager = new AppUserManager(new UserStore<UsersSet,RoleSet,string,UserLoginSet,UserRoleSet,UserClaimSet>(context.Get<RestSupplyDBModel>()));
+            var manager = new AppUserManager(new UserStore<AppUser,AppRole,string,AppUserLogin,AppUserRole,AppUserClaim>(context.Get<RestSupplyDBModel>()));
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<UsersSet>(manager)
+            manager.UserValidator = new UserValidator<AppUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -85,11 +86,11 @@ namespace RestSupplyMVC
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
-            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<UsersSet>
+            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<AppUser>
             {
                 MessageFormat = "Your security code is {0}"
             });
-            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<UsersSet>
+            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<AppUser>
             {
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
@@ -100,7 +101,7 @@ namespace RestSupplyMVC
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider =
-                    new DataProtectorTokenProvider<UsersSet>(dataProtectionProvider.Create("ASP.NET Identity"));
+                    new DataProtectorTokenProvider<AppUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
         }

@@ -1,4 +1,6 @@
-namespace RestSupplyDB.Models
+using RestSupplyDB.Models.Ingredient;
+
+namespace RestSupplyDB.Models.Menu
 {
     using System;
     using System.Collections.Generic;
@@ -6,15 +8,12 @@ namespace RestSupplyDB.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("MenuIngredientsSet")]
-    public partial class MenuIngredientsSet
+    [Table("MenuIngredients")]
+    public partial class MenuIngredients
     {
         public int Id { get; set; }
 
-        public bool Valid { get; set; }
-
-        [Required]
-        public string IngredientName { get; set; }
+        public bool IsDeleted { get; set; }
 
         public int? IngredientId { get; set; }
 
@@ -22,8 +21,8 @@ namespace RestSupplyDB.Models
 
         public double Quantity { get; set; }
 
-        public virtual IngredientsSet IngredientsSet { get; set; }
+        public virtual Ingredients IngredientsSet { get; set; }
 
-        public virtual MenuItemsSet MenuItemsSet { get; set; }
+        public virtual MenuItems MenuItemsSet { get; set; }
     }
 }

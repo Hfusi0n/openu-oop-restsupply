@@ -74,23 +74,28 @@
     <Compile Include="Migrations\201812131651324_customize_identity_models.Designer.cs">
       <DependentUpon>201812131651324_customize_identity_models.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812141810587_schema_update_4.cs" />
+    <Compile Include="Migrations\201812141810587_schema_update_4.Designer.cs">
+      <DependentUpon>201812141810587_schema_update_4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Customer\CustomerDetailOrdersSet.cs" />
-    <Compile Include="Models\Customer\CustomerOrdersSet.cs" />
-    <Compile Include="Models\Ingredient\IngredientsSet.cs" />
-    <Compile Include="Models\Kitchen\KitchenIngredientsSet.cs" />
-    <Compile Include="Models\Kitchen\KitchensSet.cs" />
-    <Compile Include="Models\Menu\MenuIngredientsSet.cs" />
-    <Compile Include="Models\Menu\MenuItemsSet.cs" />
-    <Compile Include="Models\Ingredient\IngredientListOrdersSet.cs" />
-    <Compile Include="Models\Ingredient\IngredientOrdersSet.cs" />
-    <Compile Include="Models\User\RoleSet.cs" />
-    <Compile Include="Models\User\UserClaimSet.cs" />
-    <Compile Include="Models\User\UserLoginSet.cs" />
-    <Compile Include="Models\User\UserRoleSet.cs" />
+    <Compile Include="Models\Customer\CustomerDetailOrders.cs" />
+    <Compile Include="Models\Customer\CustomerOrders.cs" />
+    <Compile Include="Models\Ingredient\Ingredients.cs" />
+    <Compile Include="Models\Kitchen\KitchenIngredients.cs" />
+    <Compile Include="Models\Kitchen\Kitchens.cs" />
+    <Compile Include="Models\Menu\MenuIngredients.cs" />
+    <Compile Include="Models\Menu\MenuItems.cs" />
+    <Compile Include="Models\Ingredient\IngredientListOrders.cs" />
+    <Compile Include="Models\Ingredient\IngredientOrders.cs" />
+    <Compile Include="Models\Supplier\SuppliersIngredients.cs" />
+    <Compile Include="Models\AppUser\AppRole.cs" />
+    <Compile Include="Models\AppUser\AppUserClaim.cs" />
+    <Compile Include="Models\AppUser\AppUserLogin.cs" />
+    <Compile Include="Models\AppUser\AppUserRole.cs" />
     <Compile Include="RestSupplyDBModel.cs" />
-    <Compile Include="Models\Supplier\SuppliersSet.cs" />
-    <Compile Include="Models\User\UsersSet.cs" />
+    <Compile Include="Models\Supplier\Suppliers.cs" />
+    <Compile Include="Models\AppUser\AppUsers.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201812061800285_Initial.resx">
@@ -101,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812131651324_customize_identity_models.resx">
       <DependentUpon>201812131651324_customize_identity_models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812141810587_schema_update_4.resx">
+      <DependentUpon>201812141810587_schema_update_4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

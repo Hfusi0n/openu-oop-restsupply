@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using RestSupplyMVC.Models;
 using RestSupplyDB.Models;
+using RestSupplyDB.Models.AppUser;
 using RestSupplyMVC;
 
 namespace RestSupplyMVC.Controllers
@@ -155,7 +156,7 @@ namespace RestSupplyMVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var user = new UsersSet { UserName = model.Email, Email = model.Email };
+                    var user = new AppUser { UserName = model.Email, Email = model.Email };
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
@@ -390,7 +391,7 @@ namespace RestSupplyMVC.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new UsersSet { UserName = model.Email, Email = model.Email };
+                var user = new AppUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

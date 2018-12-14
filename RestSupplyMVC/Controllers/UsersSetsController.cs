@@ -8,7 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using RestSupplyDB;
-using RestSupplyDB.Models;
+using RestSupplyDB.Models.AppUser;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -29,7 +29,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UsersSet usersSet = db.Users.Find(id);
+            AppUser usersSet = db.Users.Find(id);
             if (usersSet == null)
             {
                 return HttpNotFound();
@@ -48,7 +48,7 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] UsersSet usersSet)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] AppUser usersSet)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UsersSet usersSet = db.Users.Find(id);
+            AppUser usersSet = db.Users.Find(id);
             if (usersSet == null)
             {
                 return HttpNotFound();
@@ -80,7 +80,7 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] UsersSet usersSet)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] AppUser usersSet)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +98,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UsersSet usersSet = db.Users.Find(id);
+            AppUser usersSet = db.Users.Find(id);
             if (usersSet == null)
             {
                 return HttpNotFound();
@@ -111,7 +111,7 @@ namespace RestSupplyMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            UsersSet usersSet = db.Users.Find(id);
+            AppUser usersSet = db.Users.Find(id);
             db.Users.Remove(usersSet);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

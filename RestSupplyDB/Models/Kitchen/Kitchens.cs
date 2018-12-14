@@ -1,4 +1,6 @@
-namespace RestSupplyDB.Models
+using RestSupplyDB.Models.Customer;
+
+namespace RestSupplyDB.Models.Kitchen
 {
     using System;
     using System.Collections.Generic;
@@ -6,23 +8,24 @@ namespace RestSupplyDB.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("MenuItemsSet")]
-    public partial class MenuItemsSet
+    [Table("KitchensSet")]
+    public partial class Kitchens
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MenuItemsSet()
+        public Kitchens()
         {
-            MenuIngredientsSet = new HashSet<MenuIngredientsSet>();
-            CustomerDetailOrdersSet = new HashSet<CustomerDetailOrdersSet>();
+            KitchenIngredientsSet = new HashSet<KitchenIngredients>();
         }
 
         public int Id { get; set; }
 
         [Required]
         public string Name { get; set; }
+
+        public string Address { get; set; }
+
+        public virtual ICollection<KitchenIngredients> KitchenIngredientsSet { get; set; }
         
-        public virtual ICollection<MenuIngredientsSet> MenuIngredientsSet { get; set; }
-        
-        public virtual ICollection<CustomerDetailOrdersSet> CustomerDetailOrdersSet { get; set; }
+        public virtual ICollection<CustomerOrders> CustomerOrdersSet { get; set; }
     }
 }

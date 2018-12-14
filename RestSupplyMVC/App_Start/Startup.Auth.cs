@@ -5,7 +5,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using RestSupplyDB;
-using RestSupplyDB.Models;
+using RestSupplyDB.Models.AppUser;
 using RestSupplyMVC;
 
 namespace RestSupplyMVC
@@ -31,7 +31,7 @@ namespace RestSupplyMVC
                 {
                     // Enables the application to validate the security stamp when the user logs in.
                     // This is a security feature which is used when you change a password or add an external login to your account.  
-                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<AppUserManager, UsersSet>(
+                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<AppUserManager, AppUser>(
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }

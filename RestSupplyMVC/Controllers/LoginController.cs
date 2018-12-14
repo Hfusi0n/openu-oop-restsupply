@@ -1,18 +1,10 @@
 ﻿using RestSupplyMVC.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using RestSupplyDB.Models.AppUser;
 using System.Web;
 using System.Web.Mvc;
-using RestSupplyDB.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Host.SystemWeb;
-using Owin;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -26,7 +18,7 @@ namespace RestSupplyMVC.Controllers
                 var userManager = HttpContext.GetOwinContext().GetUserManager<AppUserManager>();
                 var authManager = HttpContext.GetOwinContext().Authentication;
 
-                UsersSet user = userManager.Find(login.UserName, login.Password);
+                AppUser user = userManager.Find(login.UserName, login.Password);
                 if (user != null)
                 {
                     var ident = userManager.CreateIdentity(user,

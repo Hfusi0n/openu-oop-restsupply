@@ -1,9 +1,11 @@
-namespace RestSupplyDB.Models
+using RestSupplyDB.Models.Ingredient;
+
+namespace RestSupplyDB.Models.Kitchen
 {
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("KitchenIngredientsSet")]
-    public partial class KitchenIngredientsSet
+    public partial class KitchenIngredients
     {
         public int Id { get; set; }
 
@@ -17,8 +19,8 @@ namespace RestSupplyDB.Models
 
         public double CurrentQuantity { get; set; }
 
-        public virtual IngredientsSet IngredientsSet { get; set; }
+        public virtual Ingredients IngredientsSet { get; set; }
 
-        public virtual KitchensSet KitchensSet { get; set; }
+        public virtual Kitchens KitchensSet { get; set; }
     }
 }

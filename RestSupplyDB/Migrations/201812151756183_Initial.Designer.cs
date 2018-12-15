@@ -7,13 +7,13 @@ namespace RestSupplyDB.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class customize_identity_models : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(customize_identity_models));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201812131651324_customize_identity_models"; }
+            get { return "201812151756183_Initial"; }
         }
         
         string IMigrationMetadata.Source

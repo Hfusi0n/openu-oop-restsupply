@@ -62,21 +62,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201812061800285_Initial.cs" />
-    <Compile Include="Migrations\201812061800285_Initial.Designer.cs">
-      <DependentUpon>201812061800285_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201812061813434_remove_roles.cs" />
-    <Compile Include="Migrations\201812061813434_remove_roles.Designer.cs">
-      <DependentUpon>201812061813434_remove_roles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201812131651324_customize_identity_models.cs" />
-    <Compile Include="Migrations\201812131651324_customize_identity_models.Designer.cs">
-      <DependentUpon>201812131651324_customize_identity_models.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201812141810587_schema_update_4.cs" />
-    <Compile Include="Migrations\201812141810587_schema_update_4.Designer.cs">
-      <DependentUpon>201812141810587_schema_update_4.cs</DependentUpon>
+    <Compile Include="Migrations\201812151756183_Initial.cs" />
+    <Compile Include="Migrations\201812151756183_Initial.Designer.cs">
+      <DependentUpon>201812151756183_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer\CustomerDetailOrders.cs" />
@@ -98,17 +86,8 @@
     <Compile Include="Models\AppUser\AppUsers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201812061800285_Initial.resx">
-      <DependentUpon>201812061800285_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201812061813434_remove_roles.resx">
-      <DependentUpon>201812061813434_remove_roles.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201812131651324_customize_identity_models.resx">
-      <DependentUpon>201812131651324_customize_identity_models.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201812141810587_schema_update_4.resx">
-      <DependentUpon>201812141810587_schema_update_4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201812151756183_Initial.resx">
+      <DependentUpon>201812151756183_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

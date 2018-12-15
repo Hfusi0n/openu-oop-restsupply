@@ -8,7 +8,7 @@ namespace RestSupplyDB.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.CustomerDetailOrdersSet",
+                "dbo.CustomerDetailOrders",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -29,53 +29,48 @@ namespace RestSupplyDB.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.MenuIngredientsSet",
+                "dbo.MenuIngredients",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Valid = c.Boolean(nullable: false),
-                        IngredientName = c.String(nullable: false),
+                        IsDeleted = c.Boolean(nullable: false),
                         IngredientId = c.Int(),
                         MenuItemId = c.Int(),
                         Quantity = c.Double(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.IngredientsSet", t => t.IngredientId)
+                .ForeignKey("dbo.Ingredients", t => t.IngredientId)
                 .ForeignKey("dbo.MenuItemsSet", t => t.MenuItemId)
                 .Index(t => t.IngredientId)
                 .Index(t => t.MenuItemId);
             
             CreateTable(
-                "dbo.IngredientsSet",
+                "dbo.Ingredients",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false),
                         Unit = c.String(nullable: false),
-                        SupplierId = c.Int(nullable: false),
-                        PricePerUnit = c.Double(nullable: false),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.SuppliersSet", t => t.SupplierId)
-                .Index(t => t.SupplierId);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.IngredientListOrdersSet",
+                "dbo.IngredientListOrders",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         OrderId = c.Int(nullable: false),
                         IngredientId = c.Int(nullable: false),
-                        IngredientPrice = c.Double(nullable: false),
+                        MoneyAmount = c.Double(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.IngredientOrdersSet", t => t.OrderId)
-                .ForeignKey("dbo.IngredientsSet", t => t.IngredientId)
+                .ForeignKey("dbo.IngredientOrders", t => t.OrderId)
+                .ForeignKey("dbo.Ingredients", t => t.IngredientId)
                 .Index(t => t.OrderId)
                 .Index(t => t.IngredientId);
             
             CreateTable(
-                "dbo.IngredientOrdersSet",
+                "dbo.IngredientOrders",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -84,15 +79,17 @@ namespace RestSupplyDB.Migrations
                         SupplierId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.SuppliersSet", t => t.SupplierId)
+                .ForeignKey("dbo.Suppliers", t => t.SupplierId)
                 .Index(t => t.SupplierId);
             
             CreateTable(
-                "dbo.SuppliersSet",
+                "dbo.Suppliers",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false),
+                        Address = c.String(),
+                        Phone = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -109,7 +106,7 @@ namespace RestSupplyDB.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.KitchensSet", t => t.KitchenId)
-                .ForeignKey("dbo.IngredientsSet", t => t.IngredientId)
+                .ForeignKey("dbo.Ingredients", t => t.IngredientId)
                 .Index(t => t.KitchenId)
                 .Index(t => t.IngredientId);
             
@@ -119,11 +116,12 @@ namespace RestSupplyDB.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false),
+                        Address = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.CustomerOrdersSet",
+                "dbo.CustomerOrders",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -136,7 +134,7 @@ namespace RestSupplyDB.Migrations
                 .Index(t => t.KitchenId);
             
             CreateTable(
-                "dbo.AspNetRoles",
+                "dbo.Roles",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
@@ -146,20 +144,20 @@ namespace RestSupplyDB.Migrations
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
             CreateTable(
-                "dbo.AspNetUserRoles",
+                "dbo.UserRoles",
                 c => new
                     {
                         UserId = c.String(nullable: false, maxLength: 128),
                         RoleId = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
-                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.Roles", t => t.RoleId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
             
             CreateTable(
-                "dbo.AspNetUsers",
+                "dbo.Users",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
@@ -179,7 +177,7 @@ namespace RestSupplyDB.Migrations
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
             
             CreateTable(
-                "dbo.AspNetUserClaims",
+                "dbo.UserClaims",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -188,11 +186,11 @@ namespace RestSupplyDB.Migrations
                         ClaimValue = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.AspNetUserLogins",
+                "dbo.UserLogins",
                 c => new
                     {
                         LoginProvider = c.String(nullable: false, maxLength: 128),
@@ -200,71 +198,74 @@ namespace RestSupplyDB.Migrations
                         UserId = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.RolesSet",
+                "dbo.SuppliersIngredients",
                 c => new
                     {
-                        Id = c.String(nullable: false, maxLength: 128),
+                        SupplierRefId = c.Int(nullable: false),
+                        IngredientRefId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetRoles", t => t.Id)
-                .Index(t => t.Id);
+                .PrimaryKey(t => new { t.SupplierRefId, t.IngredientRefId })
+                .ForeignKey("dbo.Suppliers", t => t.SupplierRefId, cascadeDelete: true)
+                .ForeignKey("dbo.Ingredients", t => t.IngredientRefId, cascadeDelete: true)
+                .Index(t => t.SupplierRefId)
+                .Index(t => t.IngredientRefId);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.RolesSet", "Id", "dbo.AspNetRoles");
-            DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.MenuIngredientsSet", "MenuItemId", "dbo.MenuItemsSet");
-            DropForeignKey("dbo.MenuIngredientsSet", "IngredientId", "dbo.IngredientsSet");
-            DropForeignKey("dbo.KitchenIngredientsSet", "IngredientId", "dbo.IngredientsSet");
+            DropForeignKey("dbo.UserRoles", "UserId", "dbo.Users");
+            DropForeignKey("dbo.UserLogins", "UserId", "dbo.Users");
+            DropForeignKey("dbo.UserClaims", "UserId", "dbo.Users");
+            DropForeignKey("dbo.UserRoles", "RoleId", "dbo.Roles");
+            DropForeignKey("dbo.MenuIngredients", "MenuItemId", "dbo.MenuItemsSet");
+            DropForeignKey("dbo.MenuIngredients", "IngredientId", "dbo.Ingredients");
+            DropForeignKey("dbo.KitchenIngredientsSet", "IngredientId", "dbo.Ingredients");
             DropForeignKey("dbo.KitchenIngredientsSet", "KitchenId", "dbo.KitchensSet");
-            DropForeignKey("dbo.CustomerOrdersSet", "KitchenId", "dbo.KitchensSet");
-            DropForeignKey("dbo.IngredientListOrdersSet", "IngredientId", "dbo.IngredientsSet");
-            DropForeignKey("dbo.IngredientsSet", "SupplierId", "dbo.SuppliersSet");
-            DropForeignKey("dbo.IngredientOrdersSet", "SupplierId", "dbo.SuppliersSet");
-            DropForeignKey("dbo.IngredientListOrdersSet", "OrderId", "dbo.IngredientOrdersSet");
-            DropForeignKey("dbo.CustomerDetailOrdersSet", "MenuItemId", "dbo.MenuItemsSet");
-            DropIndex("dbo.RolesSet", new[] { "Id" });
-            DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
-            DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
-            DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
-            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
-            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.CustomerOrdersSet", new[] { "KitchenId" });
+            DropForeignKey("dbo.CustomerOrders", "KitchenId", "dbo.KitchensSet");
+            DropForeignKey("dbo.IngredientListOrders", "IngredientId", "dbo.Ingredients");
+            DropForeignKey("dbo.SuppliersIngredients", "IngredientRefId", "dbo.Ingredients");
+            DropForeignKey("dbo.SuppliersIngredients", "SupplierRefId", "dbo.Suppliers");
+            DropForeignKey("dbo.IngredientOrders", "SupplierId", "dbo.Suppliers");
+            DropForeignKey("dbo.IngredientListOrders", "OrderId", "dbo.IngredientOrders");
+            DropForeignKey("dbo.CustomerDetailOrders", "MenuItemId", "dbo.MenuItemsSet");
+            DropIndex("dbo.SuppliersIngredients", new[] { "IngredientRefId" });
+            DropIndex("dbo.SuppliersIngredients", new[] { "SupplierRefId" });
+            DropIndex("dbo.UserLogins", new[] { "UserId" });
+            DropIndex("dbo.UserClaims", new[] { "UserId" });
+            DropIndex("dbo.Users", "UserNameIndex");
+            DropIndex("dbo.UserRoles", new[] { "RoleId" });
+            DropIndex("dbo.UserRoles", new[] { "UserId" });
+            DropIndex("dbo.Roles", "RoleNameIndex");
+            DropIndex("dbo.CustomerOrders", new[] { "KitchenId" });
             DropIndex("dbo.KitchenIngredientsSet", new[] { "IngredientId" });
             DropIndex("dbo.KitchenIngredientsSet", new[] { "KitchenId" });
-            DropIndex("dbo.IngredientOrdersSet", new[] { "SupplierId" });
-            DropIndex("dbo.IngredientListOrdersSet", new[] { "IngredientId" });
-            DropIndex("dbo.IngredientListOrdersSet", new[] { "OrderId" });
-            DropIndex("dbo.IngredientsSet", new[] { "SupplierId" });
-            DropIndex("dbo.MenuIngredientsSet", new[] { "MenuItemId" });
-            DropIndex("dbo.MenuIngredientsSet", new[] { "IngredientId" });
-            DropIndex("dbo.CustomerDetailOrdersSet", new[] { "MenuItemId" });
-            DropTable("dbo.RolesSet");
-            DropTable("dbo.AspNetUserLogins");
-            DropTable("dbo.AspNetUserClaims");
-            DropTable("dbo.AspNetUsers");
-            DropTable("dbo.AspNetUserRoles");
-            DropTable("dbo.AspNetRoles");
-            DropTable("dbo.CustomerOrdersSet");
+            DropIndex("dbo.IngredientOrders", new[] { "SupplierId" });
+            DropIndex("dbo.IngredientListOrders", new[] { "IngredientId" });
+            DropIndex("dbo.IngredientListOrders", new[] { "OrderId" });
+            DropIndex("dbo.MenuIngredients", new[] { "MenuItemId" });
+            DropIndex("dbo.MenuIngredients", new[] { "IngredientId" });
+            DropIndex("dbo.CustomerDetailOrders", new[] { "MenuItemId" });
+            DropTable("dbo.SuppliersIngredients");
+            DropTable("dbo.UserLogins");
+            DropTable("dbo.UserClaims");
+            DropTable("dbo.Users");
+            DropTable("dbo.UserRoles");
+            DropTable("dbo.Roles");
+            DropTable("dbo.CustomerOrders");
             DropTable("dbo.KitchensSet");
             DropTable("dbo.KitchenIngredientsSet");
-            DropTable("dbo.SuppliersSet");
-            DropTable("dbo.IngredientOrdersSet");
-            DropTable("dbo.IngredientListOrdersSet");
-            DropTable("dbo.IngredientsSet");
-            DropTable("dbo.MenuIngredientsSet");
+            DropTable("dbo.Suppliers");
+            DropTable("dbo.IngredientOrders");
+            DropTable("dbo.IngredientListOrders");
+            DropTable("dbo.Ingredients");
+            DropTable("dbo.MenuIngredients");
             DropTable("dbo.MenuItemsSet");
-            DropTable("dbo.CustomerDetailOrdersSet");
+            DropTable("dbo.CustomerDetailOrders");
         }
     }
 }

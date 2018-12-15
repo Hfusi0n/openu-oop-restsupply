@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RestSupplyDB.MenuIngredients>
+﻿@model IEnumerable<RestSupplyDB.Models.Menu.MenuIngredients>
 
 @{
     ViewBag.Title = "MenuIngredients";
@@ -12,19 +12,19 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Valid)
+            @Html.DisplayNameFor(model => model.IsDeleted)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IngredientName)
+            @Html.DisplayNameFor(model => model.IngredientsSet.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Quantity)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Ingredients.Name)
+            @Html.DisplayNameFor(model => model.IngredientsSet.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.MenuItems.Name)
+            @Html.DisplayNameFor(model => model.MenuItemsSet.Name)
         </th>
         <th></th>
     </tr>
@@ -32,19 +32,19 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Valid)
+            @Html.DisplayFor(modelItem => item.IsDeleted)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.IngredientName)
+            @Html.DisplayFor(modelItem => item.IngredientsSet.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Quantity)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Ingredients.Name)
+            @Html.DisplayFor(modelItem => item.IngredientsSet.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.MenuItems.Name)
+            @Html.DisplayFor(modelItem => item.MenuItemsSet.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

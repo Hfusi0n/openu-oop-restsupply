@@ -13,10 +13,6 @@ namespace RestSupplyMVC
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute("MenuItems",
-                "menuitems/{action}",
-                new {controller = "MenuItems", action = "Create"});
-
             routes.MapRoute("Ingredients",
                "{controller}/{action}",
                new { controller = "Ingredients", action = "Create" });
@@ -27,9 +23,15 @@ namespace RestSupplyMVC
                 defaults: new { controller = "Navigation", action = "Index", id = UrlParameter.Optional }
             );
 
+            routes.MapRoute("MenuItems",
+                "menuitems/{action}",
+                new { controller = "MenuItems", action = "Create" });
+
             routes.MapRoute("Suppliers",
                 "{controller}/{action}",
                 new { controller = "Suppliers", action = "Index" });
+
+            
 
         }
     }

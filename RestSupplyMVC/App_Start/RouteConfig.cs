@@ -17,6 +17,9 @@ namespace RestSupplyMVC
                 "menuitems/{action}",
                 new {controller = "MenuItems", action = "Create"});
 
+            routes.MapRoute("Ingredients",
+               "{controller}/{action}",
+               new { controller = "Ingredients", action = "Create" });
             
             routes.MapRoute(
                 name: "Default",

@@ -282,6 +282,8 @@
     <Content Include="Views\UsersSets\Details.cshtml" />
     <Content Include="Views\UsersSets\Edit.cshtml" />
     <Content Include="Views\UsersSets\Index.cshtml" />
+    <Content Include="Views\MenuItems\Create.cshtml" />
+    <Content Include="Views\Shared\MenuIngredients\_createPartial.cshtml" />
     <Content Include="Views\Ingredients\Create.cshtml" />
     <Content Include="Views\Ingredients\Delete.cshtml" />
     <Content Include="Views\Ingredients\Details.cshtml" />

@@ -15,17 +15,17 @@ namespace RestSupplyMVC.Repositories
             _context = context;
         }
 
-        public IEnumerable<Supplier> GetAllSuppliers()
+        public IEnumerable<Supplier> GetAll()
         {
             return _context.SuppliersSet.ToList();
         }
 
-        public Supplier GetSupplierById(int id)
+        public Supplier GetById(int id)
         {
             return _context.SuppliersSet.Find(id);
         } 
         // TODO all saveChanges should be done be UnitOfWork.Complete();
-        public void AddSupplier(Supplier supplier)
+        public void Add(Supplier supplier)
         {
             _context.SuppliersSet.Add(supplier);
         }

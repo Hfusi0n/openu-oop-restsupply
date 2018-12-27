@@ -14,10 +14,13 @@ namespace RestSupplyMVC.Persistence
 
         // set is private becuase we want to init the repository only inside the UoW c-tor
         public SupplierRepository Suppliers { get; private set; }
+        public IngredientRepository Ingredients { get; private set; }
+
         public UnitOfWork(RestSupplyDbContext context)
         {
             _context = context;
             Suppliers = new SupplierRepository(context);
+            Ingredients = new IngredientRepository(context);
         }
 
         public void Complete()

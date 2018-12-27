@@ -6,10 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.SqlServer.Server;
 using RestSupplyDB;
+using RestSupplyDB.Models.Ingredient;
 using RestSupplyDB.Models.Supplier;
 using RestSupplyMVC.Persistence;
 using RestSupplyMVC.Repositories;
+using RestSupplyMVC.ViewModels;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -37,7 +40,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Supplier supplier = _unitOfWork.Suppliers.GetSupplierById(id.Value);
+            Supplier supplier = _unitOfWork.Suppliers.GetById(id.Value);
             if (supplier == null)
             {
                 return HttpNotFound();
@@ -45,10 +48,14 @@ namespace RestSupplyMVC.Controllers
             return View(supplier);
         }
 
-        // GET: Suppliers/Create
+        //[Authorize]
         public ActionResult Create()
         {
-            return View();
+            var viewModel = new SupplierViewModel
+            {
+                IngredientList = _unitOfWork.Ingredients.GetAll()
+            };
+            return View(viewModel);
         }
 
         // POST: Suppliers/Create
@@ -56,16 +63,25 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Supplier supplier)
+        public ActionResult Create(SupplierViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Suppliers.AddSupplier(supplier);
+                var supplier = new Supplier
+                {
+                    Name = viewModel.Name,
+                    Address = viewModel.Address,
+                    //IngredientsSet = new List<Ingredients>() TODO
+                    Phone = viewModel.Phone
+                };
+
+                _unitOfWork.Suppliers.Add(supplier);
                 _unitOfWork.Complete();
+
                 return RedirectToAction("Index");
             }
 
-            return View(supplier);
+            return View(viewModel);
         }
 
         // GET: Suppliers/Edit/5

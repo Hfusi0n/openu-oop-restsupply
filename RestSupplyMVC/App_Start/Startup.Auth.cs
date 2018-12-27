@@ -16,7 +16,7 @@ namespace RestSupplyMVC
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context, user manager and signin manager to use a single instance per request
-            app.CreatePerOwinContext(RestSupplyDBModel.Create);
+            app.CreatePerOwinContext(RestSupplyDbContext.Create);
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 

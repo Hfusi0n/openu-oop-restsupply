@@ -9,8 +9,8 @@ namespace RestSupplyMVC.Repositories
 {
     public class SupplierRepository
     {
-        private readonly RestSupplyDBModel _context;
-        public SupplierRepository(RestSupplyDBModel context)
+        private readonly RestSupplyDbContext _context;
+        public SupplierRepository(RestSupplyDbContext context)
         {
             _context = context;
         }

@@ -18,11 +18,11 @@ namespace RestSupplyMVC
     {
         public void Configuration(IAppBuilder app)
         {
-            app.CreatePerOwinContext(() => new RestSupplyDBModel());
+            app.CreatePerOwinContext(() => new RestSupplyDbContext());
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
             app.CreatePerOwinContext<RoleManager<AppRole>>((options, context) =>
                 new RoleManager<AppRole>(
-                    new RoleStore<AppRole,string,AppUserRole>(context.Get<RestSupplyDBModel>())));
+                    new RoleStore<AppRole,string,AppUserRole>(context.Get<RestSupplyDbContext>())));
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -61,7 +61,7 @@ namespace RestSupplyMVC
 
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
-            var manager = new AppUserManager(new UserStore<AppUser,AppRole,string,AppUserLogin,AppUserRole,AppUserClaim>(context.Get<RestSupplyDBModel>()));
+            var manager = new AppUserManager(new UserStore<AppUser,AppRole,string,AppUserLogin,AppUserRole,AppUserClaim>(context.Get<RestSupplyDbContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<AppUser>(manager)
             {

@@ -81,7 +81,7 @@
     <Compile Include="Models\AppUser\AppUserClaim.cs" />
     <Compile Include="Models\AppUser\AppUserLogin.cs" />
     <Compile Include="Models\AppUser\AppUserRole.cs" />
-    <Compile Include="RestSupplyDBModel.cs" />
+    <Compile Include="RestSupplyDbContext.cs" />
     <Compile Include="Models\Supplier\Supplier.cs" />
     <Compile Include="Models\AppUser\AppUsers.cs" />
   </ItemGroup>

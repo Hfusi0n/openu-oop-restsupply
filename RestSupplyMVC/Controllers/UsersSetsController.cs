@@ -14,7 +14,7 @@ namespace RestSupplyMVC.Controllers
 {
     public class UsersSetsController : Controller
     {
-        private RestSupplyDBModel db = new RestSupplyDBModel();
+        private RestSupplyDbContext db = new RestSupplyDbContext();
 
         // GET: UsersSets
         public async Task<ActionResult> Index()

@@ -9,15 +9,15 @@ namespace RestSupplyDB
     using RestSupplyDB.Models.Menu;
     using RestSupplyDB.Models.Supplier;
 
-    public partial class RestSupplyDBModel : IdentityDbContext<AppUser, AppRole, string, AppUserLogin, AppUserRole, AppUserClaim>
+    public partial class RestSupplyDbContext : IdentityDbContext<AppUser, AppRole, string, AppUserLogin, AppUserRole, AppUserClaim>
     {
-        public RestSupplyDBModel()
+        public RestSupplyDbContext()
             : base("name=RestSupplyDBModel")
         {
         }
-        public static RestSupplyDBModel Create()
+        public static RestSupplyDbContext Create()
         {
-            return new RestSupplyDBModel();
+            return new RestSupplyDbContext();
         }
 
         public virtual DbSet<Ingredients> IngredientsSet { get; set; }

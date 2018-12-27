@@ -15,11 +15,11 @@ namespace RestSupplyMVC.Controllers
 {
     public class SuppliersController : Controller
     {
-        private readonly RestSupplyDBModel _context;
+        private readonly RestSupplyDbContext _context;
         private readonly UnitOfWork _unitOfWork;
         public SuppliersController()
         {
-            _context = new RestSupplyDBModel();
+            _context = new RestSupplyDbContext();
             _unitOfWork = new UnitOfWork(_context);
             //... you can init other repos in the UoW c-tor
         }

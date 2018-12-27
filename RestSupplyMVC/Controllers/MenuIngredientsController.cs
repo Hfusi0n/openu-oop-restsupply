@@ -13,7 +13,7 @@ namespace RestSupplyMVC.Controllers
 {
     public class MenuIngredientsController : Controller
     {
-        private RestSupplyDBModel db = new RestSupplyDBModel();
+        private RestSupplyDbContext db = new RestSupplyDbContext();
 
         // GET: MenuIngredients
         public ActionResult Index()

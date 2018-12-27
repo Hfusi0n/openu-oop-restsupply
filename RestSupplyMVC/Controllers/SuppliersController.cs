@@ -8,17 +8,27 @@ using System.Web;
 using System.Web.Mvc;
 using RestSupplyDB;
 using RestSupplyDB.Models.Supplier;
+using RestSupplyMVC.Persistence;
+using RestSupplyMVC.Repositories;
 
 namespace RestSupplyMVC.Controllers
 {
     public class SuppliersController : Controller
     {
-        private RestSupplyDBModel db = new RestSupplyDBModel();
+        private readonly RestSupplyDBModel _context;
+        private readonly UnitOfWork _unitOfWork;
+        public SuppliersController()
+        {
+            _context = new RestSupplyDBModel();
+            _unitOfWork = new UnitOfWork(_context);
+            //... you can init other repos in the UoW c-tor
+        }
 
         // GET: Suppliers
         public ActionResult Index()
         {
-            return View(db.SuppliersSet.ToList());
+            
+            return View(_unitOfWork.Suppliers.GetAllSuppliers());
         }
 
         // GET: Suppliers/Details/5
@@ -28,7 +38,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Suppliers suppliers = db.SuppliersSet.Find(id);
+            Suppliers suppliers = _context.SuppliersSet.Find(id);
             if (suppliers == null)
             {
                 return HttpNotFound();
@@ -51,8 +61,8 @@ namespace RestSupplyMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.SuppliersSet.Add(suppliers);
-                db.SaveChanges();
+                _context.SuppliersSet.Add(suppliers);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +76,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Suppliers suppliers = db.SuppliersSet.Find(id);
+            Suppliers suppliers = _context.SuppliersSet.Find(id);
             if (suppliers == null)
             {
                 return HttpNotFound();
@@ -83,8 +93,8 @@ namespace RestSupplyMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(suppliers).State = EntityState.Modified;
-                db.SaveChanges();
+                _context.Entry(suppliers).State = EntityState.Modified;
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(suppliers);
@@ -97,7 +107,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Suppliers suppliers = db.SuppliersSet.Find(id);
+            Suppliers suppliers = _context.SuppliersSet.Find(id);
             if (suppliers == null)
             {
                 return HttpNotFound();
@@ -110,9 +120,9 @@ namespace RestSupplyMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Suppliers suppliers = db.SuppliersSet.Find(id);
-            db.SuppliersSet.Remove(suppliers);
-            db.SaveChanges();
+            Suppliers suppliers = _context.SuppliersSet.Find(id);
+            _context.SuppliersSet.Remove(suppliers);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -120,7 +130,7 @@ namespace RestSupplyMVC.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _context.Dispose();
             }
             base.Dispose(disposing);
         }

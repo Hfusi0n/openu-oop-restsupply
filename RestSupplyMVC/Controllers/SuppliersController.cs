@@ -30,7 +30,7 @@ namespace RestSupplyMVC.Controllers
         // GET: Suppliers
         public ActionResult Index()
         {
-            return View(_unitOfWork.Suppliers.GetAllSuppliers());
+            return View(_unitOfWork.Suppliers.GetAll());
         }
 
         // GET: Suppliers/Details/5

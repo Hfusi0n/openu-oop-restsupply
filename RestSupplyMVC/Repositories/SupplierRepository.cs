@@ -15,10 +15,19 @@ namespace RestSupplyMVC.Repositories
             _context = context;
         }
 
-        public IEnumerable<Suppliers> GetAllSuppliers()
+        public IEnumerable<Supplier> GetAllSuppliers()
         {
             return _context.SuppliersSet.ToList();
         }
+
+        public Supplier GetSupplierById(int id)
+        {
+            return _context.SuppliersSet.Find(id);
+        } 
         // TODO all saveChanges should be done be UnitOfWork.Complete();
+        public void AddSupplier(Supplier supplier)
+        {
+            _context.SuppliersSet.Add(supplier);
+        }
     }
 }

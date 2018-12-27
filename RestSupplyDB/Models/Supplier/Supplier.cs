@@ -9,10 +9,10 @@ namespace RestSupplyDB.Models.Supplier
     using System.Data.Entity.Spatial;
 
     [Table("Suppliers")]
-    public partial class Suppliers
+    public partial class Supplier 
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Suppliers()
+        public Supplier()
         {
             IngredientsSet = new HashSet<Ingredients>();
             IngredientOrdersSet = new HashSet<IngredientOrders>();

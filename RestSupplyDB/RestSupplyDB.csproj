@@ -82,7 +82,7 @@
     <Compile Include="Models\AppUser\AppUserLogin.cs" />
     <Compile Include="Models\AppUser\AppUserRole.cs" />
     <Compile Include="RestSupplyDBModel.cs" />
-    <Compile Include="Models\Supplier\Suppliers.cs" />
+    <Compile Include="Models\Supplier\Supplier.cs" />
     <Compile Include="Models\AppUser\AppUsers.cs" />
   </ItemGroup>
   <ItemGroup>

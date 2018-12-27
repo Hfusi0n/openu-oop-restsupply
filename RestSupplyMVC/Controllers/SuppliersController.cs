@@ -27,7 +27,6 @@ namespace RestSupplyMVC.Controllers
         // GET: Suppliers
         public ActionResult Index()
         {
-            
             return View(_unitOfWork.Suppliers.GetAllSuppliers());
         }
 
@@ -38,12 +37,12 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Suppliers suppliers = _context.SuppliersSet.Find(id);
-            if (suppliers == null)
+            Supplier supplier = _unitOfWork.Suppliers.GetSupplierById(id.Value);
+            if (supplier == null)
             {
                 return HttpNotFound();
             }
-            return View(suppliers);
+            return View(supplier);
         }
 
         // GET: Suppliers/Create
@@ -57,16 +56,16 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Suppliers suppliers)
+        public ActionResult Create([Bind(Include = "Id,Name")] Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _context.SuppliersSet.Add(suppliers);
-                _context.SaveChanges();
+                _unitOfWork.Suppliers.AddSupplier(supplier);
+                _unitOfWork.Complete();
                 return RedirectToAction("Index");
             }
 
-            return View(suppliers);
+            return View(supplier);
         }
 
         // GET: Suppliers/Edit/5
@@ -76,12 +75,12 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Suppliers suppliers = _context.SuppliersSet.Find(id);
-            if (suppliers == null)
+            Supplier supplier = _context.SuppliersSet.Find(id);
+            if (supplier == null)
             {
                 return HttpNotFound();
             }
-            return View(suppliers);
+            return View(supplier);
         }
 
         // POST: Suppliers/Edit/5
@@ -89,15 +88,15 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] Suppliers suppliers)
+        public ActionResult Edit([Bind(Include = "Id,Name")] Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _context.Entry(suppliers).State = EntityState.Modified;
+                _context.Entry(supplier).State = EntityState.Modified;
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(suppliers);
+            return View(supplier);
         }
 
         // GET: Suppliers/Delete/5
@@ -107,12 +106,12 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Suppliers suppliers = _context.SuppliersSet.Find(id);
-            if (suppliers == null)
+            Supplier supplier = _context.SuppliersSet.Find(id);
+            if (supplier == null)
             {
                 return HttpNotFound();
             }
-            return View(suppliers);
+            return View(supplier);
         }
 
         // POST: Suppliers/Delete/5
@@ -120,8 +119,8 @@ namespace RestSupplyMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Suppliers suppliers = _context.SuppliersSet.Find(id);
-            _context.SuppliersSet.Remove(suppliers);
+            Supplier supplier = _context.SuppliersSet.Find(id);
+            _context.SuppliersSet.Remove(supplier);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

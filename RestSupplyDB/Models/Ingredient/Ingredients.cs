@@ -29,7 +29,7 @@ namespace RestSupplyDB.Models.Ingredient
         [Required]
         public string Unit { get; set; }
 
-        public virtual ICollection<Suppliers> Suppliers { get; set; }
+        public virtual ICollection<Supplier.Supplier> Suppliers { get; set; }
         
         public virtual ICollection<KitchenIngredients> KitchenIngredients { get; set; }
         

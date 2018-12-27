@@ -27,7 +27,7 @@ namespace RestSupplyDB.Models.Ingredient
 
         public int SupplierId { get; set; }
 
-        public virtual Suppliers SuppliersSet { get; set; }
+        public virtual Supplier.Supplier SupplierSet { get; set; }
         
         public virtual ICollection<IngredientListOrders> IngredientListOrdersSet { get; set; }
     }

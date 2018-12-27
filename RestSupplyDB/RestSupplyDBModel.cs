@@ -29,7 +29,7 @@ namespace RestSupplyDB
         public virtual DbSet<IngredientOrders> IngredientOrdersSet { get; set; }
         public virtual DbSet<CustomerOrders> CustomerOrdersSet { get; set; }
         public virtual DbSet<CustomerDetailOrders> CustomerDetailOrdersSet { get; set; }
-        public virtual DbSet<Suppliers> SuppliersSet { get; set; }
+        public virtual DbSet<Supplier> SuppliersSet { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -86,7 +86,7 @@ namespace RestSupplyDB
                 .WithRequired(e => e.OrdersSet)
                 .HasForeignKey(e => e.OrderId).WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Suppliers>()
+            modelBuilder.Entity<Supplier>()
                 .HasMany(e => e.IngredientsSet)
                 .WithMany(e => e.Suppliers)
                 .Map(si => 
@@ -97,9 +97,9 @@ namespace RestSupplyDB
                 });
                 
 
-            modelBuilder.Entity<Suppliers>()
+            modelBuilder.Entity<Supplier>()
                 .HasMany(e => e.IngredientOrdersSet)
-                .WithRequired(e => e.SuppliersSet)
+                .WithRequired(e => e.SupplierSet)
                 .HasForeignKey(e => e.SupplierId).WillCascadeOnDelete(false);
         }
     }

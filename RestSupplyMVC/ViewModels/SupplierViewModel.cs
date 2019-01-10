@@ -15,9 +15,12 @@ namespace RestSupplyMVC.ViewModels
         public string Address { get; set; }
         [Display(Name = "טלפון")]
         public string Phone { get; set; }
-        [Display(Name = "חומר גלם")]
-        public string Ingredient { get; set; }
         [Display(Name = "רשימת חומרי גלם")]
         public IEnumerable<Ingredients> IngredientList { get; set; }
+
+        // the ingredient chosen from the list
+        [Display(Name = "חומר גלם")]
+        public string Ingredient { get; set; }
+        
     }
 }

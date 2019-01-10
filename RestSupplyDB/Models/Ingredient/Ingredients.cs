@@ -19,6 +19,7 @@ namespace RestSupplyDB.Models.Ingredient
             KitchenIngredients = new HashSet<KitchenIngredients>();
             MenuIngredients = new HashSet<MenuIngredients>();
             IngredientListOrders = new HashSet<IngredientListOrders>();
+            Suppliers = new HashSet<Supplier.Supplier>();
         }
 
         public int Id { get; set; }

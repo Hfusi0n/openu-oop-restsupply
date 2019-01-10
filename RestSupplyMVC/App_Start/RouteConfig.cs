@@ -12,10 +12,6 @@ namespace RestSupplyMVC
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapRoute("Ingredients",
-               "{controller}/{action}",
-               new { controller = "Ingredients", action = "Create" });
             
             routes.MapRoute(
                 name: "Default",
@@ -23,15 +19,35 @@ namespace RestSupplyMVC
                 defaults: new { controller = "Navigation", action = "Index", id = UrlParameter.Optional }
             );
 
-            routes.MapRoute("MenuItems",
-                "menuitems/{action}",
+            // create routes
+            routes.MapRoute("CreateIngredients",
+                "{controller}/{action}",
+                new { controller = "Ingredients", action = "Create" });
+            routes.MapRoute("CreateMenuItems",
+                "menuItems/{action}",
                 new { controller = "MenuItems", action = "Create" });
+            routes.MapRoute("CreateMenuIngredients",
+                "{controller}/{action}",
+                new { controller = "MenuIngredients", action = "Create" });
+            routes.MapRoute("CreateSuppliers",
+                "{controller}/{action}",
+                new { controller = "Suppliers", action = "Create" });
 
-            routes.MapRoute("Suppliers",
+            // index (GET) routes
+            routes.MapRoute("GetSuppliers",
                 "{controller}/{action}",
                 new { controller = "Suppliers", action = "Index" });
+            routes.MapRoute("GetMenuItems",
+                "{controller}/{action}",
+                new { controller = "MenuItems", action = "Index" });
+            routes.MapRoute("GetMenuIngredients",
+                "{controller}/{action}",
+                new { controller = "MenuIngredients", action = "Index" });
+            routes.MapRoute("GetIngredients",
+                "{controller}/{action}",
+                new { controller = "Ingredients", action = "Index" });
 
-            
+
 
         }
     }

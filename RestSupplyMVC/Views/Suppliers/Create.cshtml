@@ -21,13 +21,29 @@
                 @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
             </div>
         </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Ingredient, htmlAttributes: new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Ingredient, new SelectList(Model.IngredientList, "Id", "Name"), "", new {@class = "form-control"})
+                @Html.ListBoxFor(model => model.SelectedIngredientIds, new MultiSelectList(Model.IngredientList, "Id", "Name"), new {style="display:block;"})
 
-                @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+                @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger" })
             </div>
         </div>
 

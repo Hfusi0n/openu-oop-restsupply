@@ -17,6 +17,7 @@ namespace RestSupplyMVC.ViewModels
         public string Phone { get; set; }
         [Display(Name = "רשימת חומרי גלם")]
         public IEnumerable<Ingredients> IngredientList { get; set; }
+        public IEnumerable<int> SelectedIngredientIds { get; set; }
 
         // the ingredient chosen from the list
         [Display(Name = "חומר גלם")]

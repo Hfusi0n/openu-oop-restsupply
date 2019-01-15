@@ -16,6 +16,7 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork = new UnitOfWork(_context);
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             var menuItemsList = _unitOfWork.MenuItems.GetAll();

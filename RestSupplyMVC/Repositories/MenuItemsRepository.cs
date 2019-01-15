@@ -16,8 +16,7 @@ namespace RestSupplyMVC.Repositories
 
         public IEnumerable<DBModels.MenuItems> GetAll()
         {
-            var menuItemses = _context.MenuItemsSet.ToList();
-            return menuItemses;
+            return _context.MenuItemsSet.ToList();
         }
 
         public DBModels.MenuItems GetById(int id)

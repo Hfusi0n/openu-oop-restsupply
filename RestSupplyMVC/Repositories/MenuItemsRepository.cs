@@ -5,20 +5,19 @@ using DBModels = RestSupplyDB.Models.Menu;
 
 namespace RestSupplyMVC.Repositories
 {
-    public class MenuItemsReposiotry
+    public class MenuItemsRepository
     {
         private readonly RestSupplyDbContext _context;
 
-        public MenuItemsReposiotry(RestSupplyDbContext context)
+        public MenuItemsRepository(RestSupplyDbContext context)
         {
             _context = context;
         }
 
         public IEnumerable<DBModels.MenuItems> GetAll()
         {
-
-            var itemsList = _context.MenuItemsSet.ToList();
-            return itemsList;
+            var menuItemses = _context.MenuItemsSet.ToList();
+            return menuItemses;
         }
 
         public DBModels.MenuItems GetById(int id)

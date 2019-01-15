@@ -11,14 +11,14 @@ namespace RestSupplyMVC.Persistence
         public SupplierRepository Suppliers { get; private set; }
         public IngredientRepository Ingredients { get; private set; }
 
-        public MenuItemsReposiotry MenuItems { get; private set; }
+        public MenuItemsRepository MenuItems { get; private set; }
 
         public UnitOfWork(RestSupplyDbContext context)
         {
             _context = context;
             Suppliers = new SupplierRepository(context);
             Ingredients = new IngredientRepository(context);
-            MenuItems = new MenuItemsReposiotry(context);
+            MenuItems = new MenuItemsRepository(context);
         }
 
         public void Complete()

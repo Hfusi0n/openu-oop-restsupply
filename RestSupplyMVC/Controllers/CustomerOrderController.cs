@@ -1,7 +1,9 @@
-﻿using RestSupplyMVC.Persistence;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using RestSupplyMVC.Persistence;
+using RestSupplyMVC.Repositories;
+using RestSupplyMVC.ViewModels;
 
-namespace RestSupplyMVC
+namespace RestSupplyMVC.Controllers
 {
     public class CustomerOrderController : Controller
     {
@@ -14,33 +16,16 @@ namespace RestSupplyMVC
             _unitOfWork = new UnitOfWork(_context);
         }
 
-        // GET: CustomerOrder
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public ActionResult Create()
         {
-
             var menuItemsList = _unitOfWork.MenuItems.GetAll();
 
-            ViewModels.CustomerOrderViewModel customerOrder = new ViewModels.CustomerOrderViewModel
+            CustomerOrderViewModel customerOrderViewModel = new CustomerOrderViewModel
             {
-                MenuItems = new SelectList(menuItemsList, "Value", "Text")
+                MenuItems = new SelectList(menuItemsList, "Id", "Name")
             };
 
-            return View(customerOrder);
-        }
-
-        [HttpGet]
-        public ActionResult AddOrder()
-        {
-            //ViewBag.SelectedMenuItem =
-
-            //var employee = new Employee();
-
-            return View();
+            return View(customerOrderViewModel);            
         }
 
     }

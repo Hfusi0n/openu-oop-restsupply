@@ -11,12 +11,18 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(x => Model.SelectedMenuItem, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+            <!-- menu items selection for the user-->
+            @Html.DropDownListFor(x => Model.SelectedMenuItem, Model.MenuItems, htmlAttributes: new { @class = "form-control", id = "MenuItem" })
+            @Html.ValidationMessageFor(x => x.SelectedMenuItem, "", new { @class = "text-danger" })
+        </div>
+    </div>
 }
 
-
-<!-- menu items selection for the user-->
-@Html.DropDownListFor(m => m.SelectedMenuItem, Model.MenuItems, "Select Menu Item")
-
-@section Scripts {
+@section Scripts 
+{
     @Scripts.Render("~/bundles/jqueryval")
 }

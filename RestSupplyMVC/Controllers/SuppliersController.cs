@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.SqlServer.Server;
-using RestSupplyDB;
-using RestSupplyDB.Models.Ingredient;
+﻿using RestSupplyDB;
 using RestSupplyDB.Models.Supplier;
 using RestSupplyMVC.Persistence;
-using RestSupplyMVC.Repositories;
 using RestSupplyMVC.ViewModels;
+using System.Data.Entity;
+using System.Net;
+using System.Web.Mvc;
 
 namespace RestSupplyMVC.Controllers
 {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Linq;
-using System.Web;
-using RestSupplyDB;
+﻿using RestSupplyDB;
 using RestSupplyMVC.Repositories;
 
 namespace RestSupplyMVC.Persistence
@@ -16,11 +11,14 @@ namespace RestSupplyMVC.Persistence
         public SupplierRepository Suppliers { get; private set; }
         public IngredientRepository Ingredients { get; private set; }
 
+        public MenuItemsReposiotry MenuItems { get; private set; }
+
         public UnitOfWork(RestSupplyDbContext context)
         {
             _context = context;
             Suppliers = new SupplierRepository(context);
             Ingredients = new IngredientRepository(context);
+            MenuItems = new MenuItemsReposiotry(context);
         }
 
         public void Complete()

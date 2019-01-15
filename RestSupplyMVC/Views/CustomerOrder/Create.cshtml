@@ -1,0 +1,22 @@
+﻿@model RestSupplyMVC.ViewModels.CustomerOrderViewModel
+
+@{
+    ViewBag.Title = "Generate Customer Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Generate Customer Order</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+}
+
+
+<!-- menu items selection for the user-->
+@Html.DropDownListFor(m => m.SelectedMenuItem, Model.MenuItems, "Select Menu Item")
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

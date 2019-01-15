@@ -1,9 +1,7 @@
-﻿using System;
+﻿using RestSupplyDB;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using RestSupplyDB;
-using RestSupplyDB.Models.Ingredient;
+using DBModels = RestSupplyDB.Models.Ingredient;
 
 namespace RestSupplyMVC.Repositories
 {
@@ -16,17 +14,17 @@ namespace RestSupplyMVC.Repositories
             _context = context;
         }
 
-        public IEnumerable<Ingredients> GetAll()
+        public IEnumerable<DBModels.Ingredients> GetAll()
         {
             return _context.IngredientsSet.ToList();
         }
 
-        public Ingredients GetById(int id)
+        public DBModels.Ingredients GetById(int id)
         {
             return _context.IngredientsSet.Find(id);
         }
 
-        public void Add(Ingredients item)
+        public void Add(DBModels.Ingredients item)
         {
             _context.IngredientsSet.Add(item);
         }

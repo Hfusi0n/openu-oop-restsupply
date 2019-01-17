@@ -14,20 +14,22 @@
 
     <div class="form-group">
         <div id="menu-order-group">
-            <div class="row">
-                <div class="col-xs-4">
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-danger" data-type="minus" data-field="quant[2]" disabled="disabled">
-                                <span class="glyphicon glyphicon-minus"></span>
-                            </button>
-                        </span>
-                        @Html.DropDownListFor(x => Model.SelectedMenuItem, Model.MenuItems, htmlAttributes: new {@class = "form-control", id = "MenuItem"})
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-success" data-type="plus" data-field="quant[2]">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </span>
+            <div class="cloned-row">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-minus btn-danger" data-type="minus" data-field="quant[2]" disabled="disabled">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+                            </span>
+                            @Html.DropDownListFor(x => Model.SelectedMenuItem, Model.MenuItems, htmlAttributes: new {@class = "form-control", id = "MenuItem"})
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-plus btn-success" data-type="plus" data-field="quant[2]">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,5 +48,29 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript" src="@Url.Content("/Scripts/site.form.dynamic.js")"></script>
+    
+    <script>
+        var count = 0;
+
+        // remove menu item handler
+        $(".btn-minus").click(function (e)
+        {
+            $(this).closest(".cloned-row").remove();
+            e.preventDefault();
+
+            count--;
+
+            if (count <= 0) {
+                $(".btn-minus").prop("disabled", true);
+            }
+        });
+
+        // add menu item handler
+        $(".btn-plus").click(function () {
+            $(".cloned-row:first").clone(true, true).insertAfter(".cloned-row:last");
+            $(".btn-minus").prop("disabled", false);
+            count++;
+        });
+    </script>
 }
 

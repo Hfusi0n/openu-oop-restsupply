@@ -66,6 +66,10 @@
     <Compile Include="Migrations\201812151756183_Initial.Designer.cs">
       <DependentUpon>201812151756183_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901181522569_migration_custom_user_types.cs" />
+    <Compile Include="Migrations\201901181522569_migration_custom_user_types.Designer.cs">
+      <DependentUpon>201901181522569_migration_custom_user_types.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppUser\AppRoleStore.cs" />
     <Compile Include="Models\AppUser\AppUserStore.cs" />
@@ -90,6 +94,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201812151756183_Initial.resx">
       <DependentUpon>201812151756183_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901181522569_migration_custom_user_types.resx">
+      <DependentUpon>201901181522569_migration_custom_user_types.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

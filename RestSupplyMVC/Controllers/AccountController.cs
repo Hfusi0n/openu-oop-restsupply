@@ -12,17 +12,21 @@ using RestSupplyMVC.Models;
 using RestSupplyDB.Models;
 using RestSupplyDB.Models.AppUser;
 using RestSupplyMVC;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace RestSupplyMVC.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly RestSupplyDB.RestSupplyDbContext _context;
         private ApplicationSignInManager _signInManager;
         private AppUserManager _userManager;
 
+
         public AccountController()
         {
+            _context = new RestSupplyDB.RestSupplyDbContext();
         }
 
         public AccountController(AppUserManager userManager, ApplicationSignInManager signInManager )
@@ -157,20 +161,25 @@ namespace RestSupplyMVC.Controllers
                 if (ModelState.IsValid)
                 {
                     AppUser user;
+                    string userRole;
 
                     switch (model.UserType)
                     {
                         case "Admin":
                             user = new Admin();
+                            userRole = "Admin";
                             break;
                         case "Chef":
                             user = new Chef();
+                            userRole = "Chef";
                             break;
                         case "KitchenManager":
                             user = new KitchenManager();
+                            userRole = "KitchenManager";
                             break;
                         case "Waitress":
                             user = new Waitress();
+                            userRole = "Waitress";
                             break;
                         default:
                             throw new NotImplementedException("Unknown user type: " + model.UserType);
@@ -180,6 +189,15 @@ namespace RestSupplyMVC.Controllers
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
+                        var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+
+                        if (!roleManager.RoleExists(userRole))
+                        {
+                            await roleManager.CreateAsync(new IdentityRole(userRole));
+                        }
+
+                        await UserManager.AddToRoleAsync(user.Id, userRole);
+
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                         // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

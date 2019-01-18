@@ -63,6 +63,9 @@ namespace RestSupplyMVC.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        
+        [Display(Name = "User Type")]
+        public string UserType { get; set; }
     }
 
     public class ResetPasswordViewModel

@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace RestSupplyDB.Models.AppUser
 {
-    class AppUserStore : UserStore<AppUser, AppRole, string,
+    public class AppUserStore : UserStore<AppUser, AppRole, string,
         AppUserLogin, AppUserRole, AppUserClaim>
     {
         public AppUserStore(RestSupplyDbContext context)

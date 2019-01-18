@@ -7,13 +7,8 @@ namespace RestSupplyDB.Models.AppUser
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    public class AppUser : IdentityUser<string, AppUserLogin, AppUserRole, AppUserClaim>
+    public abstract class AppUser : IdentityUser<string, AppUserLogin, AppUserRole, AppUserClaim>
     {
-        public AppUser()
-        {
-            this.Id = Guid.NewGuid().ToString();
-        }
-
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser,string> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -22,4 +17,12 @@ namespace RestSupplyDB.Models.AppUser
             return userIdentity;
         }
     }
+
+    public class Admin : AppUser {}
+
+    public class Waitress : AppUser {}
+
+    public class KitchenManager : AppUser {}
+
+    public class Chef : AppUser {}
 }

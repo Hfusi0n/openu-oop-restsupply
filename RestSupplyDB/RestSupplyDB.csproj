@@ -67,6 +67,8 @@
       <DependentUpon>201812151756183_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AppUser\AppRoleStore.cs" />
+    <Compile Include="Models\AppUser\AppUserStore.cs" />
     <Compile Include="Models\Customer\CustomerDetailOrders.cs" />
     <Compile Include="Models\Customer\CustomerOrders.cs" />
     <Compile Include="Models\Ingredient\Ingredients.cs" />

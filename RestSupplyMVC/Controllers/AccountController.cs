@@ -156,7 +156,27 @@ namespace RestSupplyMVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var user = new AppUser { UserName = model.Email, Email = model.Email };
+                    AppUser user;
+
+                    switch (model.UserType)
+                    {
+                        case "Admin":
+                            user = new Admin();
+                            break;
+                        case "Chef":
+                            user = new Chef();
+                            break;
+                        case "KitchenManager":
+                            user = new KitchenManager();
+                            break;
+                        case "Waitress":
+                            user = new Waitress();
+                            break;
+                        default:
+                            throw new NotImplementedException("Unknown user type: " + model.UserType);
+                    }
+
+                    //var user = new AppUser { UserName = model.Email, Email = model.Email };
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
@@ -390,8 +410,9 @@ namespace RestSupplyMVC.Controllers
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
-                }
-                var user = new AppUser { UserName = model.Email, Email = model.Email };
+                }   
+
+                var user = new Waitress { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

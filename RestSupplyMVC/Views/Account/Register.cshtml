@@ -28,13 +28,39 @@
                                 @Html.PasswordFor(m => m.Password, new { @id = "inputPassword", @class = "form-control", @placeholder = "Password" })
                             </div>
                             <div class="form-group">
-
                                 @Html.PasswordFor(m => m.ConfirmPassword, new { @id = "confirmPassword", @class = "form-control", @placeholder = "Confirm Password" })
+                            </div>
+                            <div class="form-group">
+                                @{
+                                    List<SelectListItem> listItems= new List<SelectListItem>();
+                                    listItems.Add(new SelectListItem
+                                    {
+                                        Text = "Admin",
+                                        Value = "Admin"
+                                    });
+                                    listItems.Add(new SelectListItem
+                                    {
+                                        Text = "Waitress",
+                                        Value = "Waitress",
+                                        Selected = true
+                                    });
+                                    listItems.Add(new SelectListItem
+                                    {
+                                        Text = "Chef",
+                                        Value = "Chef"
+                                    });
+                                    listItems.Add(new SelectListItem
+                                    {
+                                        Text = "KitchenManager",
+                                        Value = "KitchenManager"
+                                    });
+                                }
+
+                                @Html.DropDownListFor(model => model.UserType, listItems, "-- Select Status --", new { @id = "userTypeSelector" ,@class = "form-control" })
                             </div>
                             <div class="login-button">
                                 <input type="submit" class="btn btn-primary" value="Register" />
                             </div>
-
                         }
 
                     </div>

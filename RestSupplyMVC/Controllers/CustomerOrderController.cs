@@ -1,6 +1,6 @@
-﻿using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 using RestSupplyMVC.Persistence;
 using RestSupplyMVC.ViewModels;
 using DBAppUser = RestSupplyDB.Models.AppUser;
@@ -18,33 +18,24 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork = new UnitOfWork(_context);
         }
 
+
         [Authorize]
         public ActionResult Create()
-        {           
-            var menuItemsList = _unitOfWork.MenuItems.GetAll();
-
-            CustomerOrderViewModel customerOrderViewModel = new CustomerOrderViewModel
+        {
+            CustomerOrderViewModel model = new CustomerOrderViewModel()
             {
-                MenuItems = new SelectList(menuItemsList, "Id", "Name")
+                MenuItems = new SelectList(_unitOfWork.MenuItems.GetAll(), "Id", "Name", 1),
+                Orders = new Dictionary<string, string>()
             };
 
-            return View(customerOrderViewModel);            
+            return View(model);
         }
 
         [Authorize]
         [HttpPost]
-        public ActionResult Create(CustomerOrderViewModel model,
-            string submitButton)
-        {
-            switch (submitButton)
-            {
-                case "Value1":
-                    break;
-                case "Value2":
-                    break;
-            }
-
-            return View(model);
+        public ActionResult Create(List<string> Orders)
+        {            
+            return View();
         }
 
     }

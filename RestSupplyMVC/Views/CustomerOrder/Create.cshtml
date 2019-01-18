@@ -7,7 +7,6 @@
 
 <h2>Generate Customer Order</h2>
 
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -15,29 +14,34 @@
     <div class="form-group">
         <div id="menu-order-group">
             <div class="cloned-row">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <div class="input-group">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-minus btn-danger" data-type="minus" data-field="quant[2]" disabled="disabled">
-                                    <span class="glyphicon glyphicon-minus"></span>
-                                </button>
-                            </span>
-                            @Html.DropDownListFor(x => Model.SelectedMenuItem, Model.MenuItems, htmlAttributes: new {@class = "form-control", id = "MenuItem"})
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-plus btn-success" data-type="plus" data-field="quant[2]">
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+<div class="row">
+    <div class="col-xs-4">
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-minus btn-danger" data-type="minus" data-field="quant[2]" disabled="disabled">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </button>
+            </span>
+            @{
+                 // create a new element id for the drop down list
+                 string elementId = Guid.NewGuid().ToString();
+
+                  // populate the drop down list with the element id
+                 @Html.DropDownListFor(m => m.Orders[elementId], Model.MenuItems,htmlAttributes: new {@class = "form-control order-menu-dropdown", id = elementId});              
+            }
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-plus btn-success" data-type="plus" data-field="quant[2]">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-4">
                 <input type="submit" value="Create" class="btn btn-primary"/>
-                @Html.ValidationMessageFor(x => x.SelectedMenuItem, "", new {@class = "text-danger"})
             </div>
         </div>
     </div>
@@ -48,13 +52,12 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript" src="@Url.Content("/Scripts/site.form.dynamic.js")"></script>
-    
+
     <script>
         var count = 0;
 
         // remove menu item handler
-        $(".btn-minus").click(function (e)
-        {
+        $(".btn-minus").click(function(e) {
             $(this).closest(".cloned-row").remove();
             e.preventDefault();
 
@@ -66,7 +69,7 @@
         });
 
         // add menu item handler
-        $(".btn-plus").click(function () {
+        $(".btn-plus").click(function() {
             $(".cloned-row:first").clone(true, true).insertAfter(".cloned-row:last");
             $(".btn-minus").prop("disabled", false);
             count++;

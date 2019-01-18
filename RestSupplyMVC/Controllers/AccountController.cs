@@ -185,15 +185,25 @@ namespace RestSupplyMVC.Controllers
                             throw new NotImplementedException("Unknown user type: " + model.UserType);
                     }
 
-                    //var user = new AppUser { UserName = model.Email, Email = model.Email };
+                    user.Id = Guid.NewGuid().ToString();
+                    user.UserName = model.Email;
+                    user.Email = model.Email;
+
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+                        
+                        var roleManager = new RoleManager<AppRole>(new AppRoleStore(_context));
 
                         if (!roleManager.RoleExists(userRole))
                         {
-                            await roleManager.CreateAsync(new IdentityRole(userRole));
+                            AppRole roleObject = new AppRole()
+                            {
+                                Id = Guid.NewGuid().ToString(),
+                                Name = userRole
+                            };
+
+                            await roleManager.CreateAsync(roleObject);
                         }
 
                         await UserManager.AddToRoleAsync(user.Id, userRole);

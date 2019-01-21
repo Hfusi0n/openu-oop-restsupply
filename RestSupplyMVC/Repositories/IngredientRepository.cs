@@ -5,7 +5,7 @@ using DBModels = RestSupplyDB.Models.Ingredient;
 
 namespace RestSupplyMVC.Repositories
 {
-    public class IngredientRepository
+    public class IngredientRepository : IIngredientRepository
     {
         private readonly RestSupplyDbContext _context;
 
@@ -27,6 +27,11 @@ namespace RestSupplyMVC.Repositories
         public void Add(DBModels.Ingredients item)
         {
             _context.IngredientsSet.Add(item);
+        }
+
+        public void Remove(DBModels.Ingredients ingredients)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

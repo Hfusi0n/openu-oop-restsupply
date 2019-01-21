@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using RestSupplyDB;
 using RestSupplyMVC.Persistence;
 using RestSupplyMVC.ViewModels;
-using DBAppUser = RestSupplyDB.Models.AppUser;
 
 namespace RestSupplyMVC.Controllers
 {
     public class CustomerOrderController : Controller
     {
-        private readonly RestSupplyDB.RestSupplyDbContext _context;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CustomerOrderController()
         {
-            _context = new RestSupplyDB.RestSupplyDbContext();
-            _unitOfWork = new UnitOfWork(_context);
+            _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
 
 

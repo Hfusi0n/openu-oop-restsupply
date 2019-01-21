@@ -3,14 +3,12 @@ using RestSupplyMVC.Repositories;
 
 namespace RestSupplyMVC.Persistence
 {
-    public class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly RestSupplyDbContext _context;
-
-        // set is private becuase we want to init the repository only inside the UoW c-tor
-        public SupplierRepository Suppliers { get; private set; }
-        public IngredientRepository Ingredients { get; private set; }
-        public MenuItemsRepository MenuItems { get; private set; }
+        public ISupplierRepository Suppliers { get; private set; }
+        public IIngredientRepository Ingredients { get; private set; }
+        public IMenuItemsRepository MenuItems { get; private set; }
 
         public UnitOfWork(RestSupplyDbContext context)
         {

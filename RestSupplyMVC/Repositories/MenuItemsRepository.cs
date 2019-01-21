@@ -5,7 +5,7 @@ using DBModels = RestSupplyDB.Models.Menu;
 
 namespace RestSupplyMVC.Repositories
 {
-    public class MenuItemsRepository
+    public class MenuItemsRepository : IMenuItemsRepository
     {
         private readonly RestSupplyDbContext _context;
 

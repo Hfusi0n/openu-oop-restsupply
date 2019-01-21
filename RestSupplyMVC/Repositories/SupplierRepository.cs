@@ -7,7 +7,7 @@ using RestSupplyDB.Models.Supplier;
 
 namespace RestSupplyMVC.Repositories
 {
-    public class SupplierRepository
+    public class SupplierRepository : ISupplierRepository
     {
         private readonly RestSupplyDbContext _context;
         public SupplierRepository(RestSupplyDbContext context)

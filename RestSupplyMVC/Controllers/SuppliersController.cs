@@ -10,13 +10,10 @@ namespace RestSupplyMVC.Controllers
 {
     public class SuppliersController : Controller
     {
-        private readonly RestSupplyDbContext _context;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         public SuppliersController()
         {
-            _context = new RestSupplyDbContext();
-            _unitOfWork = new UnitOfWork(_context);
-            //... you can init other repos in the UoW c-tor
+            _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
 
         // GET: Suppliers
@@ -100,7 +97,7 @@ namespace RestSupplyMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Entry(supplier).State = EntityState.Modified;
+                new RestSupplyDbContext().Entry(supplier).State = EntityState.Modified;
                 _unitOfWork.Complete();
                 return RedirectToAction("Index");
             }
@@ -114,7 +111,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Supplier supplier = _context.SuppliersSet.Find(id);
+            Supplier supplier = new RestSupplyDbContext().SuppliersSet.Find(id);
             if (supplier == null)
             {
                 return HttpNotFound();
@@ -127,17 +124,22 @@ namespace RestSupplyMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Supplier supplier = _context.SuppliersSet.Find(id);
-            _context.SuppliersSet.Remove(supplier);
-            _unitOfWork.Complete();
-            return RedirectToAction("Index");
+            var context = new RestSupplyDbContext();
+            Supplier supplier = context.SuppliersSet.Find(id);
+            if (supplier != null)
+            {
+                context.SuppliersSet.Remove(supplier);
+                _unitOfWork.Complete();
+            }    
+        
+        return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _context.Dispose();
+                new RestSupplyDbContext().Dispose();
             }
             base.Dispose(disposing);
         }

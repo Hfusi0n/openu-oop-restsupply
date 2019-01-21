@@ -8,13 +8,19 @@ using System.Web;
 using System.Web.Mvc;
 using RestSupplyDB;
 using RestSupplyDB.Models.Menu;
+using RestSupplyMVC.Persistence;
 
 namespace RestSupplyMVC.Controllers
 {
     public class MenuIngredientsController : Controller
     {
         private RestSupplyDbContext db = new RestSupplyDbContext();
+        private IUnitOfWork _unitOfWork;
 
+        public MenuIngredientsController()
+        {
+            _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
+        }
         // GET: MenuIngredients
         public ActionResult Index()
         {

@@ -17,13 +17,11 @@ namespace RestSupplyMVC.Controllers
 {
     public class IngredientsController : Controller
     {
-        private readonly RestSupplyDbContext _context;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public IngredientsController()
         {
-            _context = new RestSupplyDbContext();
-            _unitOfWork = new UnitOfWork(_context);
+            _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
 
         // GET: Ingredients
@@ -101,7 +99,7 @@ namespace RestSupplyMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Entry(ingredients).State = EntityState.Modified;
+                new RestSupplyDbContext().Entry(ingredients).State = EntityState.Modified;
                 _unitOfWork.Complete();
                 return RedirectToAction("Index");
             }
@@ -138,7 +136,7 @@ namespace RestSupplyMVC.Controllers
         {
             if (disposing)
             {
-                _context.Dispose();
+                new RestSupplyDbContext().Dispose();
             }
             base.Dispose(disposing);
         }

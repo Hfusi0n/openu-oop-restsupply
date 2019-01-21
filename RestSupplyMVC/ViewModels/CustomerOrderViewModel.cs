@@ -8,7 +8,9 @@ namespace RestSupplyMVC.ViewModels
 {
     public class CustomerOrderViewModel
     {
+        [Display(Name = "מנות מהתפריט")]
         public IEnumerable<SelectListItem> MenuItems { get; set; }
+        [Display(Name = "הזמנות לקוח")]
 
         public Dictionary<string, string> Orders { get; set; }
     }

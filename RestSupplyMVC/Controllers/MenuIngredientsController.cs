@@ -35,7 +35,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MenuIngredients menuIngredients = db.MenuIngredientsSet.Find(id);
+            MenuItemIngredients menuIngredients = db.MenuIngredientsSet.Find(id);
             if (menuIngredients == null)
             {
                 return HttpNotFound();
@@ -56,7 +56,7 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Valid,IngredientName,IngredientId,MenuItemId,Quantity")] MenuIngredients menuIngredients)
+        public ActionResult Create([Bind(Include = "Id,Valid,IngredientName,IngredientId,MenuItemId,Quantity")] MenuItemIngredients menuIngredients)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +77,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MenuIngredients menuIngredients = db.MenuIngredientsSet.Find(id);
+            MenuItemIngredients menuIngredients = db.MenuIngredientsSet.Find(id);
             if (menuIngredients == null)
             {
                 return HttpNotFound();
@@ -92,7 +92,7 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Valid,IngredientName,IngredientId,MenuItemId,Quantity")] MenuIngredients menuIngredients)
+        public ActionResult Edit([Bind(Include = "Id,Valid,IngredientName,IngredientId,MenuItemId,Quantity")] MenuItemIngredients menuIngredients)
         {
             if (ModelState.IsValid)
             {
@@ -112,7 +112,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MenuIngredients menuIngredients = db.MenuIngredientsSet.Find(id);
+            MenuItemIngredients menuIngredients = db.MenuIngredientsSet.Find(id);
             if (menuIngredients == null)
             {
                 return HttpNotFound();
@@ -125,7 +125,7 @@ namespace RestSupplyMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            MenuIngredients menuIngredients = db.MenuIngredientsSet.Find(id);
+            MenuItemIngredients menuIngredients = db.MenuIngredientsSet.Find(id);
             db.MenuIngredientsSet.Remove(menuIngredients);
             db.SaveChanges();
             return RedirectToAction("Index");

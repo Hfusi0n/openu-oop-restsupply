@@ -14,7 +14,7 @@ namespace RestSupplyDB.Models.Menu
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MenuItems()
         {
-            MenuIngredientsSet = new HashSet<MenuIngredients>();
+            MenuIngredientsSet = new HashSet<MenuItemIngredients>();
             CustomerDetailOrdersSet = new HashSet<CustomerDetailOrders>();
         }
 
@@ -23,7 +23,7 @@ namespace RestSupplyDB.Models.Menu
         [Required]
         public string Name { get; set; }
         
-        public virtual ICollection<MenuIngredients> MenuIngredientsSet { get; set; }
+        public virtual ICollection<MenuItemIngredients> MenuIngredientsSet { get; set; }
         
         public virtual ICollection<CustomerDetailOrders> CustomerDetailOrdersSet { get; set; }
     }

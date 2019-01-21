@@ -9,15 +9,16 @@ namespace RestSupplyDB.Models.Menu
     using System.Data.Entity.Spatial;
 
     [Table("MenuIngredients")]
-    public partial class MenuIngredients
+    public partial class MenuItemIngredients
     {
         public int Id { get; set; }
 
         public bool IsDeleted { get; set; }
 
-        public int? IngredientId { get; set; }
-
-        public int? MenuItemId { get; set; }
+        [Required]
+        public int IngredientId { get; set; }
+        [Required]
+        public int MenuItemId { get; set; }
 
         public double Quantity { get; set; }
 

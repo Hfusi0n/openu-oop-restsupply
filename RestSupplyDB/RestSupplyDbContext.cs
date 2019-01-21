@@ -27,7 +27,7 @@ namespace RestSupplyDB
         public virtual DbSet<Ingredients> IngredientsSet { get; set; }
         public virtual DbSet<KitchenIngredients> KitchenIngredientsSet { get; set; }
         public virtual DbSet<Kitchens> KitchensSet { get; set; }
-        public virtual DbSet<MenuIngredients> MenuIngredientsSet { get; set; }
+        public virtual DbSet<MenuItemIngredients> MenuIngredientsSet { get; set; }
         public virtual DbSet<MenuItems> MenuItemsSet { get; set; }
         public virtual DbSet<IngredientListOrders> IngredientListOrdersSet { get; set; }
         public virtual DbSet<IngredientOrders> IngredientOrdersSet { get; set; }

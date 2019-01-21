@@ -78,7 +78,7 @@
     <Compile Include="Models\Ingredient\Ingredients.cs" />
     <Compile Include="Models\Kitchen\KitchenIngredients.cs" />
     <Compile Include="Models\Kitchen\Kitchens.cs" />
-    <Compile Include="Models\Menu\MenuIngredients.cs" />
+    <Compile Include="Models\Menu\MenuItemIngredients.cs" />
     <Compile Include="Models\Menu\MenuItems.cs" />
     <Compile Include="Models\Ingredient\IngredientListOrders.cs" />
     <Compile Include="Models\Ingredient\IngredientOrders.cs" />

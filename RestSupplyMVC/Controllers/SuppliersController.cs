@@ -83,7 +83,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Supplier supplier = _context.SuppliersSet.Find(id);
+            Supplier supplier = _unitOfWork.Suppliers.GetById(id.Value);
             if (supplier == null)
             {
                 return HttpNotFound();
@@ -101,7 +101,7 @@ namespace RestSupplyMVC.Controllers
             if (ModelState.IsValid)
             {
                 _context.Entry(supplier).State = EntityState.Modified;
-                _context.SaveChanges();
+                _unitOfWork.Complete();
                 return RedirectToAction("Index");
             }
             return View(supplier);
@@ -129,7 +129,7 @@ namespace RestSupplyMVC.Controllers
         {
             Supplier supplier = _context.SuppliersSet.Find(id);
             _context.SuppliersSet.Remove(supplier);
-            _context.SaveChanges();
+            _unitOfWork.Complete();
             return RedirectToAction("Index");
         }
 

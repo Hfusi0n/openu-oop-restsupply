@@ -8,17 +8,28 @@ using System.Web;
 using System.Web.Mvc;
 using RestSupplyDB;
 using RestSupplyDB.Models.Ingredient;
+using RestSupplyDB.Models.Supplier;
+using RestSupplyMVC.Persistence;
+using RestSupplyMVC.Repositories;
+using RestSupplyMVC.ViewModels;
 
 namespace RestSupplyMVC.Controllers
 {
     public class IngredientsController : Controller
     {
-        private RestSupplyDbContext db = new RestSupplyDbContext();
+        private readonly RestSupplyDbContext _context;
+        private readonly UnitOfWork _unitOfWork;
+
+        public IngredientsController()
+        {
+            _context = new RestSupplyDbContext();
+            _unitOfWork = new UnitOfWork(_context);
+        }
 
         // GET: Ingredients
         public ActionResult Index()
         {
-            return View(db.IngredientsSet.ToList());
+            return View(_unitOfWork.Ingredients.GetAll());
         }
 
         // GET: Ingredients/Details/5
@@ -28,7 +39,8 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ingredients ingredients = db.IngredientsSet.Find(id);
+
+            Ingredients ingredients = _unitOfWork.Ingredients.GetById(id.Value);
             if (ingredients == null)
             {
                 return HttpNotFound();
@@ -47,16 +59,22 @@ namespace RestSupplyMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Unit")] Ingredients ingredients)
+        public ActionResult Create(IngredientViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                db.IngredientsSet.Add(ingredients);
-                db.SaveChanges();
+                var createdIngredient = new Ingredients
+                {
+                    Name = vm.Name,
+                    Unit = vm.Unit
+                };
+                _unitOfWork.Ingredients.Add(createdIngredient);
+                _unitOfWork.Complete();
+
                 return RedirectToAction("Index");
             }
 
-            return View(ingredients);
+            return View(vm);
         }
 
         // GET: Ingredients/Edit/5
@@ -66,7 +84,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ingredients ingredients = db.IngredientsSet.Find(id);
+            Ingredients ingredients = _unitOfWork.Ingredients.GetById(id.Value);
             if (ingredients == null)
             {
                 return HttpNotFound();
@@ -83,8 +101,8 @@ namespace RestSupplyMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(ingredients).State = EntityState.Modified;
-                db.SaveChanges();
+                _context.Entry(ingredients).State = EntityState.Modified;
+                _unitOfWork.Complete();
                 return RedirectToAction("Index");
             }
             return View(ingredients);
@@ -97,7 +115,7 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ingredients ingredients = db.IngredientsSet.Find(id);
+            Ingredients ingredients = _unitOfWork.Ingredients.GetById(id.Value);
             if (ingredients == null)
             {
                 return HttpNotFound();
@@ -110,9 +128,9 @@ namespace RestSupplyMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Ingredients ingredients = db.IngredientsSet.Find(id);
-            db.IngredientsSet.Remove(ingredients);
-            db.SaveChanges();
+            Ingredients ingredients = _unitOfWork.Ingredients.GetById(id);
+            _unitOfWork.Ingredients.Remove(ingredients);
+            _unitOfWork.Complete();
             return RedirectToAction("Index");
         }
 
@@ -120,7 +138,7 @@ namespace RestSupplyMVC.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _context.Dispose();
             }
             base.Dispose(disposing);
         }

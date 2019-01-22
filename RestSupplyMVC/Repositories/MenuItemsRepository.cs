@@ -1,7 +1,8 @@
 ﻿using RestSupplyDB;
 using System.Collections.Generic;
 using System.Linq;
-using DBModels = RestSupplyDB.Models.Menu;
+using RestSupplyMVC.ViewModels;
+using RestSupplyDB.Models.Menu;
 
 namespace RestSupplyMVC.Repositories
 {
@@ -14,19 +15,20 @@ namespace RestSupplyMVC.Repositories
             _context = context;
         }
 
-        public IEnumerable<DBModels.MenuItems> GetAll()
+        public IEnumerable<MenuItems> GetAll()
         {
             return _context.MenuItemsSet.ToList();
         }
 
-        public DBModels.MenuItems GetById(int id)
+        public MenuItems GetById(int id)
         {
             return _context.MenuItemsSet.Find(id);
         }
 
-        public void Add(DBModels.MenuItems item)
+        public void Add(MenuItems item)
         {
             _context.MenuItemsSet.Add(item);
         }
+
     }
 }

@@ -33,6 +33,7 @@ namespace RestSupplyMVC.Controllers
             {
                 menuItemsListVm.Add(new MenuItemViewModel
                 {
+                    Id = dbMenuItem.Id,
                     Name = dbMenuItem.Name,
                     MenuItemIngredients = dbMenuItem.MenuIngredientsSet.Select(mi => new MenuItemIngredientViewModel
                     {
@@ -139,8 +140,8 @@ namespace RestSupplyMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                /*db.Entry(menuItems).State = EntityState.Modified;
-                db.SaveChanges();*/
+                new RestSupplyDbContext().Entry(menuItems).State = EntityState.Modified;
+                _unitOfWork.Complete();
                 return RedirectToAction("Index");
             }
             return View(menuItems);

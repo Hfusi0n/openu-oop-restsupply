@@ -5930,6 +5930,7 @@ button.close {
 .modal-backdrop.in {
   filter: alpha(opacity=50);
   opacity: .5;
+  display: none;
 }
 .modal-header {
   padding: 15px;

@@ -1,4 +1,4 @@
-﻿@model RestSupplyDB.Models.Menu.MenuItems
+﻿@model RestSupplyMVC.ViewModels.MenuItemViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -15,7 +15,37 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            <div class="panel-body">
+                <table class="table table-striped table-responsive">
+                    <tbody>
+                        <tr>
+                            <td>שם מנה: @Model.Name </ td >
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>חומר גלם</th>
+                                            <th>כמות</th>
+                                            <th>יחידת מידה</th>
+                                        </tr>
+                                        
+                                        @foreach (var menuItemIngredient in Model.MenuItemIngredients)
+                                        {
+                                            <tr>
+                                                <td>@menuItemIngredient.Name</td>
+                                                <td>@menuItemIngredient.Quantity</td>
+                                                <td>@menuItemIngredient.Unit</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </dd>
 
     </dl>

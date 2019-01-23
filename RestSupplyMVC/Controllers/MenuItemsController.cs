@@ -55,12 +55,26 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            MenuItems menuItems = _unitOfWork.MenuItems.GetById(id.Value);
-            if (menuItems == null)
+            MenuItems dbMenuItem = _unitOfWork.MenuItems.GetById(id.Value);
+            if (dbMenuItem == null)
             {
                 return HttpNotFound();
             }
-            return View(menuItems);
+
+            var menuItemVm = new MenuItemViewModel
+            {
+                Id = dbMenuItem.Id,
+                Name = dbMenuItem.Name,
+                MenuItemIngredients = dbMenuItem.MenuIngredientsSet.Select(mi => new MenuItemIngredientViewModel
+                {
+                    Id = mi.IngredientId,
+                    Name = _unitOfWork.Ingredients.GetById(mi.IngredientId).Name,
+                    Quantity = mi.Quantity,
+                    Unit = _unitOfWork.Ingredients.GetById(mi.IngredientId).Unit
+                })
+            };
+
+            return View(menuItemVm);
         }
 
         // GET: MenuItems/Create

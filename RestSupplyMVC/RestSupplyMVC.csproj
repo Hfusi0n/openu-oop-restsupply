@@ -220,6 +220,7 @@
     <Compile Include="Repositories\IngredientRepository.cs" />
     <Compile Include="Repositories\SupplierRepository.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\MenuItemIngredientViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\SupplierListViewModel.cs" />
     <Compile Include="ViewModels\SupplierViewModel.cs" />

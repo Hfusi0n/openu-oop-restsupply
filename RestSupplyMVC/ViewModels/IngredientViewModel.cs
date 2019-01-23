@@ -10,6 +10,7 @@ namespace RestSupplyMVC.ViewModels
     public class IngredientViewModel
     {
         [Display(Name = "שם חומר גלם")] public string Name { get; set; }
+        public int Id { get; set; }
         [Display(Name = "יחידת מידה")] public string Unit { get; set; }
     }
 }

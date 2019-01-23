@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RestSupplyMVC.ViewModels.MenuItemViewModel>
+﻿@model RestSupplyMVC.ViewModels.MenuItemIndexViewModel
 
 @{
     ViewBag.Title = "מנות בתפריט";
@@ -14,13 +14,15 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @*
+            @Html.DisplayNameFor(model => model.MenuItemViewModels.Name)
+        *@
         </th>
         <th></th>
     </tr>
-    @if (Model.Count() != 0)
+    @if (Model.MenuItemViewModels.Count() != 0)
     {
-        foreach (var item in Model)
+        foreach (var item in Model.MenuItemViewModels)
         {
             <tr>
                 <td>
@@ -63,7 +65,7 @@
                                 Customer Name
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="name" name="name" placeholder="Customer Name" class="form-control" />
+                                <input type="text" id="menuItem" name="name" placeholder="מנה בתפריט" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -78,14 +80,14 @@
                                 Product Name
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="productName" name="productName" placeholder="Product Name" class="form-control" />
+                                <input type="text" id="name" name="productName" placeholder="Product Name" class="form-control" />
                                
                             </div>
                             <label class="control-label col-md-2">
                                 Unit
                             </label>
                             <div class="col-md-4">
-                                <input type="number" id="unit" name="unit" placeholder="Unit" class="form-control" />
+                                <input type="text" id="unit" name="unit" placeholder="Unit" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -93,7 +95,7 @@
                                 Quantity
                             </label>
                             <div class="col-md-4">
-                                <input type="number" id="quantity" name="quantity" placeholder="Quantity" class="form-control" />
+                                <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" />
                             </div>
                             <div class="col-md-2 col-lg-offset-4">
                                 <a id="addToList" class="btn btn-primary">Add To List</a>
@@ -131,22 +133,22 @@
         $("#addToList").click(function (e) {
             e.preventDefault();
 
-            if ($.trim($("#productName").val()) == "" || $.trim($("#price").val()) == "" || $.trim($("#quantity").val()) == "") return;
+            if ($.trim($("#name").val()) == "" || $.trim($("#quantity").val()) == "" || $.trim($("#unit").val()) == "") return;
 
-            var productName = $("#productName").val(),
-                price = $("#price").val(),
+            var name = $("#name").val(),
                 quantity = $("#quantity").val(),
+                unit = $("#unit").val(),
                 detailsTableBody = $("#detailsTable tbody");
 
-            var productItem = '<tr><td>' + productName + '</td><td>' + quantity + '</td><td>' + price + '</td><td>' + (parseFloat(price) * parseInt(quantity)) + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            var productItem = '<tr><td>' + name + '</td><td>' + quantity + '</td><td>' + unit +  '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
             detailsTableBody.append(productItem);
             clearItem();
         });
         //After Add A New Order In The List, Clear Clean The Form For Add More Order.
         function clearItem() {
-            $("#productName").val('');
-            $("#price").val('');
+            $("#name").val('');
             $("#quantity").val('');
+            $("#unit").val('');
         }
         // After Add A New Order In The List, If You Want, You Can Remove It.
         $(document).on('click', 'a.deleteItem', function (e) {
@@ -184,10 +186,9 @@
 
             $.each($("#detailsTable tbody tr"), function () {
                 orderArr.push({
-                    productName: $(this).find('td:eq(0)').html(),
+                    name: $(this).find('td:eq(0)').html(),
                     quantity: $(this).find('td:eq(1)').html(),
-                    price: $(this).find('td:eq(2)').html(),
-                    amount: $(this).find('td:eq(3)').html()
+                    unit: $(this).find('td:eq(2)').html()
                 });
             });
 

@@ -26,8 +26,21 @@ namespace RestSupplyMVC.Controllers
         // GET: MenuItems
         public ActionResult Index()
         {
-            var menuItemsListVm = new List<MenuItemViewModel>();
             var dbMenuItems = _unitOfWork.MenuItems.GetAll();
+            var dbIngredients = _unitOfWork.Ingredients.GetAll();
+
+            var menuItemIndexVm = new MenuItemIndexViewModel();
+            var menuItemsListVm = new List<MenuItemViewModel>();
+            var createMenuItemVm = new CreateMenuItemViewModel
+            {
+                AllIngredients = dbIngredients.Select(i => new IngredientViewModel
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Unit = i.Unit
+                })
+            };
+            menuItemIndexVm.CreateMenuItemViewModel = createMenuItemVm;
 
             foreach (var dbMenuItem in dbMenuItems)
             {
@@ -45,7 +58,9 @@ namespace RestSupplyMVC.Controllers
                 });
             }
 
-            return View(menuItemsListVm);
+            menuItemIndexVm.MenuItemViewModels = menuItemsListVm;
+
+            return View(menuItemIndexVm);
         }
 
         // GET: MenuItems/Details/5
@@ -114,7 +129,7 @@ namespace RestSupplyMVC.Controllers
                 var menuItem = new MenuItems
                 {
                     Name = vm.Name,
-                    MenuIngredientsSet = (ICollection<MenuItemIngredients>) vm.SelectedMenuItemIngredients.Select(m =>
+                    MenuIngredientsSet = (ICollection<MenuItemIngredients>) vm.MenuItemIngredients.Select(m =>
                         new MenuItemIngredients
                         {
                             IngredientId = m.Id,

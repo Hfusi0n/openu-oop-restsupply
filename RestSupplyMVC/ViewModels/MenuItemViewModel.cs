@@ -9,20 +9,21 @@ namespace RestSupplyMVC.ViewModels
 {
     public class MenuItemViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<MenuItemIngredientViewModel> MenuItemIngredients{ get; set; }
+        public IEnumerable<MenuItemIngredientViewModel> MenuItemIngredients { get; set; }
         public string Heading { get; set; }
         public string Action => (Id != 0) ? "Update" : "Create";
-        public IEnumerable<MenuItemIngredientViewModel> SelectedMenuItemIngredients { get; set; }
     }
 
-    public class MenuItemIngredientViewModel
+    public class MenuItemIndexViewModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Unit { get; set; }
-        public double Quantity { get; set; }
+        public IEnumerable<MenuItemViewModel> MenuItemViewModels { get; set; }
+        public CreateMenuItemViewModel CreateMenuItemViewModel { get; set; }
+    }
 
+    public class CreateMenuItemViewModel : MenuItemViewModel
+    {
+        public IEnumerable<IngredientViewModel> AllIngredients { get; set; }
     }
 }

@@ -7,17 +7,12 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("הוספת מנה חדשה לתפריט", "Create")
-    <button style="margin-right:10px" class="btn btn-primary pull-right" onclick="addNewOrder()">New Order</button>
+    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">New Order</button>
 
 </p>
 <table class="table">
     <tr>
-        <th>
-            @*
-            @Html.DisplayNameFor(model => model.MenuItemViewModels.Name)
-        *@
-        </th>
+
         <th></th>
     </tr>
     @if (Model.MenuItemViewModels.Count() != 0)
@@ -39,7 +34,7 @@
     else
     {
         <div class="panel-body">
-            <h3 style="color:red;">Empty!</h3>
+            <h3 style="color:red;">אין מנות בתפריט!</h3>
         </div>
     }
 
@@ -51,27 +46,27 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="close" data-dismiss="modal">&times;</a>
-                <h4>Add New Order</h4>
+                <h4>הוספת מנה חדשה</h4>
             </div>
             <form id="NewOrderForm">
                 <div class="modal-body">
                     @*Customer Details*@
-                    <h5 style="color:#ff6347">Customer Details</h5>
+                    <h5 style="color:#112247">מנה חדשה</h5>
                     <hr />
                     <div class="form-horizontal">
                         <input type="hidden" id="CustomerId" />
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                Customer Name
+                                שם מנה
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="menuItem" name="name" placeholder="מנה בתפריט" class="form-control" />
+                                <input type="text" id="menuItem" name="name" placeholder="שם מנה" class="form-control" />
                             </div>
                         </div>
                     </div>
 
                     @*Order Details*@
-                    <h5 style="margin-top:10px;color:#ff6347">Order Details</h5>
+                    <h5 style="margin-top:10px;color:#112247">Order Details</h5>
                     <hr />
                     <div class="form-horizontal">
                         <input type="hidden" id="IngredientId" />
@@ -80,8 +75,13 @@
                                 Product Name
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="name" name="productName" placeholder="Product Name" class="form-control" />
-                               
+                                @Html.DropDownListFor(model => model.CreateMenuItemViewModel.AllIngredients, new SelectList(Model.CreateMenuItemViewModel.AllIngredients, "Id", "Name"), "", new { @id = "name" , @class = "form-control" })
+                            </div>
+                            <label class="control-label col-md-2">
+                                Quantity
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" />
                             </div>
                             <label class="control-label col-md-2">
                                 Unit
@@ -91,23 +91,21 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-2">
-                                Quantity
-                            </label>
-                            <div class="col-md-4">
-                                <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" />
-                            </div>
-                            <div class="col-md-2 col-lg-offset-4">
-                                <a id="addToList" class="btn btn-primary">Add To List</a>
-                            </div>
+                            
+                                <div class="col-md-1 col-lg-offset-1">
+                                    <a id="addToList" class="btn btn-primary">Add To List</a>
+                                </div>
+                            
                         </div>
+                       
+                            
 
                         <table id="detailsTable" class="table">
                             <thead>
                                 <tr>
                                     <th style="width:30%">Ingredient</th>
-                                    <th style="width:20%">Unit</th>
                                     <th style="width:15%">Quantity</th>
+                                    <th style="width:20%">Unit</th>
                                     <th style="width:10%"></th>
                                 </tr>
                             </thead>
@@ -135,7 +133,7 @@
 
             if ($.trim($("#name").val()) == "" || $.trim($("#quantity").val()) == "" || $.trim($("#unit").val()) == "") return;
 
-            var name = $("#name").val(),
+            var name = $("#name option:selected").text(),
                 quantity = $("#quantity").val(),
                 unit = $("#unit").val(),
                 detailsTableBody = $("#detailsTable tbody");
@@ -146,7 +144,7 @@
         });
         //After Add A New Order In The List, Clear Clean The Form For Add More Order.
         function clearItem() {
-            $("#name").val('');
+            $("#name option:selected").remove();
             $("#quantity").val('');
             $("#unit").val('');
         }
@@ -166,7 +164,7 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 type: 'POST',
-                url: "/Orders/SaveOrder",
+                url: "/MenuItems/SaveOrder",
                 data: data,
                 success: function (result) {
                     alert(result);
@@ -181,11 +179,11 @@
         $("#saveOrder").click(function (e) {
             e.preventDefault();
 
-            var orderArr = [];
-            orderArr.length = 0;
+            var ingredientsArr = [];
+            ingredientsArr.length = 0;
 
             $.each($("#detailsTable tbody tr"), function () {
-                orderArr.push({
+                ingredientsArr.push({
                     name: $(this).find('td:eq(0)').html(),
                     quantity: $(this).find('td:eq(1)').html(),
                     unit: $(this).find('td:eq(2)').html()
@@ -194,9 +192,8 @@
 
 
             var data = JSON.stringify({
-                name: $("#name").val(),
-                address: $("#address").val(),
-                order: orderArr
+                name: $("#menuItem").val(),
+                order: ingredientsArr
             });
 
             $.when(saveOrder(data)).then(function (response) {

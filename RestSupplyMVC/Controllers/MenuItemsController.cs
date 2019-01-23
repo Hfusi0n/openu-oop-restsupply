@@ -186,7 +186,34 @@ namespace RestSupplyMVC.Controllers
             db.SaveChanges();*/
             return RedirectToAction("Index");
         }
+        public ActionResult SaveOrder(string name, MenuItemIngredientViewModel[] ingredients)
+        {
+            string result = "Error! Order Is Not Complete!";
+            if (name != null && ingredients != null)
+            {
+                var menuItem = new MenuItems
+                {
+                    Name = name
+                };
+                foreach (var ingredientItem in ingredients)
+                {
+                    menuItem.MenuIngredientsSet.Add(
+                        new MenuItemIngredients
+                        {
+                            IngredientId = ingredientItem.Id,
+                            Quantity = ingredientItem.Quantity
+                        });
 
+                }
+
+                _unitOfWork.MenuItems.Add(menuItem);
+                _unitOfWork.Complete();
+            }
+
+            result = "Success! Order Is Complete!";
+            
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

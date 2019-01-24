@@ -19,6 +19,11 @@ namespace RestSupplyMVC.Repositories
             return _context.IngredientsSet.ToList();
         }
 
+        public IEnumerable<DBModels.Ingredients> GetIngredientsBySupplierId(int id)
+        {
+            return _context.IngredientsSet.Where(i => i.SuppliersIngredients.Any(si => si.SupplierId == id));
+        }
+
         public DBModels.Ingredients GetById(int id)
         {
             return _context.IngredientsSet.Find(id);

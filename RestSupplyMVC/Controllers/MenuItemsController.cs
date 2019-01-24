@@ -201,14 +201,14 @@ namespace RestSupplyMVC.Controllers
             db.SaveChanges();*/
             return RedirectToAction("Index");
         }
-        public ActionResult SaveOrder(string name, MenuItemIngredientViewModel[] ingredients)
+        public ActionResult SaveOrder(string menuItemName, MenuItemIngredientViewModel[] ingredients)
         {
             string result = "Error! Order Is Not Complete!";
-            if (name != null && ingredients != null)
+            if (menuItemName != null && ingredients != null)
             {
                 var menuItem = new MenuItems
                 {
-                    Name = name
+                    Name = menuItemName
                 };
                 foreach (var ingredientItem in ingredients)
                 {

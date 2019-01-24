@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RestSupplyDB.Models.Menu;
 
 namespace RestSupplyMVC.Repositories
 {
@@ -6,6 +7,6 @@ namespace RestSupplyMVC.Repositories
     {
         IEnumerable<RestSupplyDB.Models.Menu.MenuItems> GetAll();
         RestSupplyDB.Models.Menu.MenuItems GetById(int id);
-        void Add(RestSupplyDB.Models.Menu.MenuItems item);
+        MenuItems Add(MenuItems item);
     }
 }

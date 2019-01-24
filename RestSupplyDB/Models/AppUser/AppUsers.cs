@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using RestSupplyDB.Models.Kitchen;
+
 namespace RestSupplyDB.Models.AppUser
 {
     using Microsoft.AspNet.Identity;
@@ -7,15 +10,21 @@ namespace RestSupplyDB.Models.AppUser
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    public class AppUser :
-        IdentityUser<string, AppUserLogin, AppUserRole, AppUserClaim>
+    public class AppUser : IdentityUser<string, AppUserLogin, AppUserRole, AppUserClaim>
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser,string> manager)
+        public AppUser()
+        {
+            UserKitchens = new HashSet<KitchenUsers>();
+        }
+
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser, string> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
         }
-    }    
-}
+
+        public virtual ICollection<KitchenUsers> UserKitchens { get; set; }
+    }
+}  

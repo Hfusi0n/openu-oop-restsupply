@@ -45,6 +45,11 @@ namespace RestSupplyDB
             modelBuilder.Entity<AppUserClaim>().Property(r => r.Id);
             modelBuilder.Entity<AppRole>().Property(r => r.Id);
 
+            modelBuilder.Entity<AppUser>()
+                .HasMany(e => e.UserKitchens)
+                .WithRequired(e => e.AppUser)
+                .HasForeignKey(e => e.UserId).WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Ingredients>()
                 .HasMany(e => e.KitchenIngredients)
                 .WithRequired(e => e.IngredientsSet)
@@ -75,7 +80,12 @@ namespace RestSupplyDB
                 .HasMany(e => e.CustomerOrdersSet)
                 .WithRequired(e => e.Kitchens)
                 .HasForeignKey(e => e.KitchenId);
-
+            
+            modelBuilder.Entity<Kitchens>()
+                .HasMany(e => e.KitchenUsers)
+                .WithRequired(e => e.Kitchen)
+                .HasForeignKey(e => e.KitchenId);
+               
             modelBuilder.Entity<MenuItems>()
                 .HasMany(e => e.MenuIngredientsSet)
                 .WithRequired(e => e.MenuItemsSet)

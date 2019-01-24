@@ -82,6 +82,10 @@
     <Compile Include="Migrations\201901241945570_remove_custom_user_types_migration.Designer.cs">
       <DependentUpon>201901241945570_remove_custom_user_types_migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901242045492_add_kitchen_users_table_migration.cs" />
+    <Compile Include="Migrations\201901242045492_add_kitchen_users_table_migration.Designer.cs">
+      <DependentUpon>201901242045492_add_kitchen_users_table_migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppUser\AppRoleStore.cs" />
     <Compile Include="Models\AppUser\AppUserStore.cs" />
@@ -90,6 +94,7 @@
     <Compile Include="Models\Ingredient\Ingredients.cs" />
     <Compile Include="Models\Kitchen\KitchenIngredients.cs" />
     <Compile Include="Models\Kitchen\Kitchens.cs" />
+    <Compile Include="Models\Kitchen\KitchenUsers.cs" />
     <Compile Include="Models\Menu\MenuItemIngredients.cs" />
     <Compile Include="Models\Menu\MenuItems.cs" />
     <Compile Include="Models\Ingredient\IngredientListOrders.cs" />
@@ -118,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901241945570_remove_custom_user_types_migration.resx">
       <DependentUpon>201901241945570_remove_custom_user_types_migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901242045492_add_kitchen_users_table_migration.resx">
+      <DependentUpon>201901242045492_add_kitchen_users_table_migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

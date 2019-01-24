@@ -40,6 +40,9 @@ namespace RestSupplyMVC
             routes.MapRoute("GetSuppliers",
                 "{controller}/{action}",
                 new { controller = "Suppliers", action = "Index" });
+            routes.MapRoute("GetSupplierOrders",
+                "{controller}/{action}",
+                new { controller = "SupplierOrder", action = "Index" });
             routes.MapRoute("GetMenuItems",
                 "{controller}/{action}",
                 new { controller = "MenuItems", action = "Index" });

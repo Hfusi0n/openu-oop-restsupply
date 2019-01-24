@@ -200,19 +200,23 @@
     <Compile Include="Controllers\MenuIngredientsController.cs" />
     <Compile Include="Controllers\MenuItemsController.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="Controllers\SupplierOrderController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UsersSetsController.cs" />
     <Compile Include="Controllers\CustomerOrderController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\ISupplierOrderRepository.cs" />
     <Compile Include="Persistence\IUnitOfWork.cs" />
     <Compile Include="Repositories\IIngredientRepository.cs" />
     <Compile Include="Repositories\IMenuItemsRepository.cs" />
     <Compile Include="Repositories\ISupplierRepository.cs" />
     <Compile Include="Repositories\MenuItemsRepository.cs" />
+    <Compile Include="Repositories\SupplierOrderRepository.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\CustomerOrderViewModel.cs" />
+    <Compile Include="ViewModels\SupplierOrderViewModel.cs" />
     <Compile Include="ViewModels\IngredientViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Persistence\UnitOfWork.cs" />
@@ -310,6 +314,7 @@
     <Content Include="Views\MenuItems\Delete.cshtml" />
     <Content Include="Views\MenuItems\Details.cshtml" />
     <Content Include="Views\MenuItems\Edit.cshtml" />
+    <Content Include="Views\SupplierOrder\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

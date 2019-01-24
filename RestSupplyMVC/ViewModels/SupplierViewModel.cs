@@ -25,6 +25,13 @@ namespace RestSupplyMVC.ViewModels
         public IEnumerable<IngredientViewModel> AllIngredients { get; set; }
     }
 
+    public class CreateSupplierOrderViewModell : SupplierViewModel
+    {
+        public IEnumerable<IngredientViewModel> SupplierIngredients { get; set; }
+        public double Amount { get; set; }
+
+    }
+
     public class SupplierIndexViewModel
     {
         public IEnumerable<SupplierViewModel> SuppliersList { get; set; }

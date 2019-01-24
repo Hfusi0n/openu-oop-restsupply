@@ -19,7 +19,7 @@ namespace RestSupplyDB.Models.Ingredient
             KitchenIngredients = new HashSet<KitchenIngredients>();
             MenuIngredients = new HashSet<MenuItemIngredients>();
             IngredientListOrders = new HashSet<IngredientListOrders>();
-            Suppliers = new HashSet<Supplier.Supplier>();
+            SuppliersIngredients = new HashSet<SuppliersIngredients>();
         }
 
         public int Id { get; set; }
@@ -30,7 +30,7 @@ namespace RestSupplyDB.Models.Ingredient
         [Required]
         public string Unit { get; set; }
 
-        public virtual ICollection<Supplier.Supplier> Suppliers { get; set; }
+        public virtual ICollection<SuppliersIngredients> SuppliersIngredients { get; set; }
         
         public virtual ICollection<KitchenIngredients> KitchenIngredients { get; set; }
         

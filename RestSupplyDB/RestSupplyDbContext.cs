@@ -65,6 +65,11 @@ namespace RestSupplyDB
                 .WithRequired(e => e.IngredientsSet)
                 .HasForeignKey(e => e.IngredientId).WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Ingredients>()
+                .HasMany(e => e.SuppliersIngredients)
+                .WithRequired(e => e.Ingredient)
+                .HasForeignKey(e => e.IngredientId).WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Kitchens>()
                 .HasMany(e => e.KitchenIngredientsSet)
                 .WithRequired(e => e.KitchensSet)
@@ -91,15 +96,9 @@ namespace RestSupplyDB
                 .HasForeignKey(e => e.OrderId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Supplier>()
-                .HasMany(e => e.IngredientsSet)
-                .WithMany(e => e.Suppliers)
-                .Map(si => 
-                {
-                    si.MapLeftKey("SupplierRefId");
-                    si.MapRightKey("IngredientRefId");
-                    si.ToTable("SuppliersIngredients");
-                });
-                
+                .HasMany(e => e.SuppliersIngredients)
+                .WithRequired(e => e.Supplier)
+                .HasForeignKey(e => e.SupplierId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Supplier>()
                 .HasMany(e => e.IngredientOrdersSet)

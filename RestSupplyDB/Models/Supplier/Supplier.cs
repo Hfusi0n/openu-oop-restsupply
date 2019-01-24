@@ -14,7 +14,7 @@ namespace RestSupplyDB.Models.Supplier
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Supplier()
         {
-            IngredientsSet = new HashSet<Ingredients>();
+            SuppliersIngredients = new HashSet<SuppliersIngredients>();
             IngredientOrdersSet = new HashSet<IngredientOrders>();
         }
 
@@ -27,7 +27,7 @@ namespace RestSupplyDB.Models.Supplier
 
         public string Phone { get; set; }
 
-        public virtual ICollection<Ingredients> IngredientsSet { get; set; }
+        public virtual ICollection<SuppliersIngredients> SuppliersIngredients { get; set; }
         
         public virtual ICollection<IngredientOrders> IngredientOrdersSet { get; set; }
     }

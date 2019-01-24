@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RestSupplyDB.Models.Ingredient;
 
 namespace RestSupplyDB.Models.Supplier
 {
     [Table("SupliersIngredients")]
-    class SuppliersIngredients
+    public class SuppliersIngredients
     {
         public int Id { get; set; }
 
@@ -18,5 +19,8 @@ namespace RestSupplyDB.Models.Supplier
 
         public double Price { get; set; }
 
+        public virtual Supplier Supplier { get; set; }
+
+        public virtual Ingredients Ingredient { get; set; }
     }
 }

@@ -78,6 +78,10 @@
     <Compile Include="Migrations\201901241604568_fixed_many_to_many_supplier_ingredient_migration.Designer.cs">
       <DependentUpon>201901241604568_fixed_many_to_many_supplier_ingredient_migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901241945570_remove_custom_user_types_migration.cs" />
+    <Compile Include="Migrations\201901241945570_remove_custom_user_types_migration.Designer.cs">
+      <DependentUpon>201901241945570_remove_custom_user_types_migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppUser\AppRoleStore.cs" />
     <Compile Include="Models\AppUser\AppUserStore.cs" />
@@ -111,6 +115,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901241604568_fixed_many_to_many_supplier_ingredient_migration.resx">
       <DependentUpon>201901241604568_fixed_many_to_many_supplier_ingredient_migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901241945570_remove_custom_user_types_migration.resx">
+      <DependentUpon>201901241945570_remove_custom_user_types_migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

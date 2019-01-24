@@ -19,11 +19,7 @@ namespace RestSupplyDB
         {
             return new RestSupplyDbContext();
         }
-
-        public virtual DbSet<KitchenManager> KitchenManagerUserSet { get; set; }
-        public virtual DbSet<Admin> AdminUsersSet { get; set; }
-        public virtual DbSet<Chef> ChefUsersSet { get; set; }
-        public virtual DbSet<Waitress> WaitressUserSet { get; set; }
+        
         public virtual DbSet<Ingredients> IngredientsSet { get; set; }
         public virtual DbSet<KitchenIngredients> KitchenIngredientsSet { get; set; }
         public virtual DbSet<Kitchens> KitchensSet { get; set; }

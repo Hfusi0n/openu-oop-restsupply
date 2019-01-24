@@ -160,34 +160,32 @@ namespace RestSupplyMVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    AppUser user;
+                    AppUser user = new AppUser
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserName = model.Email,
+                        Email = model.Email
+                    };
+
                     string userRole;
 
                     switch (model.UserType)
                     {
                         case "Admin":
-                            user = new Admin();
                             userRole = "Admin";
                             break;
                         case "Chef":
-                            user = new Chef();
                             userRole = "Chef";
                             break;
                         case "KitchenManager":
-                            user = new KitchenManager();
                             userRole = "KitchenManager";
                             break;
                         case "Waitress":
-                            user = new Waitress();
                             userRole = "Waitress";
                             break;
                         default:
                             throw new NotImplementedException("Unknown user type: " + model.UserType);
                     }
-
-                    user.Id = Guid.NewGuid().ToString();
-                    user.UserName = model.Email;
-                    user.Email = model.Email;
 
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
@@ -440,7 +438,7 @@ namespace RestSupplyMVC.Controllers
                     return View("ExternalLoginFailure");
                 }   
 
-                var user = new Waitress { UserName = model.Email, Email = model.Email };
+                var user = new AppUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

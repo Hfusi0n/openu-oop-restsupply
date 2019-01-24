@@ -7,7 +7,8 @@ namespace RestSupplyDB.Models.AppUser
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    public abstract class AppUser : IdentityUser<string, AppUserLogin, AppUserRole, AppUserClaim>
+    public class AppUser :
+        IdentityUser<string, AppUserLogin, AppUserRole, AppUserClaim>
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser,string> manager)
         {
@@ -16,13 +17,5 @@ namespace RestSupplyDB.Models.AppUser
             // Add custom user claims here
             return userIdentity;
         }
-    }
-
-    public class Admin : AppUser {}
-
-    public class Waitress : AppUser {}
-
-    public class KitchenManager : AppUser {}
-
-    public class Chef : AppUser {}
+    }    
 }

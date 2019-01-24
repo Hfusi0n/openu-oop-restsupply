@@ -1,15 +1,11 @@
 ﻿@model RestSupplyMVC.ViewModels.SupplierOrderIndexViewModel
 
 @{
-    ViewBag.Title = "מנות בתפריט";
+    ViewBag.Title = "הזמנות חומרי גלם";
 }
 
 <h2>Index</h2>
 
-<p>
-    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">New Order</button>
-
-</p>
 <table class="table">
     <tr>
 
@@ -21,7 +17,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SupplierName)
+                    @Html.DisplayFor(modelItem => item.OrderDate)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.OrderId }) |
@@ -41,183 +37,4 @@
 
 </table>
 
-<div class="modal fade" id="newOrderModal">
-    <div class="modal-dialog modal-lg" style=" width: 900px !important;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a href="#" class="close" data-dismiss="modal">&times;</a>
-                <h4>הוספת הזמנה חדשה</h4>
-            </div>
-            <form id="NewOrderForm">
-                <div class="modal-body">
-                    @*Customer Details*@
-                    <h5 style="color:#112247"> הזמנת חומרי גלם</h5>
-                    <hr />
-                    <div class="form-horizontal">
-                        <input type="hidden" id="Id" />
-                        <div class="form-group">
-                            <label class="control-label col-md-2">
-                                שם ספק
-                            </label>
-                            <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.CreateSupplierOrderViewModel.AllSuppliers, new SelectList(Model.CreateSupplierOrderViewModel.AllSuppliers, "Id", "Name"), "", new { @id = "supplier", @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-2">
-                                כתובת
-                            </label>
-                            <div class="col-md-4">
-                                <input type="text" id="address" name="name" placeholder="כתובת" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-2">
-                                טלפון
-                            </label>
-                            <div class="col-md-4">
-                                <input type="text" id="phone" name="name" placeholder="טלפון" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
 
-                    @*Order Details*@
-                    <h5 style="margin-top:10px;color:#112247">Order Details</h5>
-                    <hr />
-                    <div class="form-horizontal">
-                        <input type="hidden" id="IngredientId" />
-                        <div class="form-group">
-                            <label class="control-label col-md-2">
-                                הוסף חומרי גלם להזמנה
-                            </label>
-                            <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.CreateSupplierOrderViewModel.SupplierIngredients, new SelectList(Model.CreateSupplierOrderViewModel.SupplierIngredients, "Id", "Name"), "", new { @id = "ingredientName", @class = "form-control" })
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" id="quantity" name="quantity" placeholder="Quantity" class="form-control" />
-                            </div>
-                            <label class="control-label col-md-2">
-                                Unit
-                            </label>
-                            <div class="col-md-4">
-                                <input type="text" id="unit" name="unit" placeholder="Unit" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-
-                            <div class="col-md-1 col-lg-offset-1">
-                                <a id="addToList" class="btn btn-primary">Add To List</a>
-                            </div>
-
-                        </div>
-                        <table id="detailsTable" class="table">
-                            <thead>
-                                <tr>
-                                    <th style="width:5%"></th> @*hidden IngredientId column*@
-                                    <th style="width: 25%"> חומר גלם</th>
-                                    <th style="width: 15%"> כמות</th>
-                                    <th style="width: 25%"> יחידת מידה</th>
-                                    <th style="width: 10%"></th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="reset" class="btn btn-default" data-dismiss="modal">סגירה</button>
-                    <button id="saveOrder" type="submit" class="btn btn-danger">שמירה</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@section scripts{
-    <script>
-        //Show Modal.
-        function addNewOrder() {
-            $("#newOrderModal").modal();
-            // Hiding the IngredientId column
-            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
-        }
-        //Add Multiple Order.
-        $("#addToList").click(function (e) {
-            e.preventDefault();
-
-            if ($.trim($("#ingredientName").val()) == "" || $.trim($("#quantity").val()) == "") return;
-
-            var id = $("#ingredientName option:selected").val(),
-                name = $("#ingredientName option:selected").text(),
-                quantity = $("#quantity").val(),
-                unit = $("#unit").val(),
-                detailsTableBody = $("#detailsTable tbody");
-
-            var productItem = '<tr><td>' + id + '</td><td>' + name + '</td><td>' + quantity + '</td><td>' + unit + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
-            detailsTableBody.append(productItem);
-
-            // Hiding the IngredientId column
-            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
-
-            clearItem();
-
-        });
-        //After Add A New Order In The List, Clear Clean The Form For Add More Order.
-        function clearItem() {
-            $("#name option:selected").remove();
-        }
-        // After Add A New Order In The List, If You Want, You Can Remove It.
-        $(document).on('click', 'a.deleteItem', function (e) {
-            e.preventDefault();
-            var $self = $(this);
-            if ($(this).attr('data-itemId') == "0") {
-                $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
-                    $(this).remove();
-                });
-            }
-        });
-        //After Click Save Button Pass All Data View To Controller For Save Database
-        function saveOrder(data) {
-            return $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: 'POST',
-                url: "/SupplierOrder/SaveOrder",
-                data: data,
-                success: function (result) {
-                    alert(result);
-                    location.reload();
-                },
-                error: function () {
-                    alert("Error!")
-                }
-            });
-        }
-        //Collect Multiple Order List For Pass To Controller
-        $("#saveOrder").click(function (e) {
-            e.preventDefault();
-
-            var ingredientsArr = [];
-            ingredientsArr.length = 0;
-
-            $.each($("#detailsTable tbody tr"), function () {
-                ingredientsArr.push({
-                    id: $(this).find('td:eq(0)').html()
-                });
-            });
-
-
-            var data = JSON.stringify({
-                supplierName: $("#supplier").val(),
-                supplierAddress: $("#address").val(),
-                supplierPhone: $("#phone").val(),
-                ingredients: ingredientsArr
-            });
-
-            $.when(saveOrder(data)).then(function (response) {
-                console.log(response);
-            }).fail(function (err) {
-                console.log(err);
-            });
-        });
-    </script>
-}

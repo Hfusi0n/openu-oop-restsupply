@@ -26,7 +26,7 @@ namespace RestSupplyMVC.Controllers
 
             var supplierOrderIndexVm = new SupplierOrderIndexViewModel
             {
-                CreateSupplierOrderViewModel = new CreateSupplierOrderViewModel
+                /*CreateSupplierOrderViewModel = new CreateSupplierOrderViewModel
                 {
                     AllSuppliers = dbSuppliers.Select(i => new SupplierViewModel
                     {
@@ -35,7 +35,7 @@ namespace RestSupplyMVC.Controllers
                         Address = i.Address,
                         Phone = i.Phone
                     })
-                },
+                },*/
                 SupplierOrdersList = dbSupplierOrders.Select(s => new SupplierOrderViewModel
                 {
                     SupplierId = s.SupplierId,
@@ -55,6 +55,25 @@ namespace RestSupplyMVC.Controllers
             return View(supplierOrderIndexVm);
         }
 
+        [HttpPost]
+        public PartialViewResult GetIngredientsForSelectedSupplier(int id)
+        {
+            var dbIngredients = _unitOfWork.Ingredients.GetIngredientsBySupplierId(id);
+            var vm = new SupplierOrderIndexViewModel
+            {
+                CreateSupplierOrderViewModel = new CreateSupplierOrderViewModel
+                {
+                    SupplierIngredients = dbIngredients.Select(i => new IngredientViewModel
+                    {
+                        Id = i.Id,
+                        Name = i.Name,
+                        Unit = i.Unit
+                    })
+                }
+            };
+
+            return PartialView("_orderDetails", vm);
+        }
         // GET: SupplierOrder/Details/5
         public ActionResult Details(int id)
         {

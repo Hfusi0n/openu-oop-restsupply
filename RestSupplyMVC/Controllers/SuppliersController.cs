@@ -1,10 +1,15 @@
-﻿using RestSupplyDB;
+﻿using System.Collections.Generic;
+using RestSupplyDB;
 using RestSupplyDB.Models.Supplier;
 using RestSupplyMVC.Persistence;
 using RestSupplyMVC.ViewModels;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using RestSupplyDB.Models.Ingredient;
+using RestSupplyDB.Models.Menu;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -19,7 +24,33 @@ namespace RestSupplyMVC.Controllers
         // GET: Suppliers
         public ActionResult Index()
         {
-            return View(_unitOfWork.Suppliers.GetAll());
+            var dbIngredients = _unitOfWork.Ingredients.GetAll();
+            var dbSuppliers = _unitOfWork.Suppliers.GetAll();
+
+            var supplierIndexVm = new SupplierIndexViewModel
+            {
+                CreateSupplierViewModel = new CreateSupplierViewModel
+                {
+                    AllIngredients = dbIngredients.Select(i => new IngredientViewModel
+                    {
+                        Id = i.Id,
+                        Name = i.Name,
+                        Unit = i.Unit
+                    })
+                },
+                SuppliersList = dbSuppliers.Select(s => new SupplierViewModel
+                {
+                    Id = s.Id,
+                    Address = s.Address,
+                    Name = s.Name,
+                    Phone = s.Phone,
+                    SelectedIngredients = s.SuppliersIngredients.Select(i => new IngredientViewModel
+                    {
+                        Id = i.Id
+                    })
+                })
+            };
+            return View(supplierIndexVm);
         }
 
         // GET: Suppliers/Details/5
@@ -29,20 +60,41 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Supplier supplier = _unitOfWork.Suppliers.GetById(id.Value);
+
+            var supplier = _unitOfWork.Suppliers.GetById(id.Value);
             if (supplier == null)
             {
                 return HttpNotFound();
             }
-            return View(supplier);
+
+            SupplierViewModel supplierVm = new SupplierViewModel
+            {
+                Address = supplier.Address,
+                Id = supplier.Id,
+                Name = supplier.Name,
+                Phone = supplier.Phone,
+                SelectedIngredients = supplier.SuppliersIngredients.Select(si => new IngredientViewModel
+                {
+                    Id = si.Id,
+                    Name = _unitOfWork.Ingredients.GetById(si.IngredientId).Name,
+                    Unit = _unitOfWork.Ingredients.GetById(si.IngredientId).Unit
+                })
+            };
+
+            return View(supplierVm);
         }
 
         //[Authorize]
         public ActionResult Create()
         {
-            var viewModel = new SupplierViewModel
+            var viewModel = new CreateSupplierViewModel
             {
-                IngredientList = _unitOfWork.Ingredients.GetAll()
+                AllIngredients = _unitOfWork.Ingredients.GetAll().Select(i => new IngredientViewModel
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Unit = i.Unit
+                })
             };
             return View(viewModel);
         }
@@ -111,12 +163,28 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Supplier supplier = new RestSupplyDbContext().SuppliersSet.Find(id);
+
+            var supplier = _unitOfWork.Suppliers.GetById(id.Value);
             if (supplier == null)
             {
                 return HttpNotFound();
             }
-            return View(supplier);
+
+            SupplierViewModel supplierVm = new SupplierViewModel
+            {
+                Address = supplier.Address,
+                Id = supplier.Id,
+                Name = supplier.Name,
+                Phone = supplier.Phone,
+                SelectedIngredients = supplier.SuppliersIngredients.Select(si => new IngredientViewModel
+                {
+                    Id = si.Id,
+                    Name = _unitOfWork.Ingredients.GetById(si.IngredientId).Name,
+                    Unit = _unitOfWork.Ingredients.GetById(si.IngredientId).Unit
+                })
+            };
+            
+            return View(supplierVm);
         }
 
         // POST: Suppliers/Delete/5
@@ -133,6 +201,37 @@ namespace RestSupplyMVC.Controllers
             }    
         
         return RedirectToAction("Index");
+        }
+
+        public ActionResult SaveSupplier(string supplierName, string supplierAddress, string supplierPhone,
+            IngredientViewModel[] ingredients)
+        {
+            string result = "Error! Saving supplier process Is Not Complete!";
+            if (supplierName != null && ingredients != null)
+            {
+                var supplier = new Supplier
+                {
+                    Name = supplierName,
+                    Address = supplierAddress,
+                    Phone = supplierPhone
+                };
+                foreach (var ingredientItem in ingredients)
+                {
+                    supplier.SuppliersIngredients.Add(
+                        new SuppliersIngredients
+                        {
+                            IngredientId = ingredientItem.Id,
+                        });
+                }
+
+
+                _unitOfWork.Suppliers.Add(supplier);
+                _unitOfWork.Complete();
+
+                result = "Success! Supplier is saved!";
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

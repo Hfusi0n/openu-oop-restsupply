@@ -27,7 +27,34 @@ namespace RestSupplyMVC.Controllers
         // GET: Ingredients
         public ActionResult Index()
         {
-            return View(_unitOfWork.Ingredients.GetAll());
+            var dbIngredients = _unitOfWork.Ingredients.GetAll();
+            var dbSuppliers = _unitOfWork.Suppliers.GetAll();
+
+            var ingredientIndexVm = new IngredientIndexViewModel
+            {
+                CreateIngredientViewModel = new CreateIngredientViewModel
+                {
+                    AllSuppliers = dbSuppliers.Select(i => new SupplierViewModel
+                    {
+                        Id = i.Id,
+                        Name = i.Name,
+                        Address = i.Address,
+                        Phone = i.Phone
+                    })
+                },
+                IngredientsList = dbIngredients.Select(s => new IngredientViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Unit = s.Unit,
+                    
+                    SelectedSuppliers = s.SuppliersIngredients.Select(i => new SupplierViewModel
+                    {
+                        Id = i.Id
+                    })
+                })
+            };
+            return View(ingredientIndexVm);
         }
 
         // GET: Ingredients/Details/5
@@ -43,7 +70,21 @@ namespace RestSupplyMVC.Controllers
             {
                 return HttpNotFound();
             }
-            return View(ingredients);
+
+            var ingredientVm = new IngredientViewModel
+            {
+                Id = ingredients.Id,
+                Name = ingredients.Name,
+                Unit = ingredients.Unit,
+                SelectedSuppliers = ingredients.SuppliersIngredients.Select(si => new SupplierViewModel
+                {
+                    Id = si.Id,
+                    Name = _unitOfWork.Suppliers.GetById(si.IngredientId).Name,
+                    Address = _unitOfWork.Suppliers.GetById(si.IngredientId).Address,
+                    Phone = _unitOfWork.Suppliers.GetById(si.IngredientId).Phone
+                })
+            };
+            return View(ingredientVm);
         }
 
         // GET: Ingredients/Create
@@ -130,6 +171,36 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork.Ingredients.Remove(ingredients);
             _unitOfWork.Complete();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult SaveIngredient(string ingredientName, string unit, SupplierViewModel[] suppliers)
+        {
+            string result = "Error! Saving ingredient Process Is Not Complete!";
+            if (ingredientName != null && unit != null)
+            {
+                var ingredient = new Ingredients
+                {
+                    Name = ingredientName,
+                    Unit = unit
+                };
+                foreach (var supplier in suppliers)
+                {
+                    ingredient.SuppliersIngredients.Add(
+                        new SuppliersIngredients
+                        {
+                            SupplierId = supplier.Id,
+                        });
+                }
+
+
+                _unitOfWork.Ingredients.Add(ingredient);
+                _unitOfWork.Complete();
+
+
+                result = "Success! Ingredient is saved!";
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

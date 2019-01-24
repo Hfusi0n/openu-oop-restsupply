@@ -203,7 +203,7 @@ namespace RestSupplyMVC.Controllers
         }
         public ActionResult SaveOrder(string menuItemName, MenuItemIngredientViewModel[] ingredients)
         {
-            string result = "Error! Order Is Not Complete!";
+            string result = "Error! Saving Menu Item Process Is Not Complete!";
             if (menuItemName != null && ingredients != null)
             {
                 var menuItem = new MenuItems
@@ -223,10 +223,8 @@ namespace RestSupplyMVC.Controllers
 
                 _unitOfWork.MenuItems.Add(menuItem);
                 _unitOfWork.Complete();
+                result = "Success! Menu Item is saved!";
             }
-
-            result = "Success! Order Is Complete!";
-            
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         protected override void Dispose(bool disposing)

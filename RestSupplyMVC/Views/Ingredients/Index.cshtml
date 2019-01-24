@@ -1,39 +1,203 @@
-﻿@model IEnumerable<RestSupplyDB.Models.Ingredient.Ingredients>
+﻿@model RestSupplyMVC.ViewModels.IngredientIndexViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "חומרי גלם";
 }
 
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">New Order</button>
+
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Unit)
-        </th>
+
         <th></th>
     </tr>
+    @if (Model.IngredientsList.Count() != 0)
+    {
+        foreach (var item in Model.IngredientsList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <div class="panel-body">
+            <h3 style="color:red;">אין חומרי גלם!</h3>
+        </div>
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Unit)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
 
 </table>
+
+<div class="modal fade" id="newOrderModal">
+    <div class="modal-dialog modal-lg" style=" width: 900px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>הוספת חומר גלם חדש</h4>
+            </div>
+            <form id="NewOrderForm">
+                <div class="modal-body">
+                    @*Customer Details*@
+                    <h5 style="color:#112247"> חומר גלם חדש</h5>
+                    <hr />
+                    <div class="form-horizontal">
+                        <input type="hidden" id="Id" />
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                שם חומר גלם
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="ingredient" name="ingredient" placeholder="שם חומר גלם" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                יחידת מידה
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="unit" name="unit" placeholder="יחידת מידה" class="form-control" />
+                            </div>
+                        </div
+                    </div>
+
+                    @*Order Details*@
+                    <h5 style="margin-top:10px;color:#112247">Order Details</h5>
+                    <hr />
+                    <div class="form-horizontal">
+                        <input type="hidden" id="IngredientId" />
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                הוסף ספק
+                            </label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(model => model.CreateIngredientViewModel.AllSuppliers, new SelectList(Model.CreateIngredientViewModel.AllSuppliers, "Id", "Name"), "", new { @id = "name", @class = "form-control" })
+                            </div>
+                        </div>
+                        
+                        @*
+                        הוספת השדות כתובת וטלפון הספק
+                        *@
+                        <div class="form-group">
+                            <div class="col-md-1 col-lg-offset-1">
+                                <a id="addToList" class="btn btn-primary">Add To List</a>
+                            </div>
+                        </div>
+                        <table id="detailsTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%"></th> @*hidden SupplierId column*@
+                                    <th style="width: 85%"> שם ספק</th>
+                                    <th style="width: 10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">סגירה</button>
+                    <button id="saveSupplier" type="submit" class="btn btn-danger">שמירה</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        //Show Modal.
+        function addNewOrder() {
+            $("#newOrderModal").modal();
+            // Hiding the SupplierId column
+            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
+        }
+        //Add Multiple Order.
+        $("#addToList").click(function (e) {
+            e.preventDefault();
+
+            if ($.trim($("#name").val()) == "") return;
+
+            var id = $("#name option:selected").val(),
+                name = $("#name option:selected").text(),
+                detailsTableBody = $("#detailsTable tbody");
+
+            var productItem = '<tr><td>'  + id + '</td><td>' + name  + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            detailsTableBody.append(productItem);
+
+            // Hiding the SupplierId column
+            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
+
+            clearItem();
+
+        });
+        //After Add A New Order In The List, Clear Clean The Form For Add More Order.
+        function clearItem() {
+            $("#name option:selected").remove();
+        }
+        // After Add A New Order In The List, If You Want, You Can Remove It.
+        $(document).on('click', 'a.deleteItem', function (e) {
+            e.preventDefault();
+            var $self = $(this);
+            if ($(this).attr('data-itemId') == "0") {
+                $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+                    $(this).remove();
+                });
+            }
+        });
+        //After Click Save Button Pass All Data View To Controller For Save Database
+        function saveSupplier(data) {
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Ingredients/SaveIngredient",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("Error!")
+                }
+            });
+        }
+        //Collect Multiple Order List For Pass To Controller
+        $("#saveSupplier").click(function (e) {
+            e.preventDefault();
+
+            var ingredientsArr = [];
+            ingredientsArr.length = 0;
+
+            $.each($("#detailsTable tbody tr"), function () {
+                ingredientsArr.push({
+                    id: $(this).find('td:eq(0)').html()
+                });
+            });
+
+
+            var data = JSON.stringify({
+                ingredientName: $("#ingredient").val(),
+                unit: $("#unit").val(),
+                ingredients: ingredientsArr
+            });
+
+            $.when(saveIngredient(data)).then(function (response) {
+                console.log(response);
+            }).fail(function (err) {
+                console.log(err);
+            });
+        });
+    </script>
+}

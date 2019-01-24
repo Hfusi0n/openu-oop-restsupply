@@ -9,6 +9,7 @@ namespace RestSupplyMVC.ViewModels
 {
     public class SupplierViewModel
     {
+        public int Id { get; set; }
         [Display(Name = "שם ספק")]
         public string Name { get; set; }
         [Display(Name = "כתובת")]
@@ -16,12 +17,17 @@ namespace RestSupplyMVC.ViewModels
         [Display(Name = "טלפון")]
         public string Phone { get; set; }
         [Display(Name = "רשימת חומרי גלם")]
-        public IEnumerable<Ingredients> IngredientList { get; set; }
-        public IEnumerable<int> SelectedIngredientIds { get; set; }
+        public IEnumerable<IngredientViewModel>  SelectedIngredients{ get; set; }
+    }
 
-        // the ingredient chosen from the list
-        [Display(Name = "חומר גלם")]
-        public string Ingredient { get; set; }
-        
+    public class CreateSupplierViewModel : SupplierViewModel
+    {
+        public IEnumerable<IngredientViewModel> AllIngredients { get; set; }
+    }
+
+    public class SupplierIndexViewModel
+    {
+        public IEnumerable<SupplierViewModel> SuppliersList { get; set; }
+        public CreateSupplierViewModel CreateSupplierViewModel { get; set; }
     }
 }

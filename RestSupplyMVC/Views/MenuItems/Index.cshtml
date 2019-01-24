@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">New Order</button>
+    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">מנה חדשה</button>
 
 </p>
 <table class="table">
@@ -129,7 +129,7 @@
             $("#newOrderModal").modal();
 
             // Hiding the IngredientId column
-            $('td:nth-child(1),th:nth-child(1)').hide();
+            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
         }
         //Add Multiple Order.
         $("#addToList").click(function (e) {
@@ -147,7 +147,7 @@
             detailsTableBody.append(productItem);
 
             // Hiding the IngredientId column
-            $('td:nth-child(1),th:nth-child(1)').hide();
+            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
 
             
             clearItem();

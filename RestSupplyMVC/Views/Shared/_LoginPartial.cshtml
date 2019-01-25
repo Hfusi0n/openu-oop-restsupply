@@ -1,22 +1,50 @@
 ﻿@using Microsoft.AspNet.Identity
+
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "nav navbar-nav navbar-right" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        <li class="menu">
+            <a href="index.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Menu <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="@Url.Action("Index", "Suppliers")">ספקים</a></li>
+                <li><a href="@Url.Action("Index", "Ingredients")">חומרי גלם</a></li>
+                <li><a href="@Url.Action("Index", "MenuItems")">תפריט</a></li>
+                <li><a href="@Url.Action("Index", "SupplierOrder")">הזמנות ספקים</a></li>
+            </ul>
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+
+        <li>
+            <a href="@Url.Action("Index", "Manage")">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                @User.Identity.GetUserName()
+            </a>
+        </li>
+        <li>
+            <a href="javascript:document.getElementById('logoutForm').submit()">
+                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                Log off
+            </a>
+        </li>
     }
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li>
+            <a href="@Url.Action("Register", "Account")" id="registerLink">                
+                Not around here? Sign up
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Login", "Account")" id="loginLink">
+                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+                Log in
+            </a>
+        </li>
     </ul>
 }

@@ -78,7 +78,7 @@ namespace RestSupplyMVC.Controllers
                 // All ingredients that supplier supplies
                 AllSupplierIngredientsList = dbSupplier.SuppliersIngredients.Select(si => new IngredientViewModel
                 {
-                    IngredientId = si.Id,
+                    IngredientId = si.IngredientId,
                     Name = _unitOfWork.Ingredients.GetById(si.IngredientId).Name,
                     Unit = _unitOfWork.Ingredients.GetById(si.IngredientId).Unit
                 })                
@@ -182,7 +182,7 @@ namespace RestSupplyMVC.Controllers
                 Phone = supplier.Phone,
                 AllSupplierIngredientsList = supplier.SuppliersIngredients.Select(si => new IngredientViewModel
                 {
-                    IngredientId = si.Id,
+                    IngredientId = si.IngredientId,
                     Name = _unitOfWork.Ingredients.GetById(si.IngredientId).Name,
                     Unit = _unitOfWork.Ingredients.GetById(si.IngredientId).Unit
                 })

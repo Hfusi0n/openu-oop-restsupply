@@ -96,13 +96,12 @@
                     <h5 style="margin-top:10px;color:#112247">Order Details</h5>
                     <hr />
                     <div class="form-horizontal">
-                        <input type="hidden" id="IngredientId" />
                         <div class="form-group">
                             <label class="control-label col-md-2">
                                 הוסף חומר גלם
                             </label>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.AllSupplierIngredientsList, new SelectList(Model.AllSupplierIngredientsList, "IngredientId", "Name"), "", new { @id = "ingredient", @class = "form-control"  })
+                                @Html.DropDownListFor(model => model.AllSupplierIngredientsList, new SelectList(Model.AllSupplierIngredientsList, "IngredientId", "Name"), "", new {@id = "ingredient", @class = "form-control"})
                             </div>
                             <label class="control-label col-md-2">
                                 כמות
@@ -148,7 +147,23 @@
 </div>
 @section scripts{
     <script>
-
+        // Get unit for selected ingredient
+        //function getUnit(val) {
+        $("#ingredient").change(function () {
+            return $.ajax({
+                url: "/Ingredients/GetUnitByIngredientId",
+                data: { 'id': $("#ingredient option:selected").val() },
+                type: 'GET',
+                dataType: "json",
+                cache: false,
+                success: function (response) {
+                    $("#unit").val(response);
+                },
+                error: function () {
+                    alert("Error finding unit for ingredient!");
+                }
+            });
+        });
         
         //Show Modal.
         function addNewOrder() {
@@ -208,24 +223,8 @@
                     alert("Error!");
                 }
             });
-        }
-        // Get unit for selected ingredient
-        //function getUnit(val) {
-        $("#ingredient").change(function () {
-            return $.ajax({
-                url: "/Ingredients/GetUnitByIngredientId",
-                data: { 'id': $("#ingredient option:selected").val() },
-                type: 'GET',
-                dataType: "json",
-                cache: false,
-                success: function (response) {
-                    $("#unit").val(response);
-                },
-                error: function () {
-                    alert("Error finding unit for ingredient!");
-                }
-            });
-        });
+        };
+
         //Collect Multiple Order List For Pass To Controller
         $("#saveSupplierOrder").click(function (e) {
             e.preventDefault();
@@ -235,15 +234,15 @@
 
             $.each($("#detailsTable tbody tr"), function () {
                 ingredientsArr.push({
-                    id: $(this).find('td:eq(0)').html()
+                    ingredientId: $(this).find('td:eq(0)').html(),
+                    amount: $(this).find('td:eq(2)').html(),
+
                 });
             });
 
 
             var data = JSON.stringify({
-                supplierName: $("#supplier").val(),
-                supplierAddress: $("#address").val(),
-                supplierPhone: $("#phone").val(),
+                supplierId: $("#SupplierId").val(),
                 ingredients: ingredientsArr
             });
 

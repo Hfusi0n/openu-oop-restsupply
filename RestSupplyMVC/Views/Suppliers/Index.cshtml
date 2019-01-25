@@ -91,7 +91,7 @@
                                 הוסף חומר גלם
                             </label>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.CreateSupplierViewModel.AllIngredients, new SelectList(Model.CreateSupplierViewModel.AllIngredients, "Id", "Name"), "", new { @id = "name", @class = "form-control" })
+                                @Html.DropDownListFor(model => model.CreateSupplierViewModel.AllIngredients, new SelectList(Model.CreateSupplierViewModel.AllIngredients, "IngredientId", "Name"), "", new { @id = "name", @class = "form-control" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -135,11 +135,11 @@
 
             if ($.trim($("#name").val()) == "") return;
 
-            var id = $("#name option:selected").val(),
+            var ingredientId = $("#name option:selected").val(),
                 name = $("#name option:selected").text(),
                 detailsTableBody = $("#detailsTable tbody");
 
-            var productItem = '<tr><td>'  + id + '</td><td>' + name  + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            var productItem = '<tr><td>' + ingredientId + '</td><td>' + name + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
             detailsTableBody.append(productItem);
 
             // Hiding the IngredientId column
@@ -175,7 +175,7 @@
                     location.reload();
                 },
                 error: function () {
-                    alert("Error!")
+                    alert("Error!");
                 }
             });
         }
@@ -188,7 +188,7 @@
 
             $.each($("#detailsTable tbody tr"), function () {
                 ingredientsArr.push({
-                    id: $(this).find('td:eq(0)').html()
+                    ingredientId: $(this).find('td:eq(0)').html()
                 });
             });
 

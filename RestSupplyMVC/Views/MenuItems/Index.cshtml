@@ -75,7 +75,7 @@
                                 Product Name
                             </label>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.CreateMenuItemViewModel.AllIngredients, new SelectList(Model.CreateMenuItemViewModel.AllIngredients, "Id", "Name"), "", new { @id = "ingredientName" , @class = "form-control" })
+                                @Html.DropDownListFor(model => model.CreateMenuItemViewModel.AllIngredients, new SelectList(Model.CreateMenuItemViewModel.AllIngredients, "IngredientId", "Name"), "", new { @id = "ingredientName" , @class = "form-control" })
                             </div>
                             <label class="control-label col-md-2">
                                 Quantity
@@ -93,7 +93,7 @@
                         <div class="form-group">
                             
                                 <div class="col-md-1 col-lg-offset-1">
-                                    <a id="addToList" class="btn btn-primary">Add To List</a>
+                                    <a id="addToList" class="btn btn-primary">הוסף פריט</a>
                                 </div>
                             
                         </div>
@@ -194,7 +194,7 @@
 
             $.each($("#detailsTable tbody tr"), function () {
                 ingredientsArr.push({
-                    id: $(this).find('td:eq(0)').html(),
+                    ingredientId: $(this).find('td:eq(0)').html(),
                     quantity: $(this).find('td:eq(2)').html()
                 });
             });

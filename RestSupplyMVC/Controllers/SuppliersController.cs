@@ -33,7 +33,7 @@ namespace RestSupplyMVC.Controllers
                 {
                     AllIngredients = dbIngredients.Select(i => new IngredientViewModel
                     {
-                        Id = i.Id,
+                        IngredientId = i.Id,
                         Name = i.Name,
                         Unit = i.Unit
                     })
@@ -44,9 +44,9 @@ namespace RestSupplyMVC.Controllers
                     Address = s.Address,
                     Name = s.Name,
                     Phone = s.Phone,
-                    SelectedIngredients = s.SuppliersIngredients.Select(i => new IngredientViewModel
+                    AllSupplierIngredientsList = s.SuppliersIngredients.Select(i => new IngredientViewModel
                     {
-                        Id = i.Id
+                        IngredientId = i.Id
                     })
                 })
             };
@@ -61,27 +61,31 @@ namespace RestSupplyMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var supplier = _unitOfWork.Suppliers.GetById(id.Value);
-            if (supplier == null)
+            var dbSupplier = _unitOfWork.Suppliers.GetById(id.Value);
+            if (dbSupplier == null)
             {
                 return HttpNotFound();
             }
 
-            SupplierViewModel supplierVm = new SupplierViewModel
+            // Get all supplier details and orders
+            var supplierDetailsVm = new SupplierOrderViewModel
             {
-                Address = supplier.Address,
-                Id = supplier.Id,
-                Name = supplier.Name,
-                Phone = supplier.Phone,
-                SelectedIngredients = supplier.SuppliersIngredients.Select(si => new IngredientViewModel
+                Address = dbSupplier.Address,
+                Id = dbSupplier.Id,
+                Name = dbSupplier.Name,
+                Phone = dbSupplier.Phone,
+
+                // All ingredients that supplier supplies
+                AllSupplierIngredientsList = dbSupplier.SuppliersIngredients.Select(si => new IngredientViewModel
                 {
-                    Id = si.Id,
+                    IngredientId = si.Id,
                     Name = _unitOfWork.Ingredients.GetById(si.IngredientId).Name,
                     Unit = _unitOfWork.Ingredients.GetById(si.IngredientId).Unit
-                })
+                })                
             };
 
-            return View(supplierVm);
+
+            return View(supplierDetailsVm);
         }
 
         //[Authorize]
@@ -91,7 +95,7 @@ namespace RestSupplyMVC.Controllers
             {
                 AllIngredients = _unitOfWork.Ingredients.GetAll().Select(i => new IngredientViewModel
                 {
-                    Id = i.Id,
+                    IngredientId = i.Id,
                     Name = i.Name,
                     Unit = i.Unit
                 })
@@ -176,9 +180,9 @@ namespace RestSupplyMVC.Controllers
                 Id = supplier.Id,
                 Name = supplier.Name,
                 Phone = supplier.Phone,
-                SelectedIngredients = supplier.SuppliersIngredients.Select(si => new IngredientViewModel
+                AllSupplierIngredientsList = supplier.SuppliersIngredients.Select(si => new IngredientViewModel
                 {
-                    Id = si.Id,
+                    IngredientId = si.Id,
                     Name = _unitOfWork.Ingredients.GetById(si.IngredientId).Name,
                     Unit = _unitOfWork.Ingredients.GetById(si.IngredientId).Unit
                 })
@@ -220,7 +224,7 @@ namespace RestSupplyMVC.Controllers
                     supplier.SuppliersIngredients.Add(
                         new SuppliersIngredients
                         {
-                            IngredientId = ingredientItem.Id,
+                            IngredientId = ingredientItem.IngredientId
                         });
                 }
 

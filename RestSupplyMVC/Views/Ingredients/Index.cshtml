@@ -24,9 +24,9 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IngredientId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IngredientId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IngredientId })
                 </td>
             </tr>
         }
@@ -109,7 +109,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-default" data-dismiss="modal">סגירה</button>
-                    <button id="saveSupplier" type="submit" class="btn btn-danger">שמירה</button>
+                    <button id="saveIngredient" type="submit" class="btn btn-danger">שמירה</button>
                 </div>
             </form>
         </div>
@@ -133,7 +133,7 @@
                 name = $("#name option:selected").text(),
                 detailsTableBody = $("#detailsTable tbody");
 
-            var productItem = '<tr><td>'  + id + '</td><td>' + name  + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            var productItem = '<tr><td>' + id + '</td><td>' + name + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
             detailsTableBody.append(productItem);
 
             // Hiding the SupplierId column
@@ -157,7 +157,7 @@
             }
         });
         //After Click Save Button Pass All Data View To Controller For Save Database
-        function saveSupplier(data) {
+        function saveIngredient(data) {
             return $.ajax({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -169,12 +169,12 @@
                     location.reload();
                 },
                 error: function () {
-                    alert("Error!")
+                    alert("Error!");
                 }
             });
         }
         //Collect Multiple Order List For Pass To Controller
-        $("#saveSupplier").click(function (e) {
+        $("#saveIngredient").click(function (e) {
             e.preventDefault();
 
             var ingredientsArr = [];
@@ -190,7 +190,7 @@
             var data = JSON.stringify({
                 ingredientName: $("#ingredient").val(),
                 unit: $("#unit").val(),
-                ingredients: ingredientsArr
+                suppliers: ingredientsArr
             });
 
             $.when(saveIngredient(data)).then(function (response) {

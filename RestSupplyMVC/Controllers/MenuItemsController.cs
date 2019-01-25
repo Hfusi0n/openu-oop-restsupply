@@ -35,7 +35,7 @@ namespace RestSupplyMVC.Controllers
             {
                 AllIngredients = dbIngredients.Select(i => new IngredientViewModel
                 {
-                    Id = i.Id,
+                    IngredientId = i.Id,
                     Name = i.Name,
                     Unit = i.Unit
                 })
@@ -50,7 +50,7 @@ namespace RestSupplyMVC.Controllers
                     Name = dbMenuItem.Name,
                     MenuItemIngredients = dbMenuItem.MenuIngredientsSet.Select(mi => new MenuItemIngredientViewModel
                     {
-                        Id = mi.IngredientId,
+                        IngredientId = mi.IngredientId,
                         Name = _unitOfWork.Ingredients.GetById(mi.IngredientId).Name,
                         Quantity = mi.Quantity,
                         Unit = _unitOfWork.Ingredients.GetById(mi.IngredientId).Unit
@@ -82,7 +82,7 @@ namespace RestSupplyMVC.Controllers
                 Name = dbMenuItem.Name,
                 MenuItemIngredients = dbMenuItem.MenuIngredientsSet.Select(mi => new MenuItemIngredientViewModel
                 {
-                    Id = mi.IngredientId,
+                    IngredientId = mi.IngredientId,
                     Name = _unitOfWork.Ingredients.GetById(mi.IngredientId).Name,
                     Quantity = mi.Quantity,
                     Unit = _unitOfWork.Ingredients.GetById(mi.IngredientId).Unit
@@ -105,7 +105,7 @@ namespace RestSupplyMVC.Controllers
                 menuItemIngredientsVm.Add(new MenuItemIngredientViewModel
                 {
                     Name = ingredient.Name,
-                    Id = ingredient.Id,
+                    IngredientId = ingredient.Id,
                     Unit = ingredient.Unit
                 });
             }
@@ -132,7 +132,7 @@ namespace RestSupplyMVC.Controllers
                     MenuIngredientsSet = (ICollection<MenuItemIngredients>) vm.MenuItemIngredients.Select(m =>
                         new MenuItemIngredients
                         {
-                            IngredientId = m.Id,
+                            IngredientId = m.IngredientId,
                             Quantity = m.Quantity,
                         })
 
@@ -215,7 +215,7 @@ namespace RestSupplyMVC.Controllers
                     menuItem.MenuIngredientsSet.Add(
                         new MenuItemIngredients
                         {
-                            IngredientId = ingredientItem.Id,
+                            IngredientId = ingredientItem.IngredientId,
                             Quantity = ingredientItem.Quantity
                         });
 

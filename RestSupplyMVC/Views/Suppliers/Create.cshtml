@@ -41,7 +41,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Id, htmlAttributes: new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.ListBoxFor(model => model.SelectedIngredients, new MultiSelectList(Model.SelectedIngredients, "Id", "Name"), new {style="display:block;"})
+                @Html.ListBoxFor(model => model.AllSupplierIngredientsList, new MultiSelectList(Model.AllSupplierIngredientsList, "IngredientId", "Name"), new {style="display:block;"})
 
                 @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger" })
             </div>

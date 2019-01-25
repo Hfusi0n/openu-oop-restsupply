@@ -31,7 +31,7 @@
 
                                 </tr>
                                         
-                                @foreach (var ingredient in Model.SelectedSuppliers)
+                                @foreach (var ingredient in Model.AllIngredientSuppliersList)
                                 {
                                     <tr>
                                         <td>@ingredient.Name</td>
@@ -52,6 +52,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IngredientId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

@@ -44,11 +44,11 @@ namespace RestSupplyMVC.Controllers
                 },
                 IngredientsList = dbIngredients.Select(s => new IngredientViewModel
                 {
-                    Id = s.Id,
+                    IngredientId = s.Id,
                     Name = s.Name,
                     Unit = s.Unit,
                     
-                    SelectedSuppliers = s.SuppliersIngredients.Select(i => new SupplierViewModel
+                    AllIngredientSuppliersList = s.SuppliersIngredients.Select(i => new SupplierViewModel
                     {
                         Id = i.Id
                     })
@@ -73,10 +73,10 @@ namespace RestSupplyMVC.Controllers
 
             var ingredientVm = new IngredientViewModel
             {
-                Id = ingredients.Id,
+                IngredientId = ingredients.Id,
                 Name = ingredients.Name,
                 Unit = ingredients.Unit,
-                SelectedSuppliers = ingredients.SuppliersIngredients.Select(si => new SupplierViewModel
+                AllIngredientSuppliersList = ingredients.SuppliersIngredients.Select(si => new SupplierViewModel
                 {
                     Id = si.Id,
                     Name = _unitOfWork.Suppliers.GetById(si.IngredientId).Name,

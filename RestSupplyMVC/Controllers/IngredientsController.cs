@@ -172,6 +172,12 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork.Complete();
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public ActionResult GetUnitByIngredientId(int id)
+        {
+            var response = _unitOfWork.Ingredients.GetById(id).Unit;
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult SaveIngredient(string ingredientName, string unit, SupplierViewModel[] suppliers)
         {

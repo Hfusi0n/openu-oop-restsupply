@@ -102,7 +102,7 @@
                                 הוסף חומר גלם
                             </label>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.AllSupplierIngredientsList, new SelectList(Model.AllSupplierIngredientsList, "IngredientId", "Name"), "", new { @id = "ingredient", @class = "form-control" , @onselect = "event()" })
+                                @Html.DropDownListFor(model => model.AllSupplierIngredientsList, new SelectList(Model.AllSupplierIngredientsList, "IngredientId", "Name"), "", new { @id = "ingredient", @class = "form-control"  })
                             </div>
                             <label class="control-label col-md-2">
                                 כמות
@@ -114,7 +114,7 @@
                                 Unit
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="unit" name="unit" placeholder="Unit" class="form-control" />
+                                <input type="text" id="unit" name="unit" placeholder="Unit" class="form-control" disabled = "disabled"  />
                             </div>
                         </div>
                         <div class="form-group">
@@ -148,6 +148,8 @@
 </div>
 @section scripts{
     <script>
+
+        
         //Show Modal.
         function addNewOrder() {
             $("#newOrderModal").modal();
@@ -203,10 +205,27 @@
                     location.reload();
                 },
                 error: function () {
-                    alert("Error!")
+                    alert("Error!");
                 }
             });
         }
+        // Get unit for selected ingredient
+        //function getUnit(val) {
+        $("#ingredient").change(function () {
+            return $.ajax({
+                url: "/Ingredients/GetUnitByIngredientId",
+                data: { 'id': $("#ingredient option:selected").val() },
+                type: 'GET',
+                dataType: "json",
+                cache: false,
+                success: function (response) {
+                    $("#unit").val(response);
+                },
+                error: function () {
+                    alert("Error finding unit for ingredient!");
+                }
+            });
+        });
         //Collect Multiple Order List For Pass To Controller
         $("#saveSupplierOrder").click(function (e) {
             e.preventDefault();

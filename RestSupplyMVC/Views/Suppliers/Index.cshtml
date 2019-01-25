@@ -93,6 +93,12 @@
                             <div class="col-md-4">
                                 @Html.DropDownListFor(model => model.CreateSupplierViewModel.AllIngredients, new SelectList(Model.CreateSupplierViewModel.AllIngredients, "IngredientId", "Name"), "", new { @id = "name", @class = "form-control" })
                             </div>
+                            <label class="control-label col-md-2">
+                                Unit
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="unit" name="unit" placeholder="Unit" class="form-control" disabled="disabled" />
+                            </div>
                         </div>
                         <div class="form-group">
 
@@ -105,7 +111,9 @@
                             <thead>
                             <tr>
                                 <th style="width:5%"></th> @*hidden IngredientId column*@
-                                <th style="width: 85%"> חומר גלם</th>
+                                <th style="width: 45%"> חומר גלם</th>
+                                <th style="width: 40%"> יחידת מידה</th>
+
                                 <th style="width: 10%"></th>
                             </tr>
                             </thead>
@@ -123,6 +131,23 @@
 </div>
 @section scripts{
     <script>
+        // Get unit for selected ingredient
+        $("#name").change(function () {
+            return $.ajax({
+                url: "/Ingredients/GetUnitByIngredientId",
+                data: { 'id': $("#name option:selected").val() },
+                type: 'GET',
+                dataType: "json",
+                cache: false,
+                success: function (response) {
+                    $("#unit").val(response);
+                },
+                error: function () {
+                    alert("Error finding unit for ingredient!");
+                }
+            });
+        });
+
         //Show Modal.
         function addNewOrder() {
             $("#newOrderModal").modal();
@@ -137,9 +162,10 @@
 
             var ingredientId = $("#name option:selected").val(),
                 name = $("#name option:selected").text(),
+                unit = $("#unit").val(),
                 detailsTableBody = $("#detailsTable tbody");
 
-            var productItem = '<tr><td>' + ingredientId + '</td><td>' + name + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            var productItem = '<tr><td>' + ingredientId + '</td><td>' + name + '</td><td>' + unit + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
             detailsTableBody.append(productItem);
 
             // Hiding the IngredientId column

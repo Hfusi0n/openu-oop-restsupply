@@ -22,62 +22,51 @@ namespace RestSupplyMVC.Controllers
         public ActionResult Index()
         {
             var dbSupplierOrders = _unitOfWork.SupplierOrders.GetAll();
-            var dbSuppliers = _unitOfWork.Suppliers.GetAll();
 
-            var supplierOrderIndexVm = new SupplierOrderIndexViewModel
+            var supplierOrderIndexVm = dbSupplierOrders.Select(s => new SupplierOrderViewModel
             {
-                /*CreateSupplierOrderViewModel = new CreateSupplierOrderViewModel
+                Id = s.SupplierId,
+                Name = _unitOfWork.Suppliers.GetById(s.SupplierId).Name,
+                Phone = _unitOfWork.Suppliers.GetById(s.SupplierId).Phone,
+                Address = _unitOfWork.Suppliers.GetById(s.SupplierId).Address,
+                SupplierOrderIngredientsList = s.IngredientListOrdersSet.Select(i => new SupplierOrderIngredientsViewModel
                 {
-                    AllSuppliers = dbSuppliers.Select(i => new SupplierViewModel
-                    {
-                        Id = i.Id,
-                        Name = i.Name,
-                        Address = i.Address,
-                        Phone = i.Phone
-                    })
-                },*/
-                SupplierOrdersList = dbSupplierOrders.Select(s => new SupplierOrderViewModel
-                {
-                    SupplierId = s.SupplierId,
-                    SupplierName = _unitOfWork.Suppliers.GetById(s.SupplierId).Name,
-                    SupplierPhone = _unitOfWork.Suppliers.GetById(s.SupplierId).Phone,
-                    SupplierAddress = _unitOfWork.Suppliers.GetById(s.SupplierId).Address,
-                    OrderIngredientsList = s.IngredientListOrdersSet.Select(i => new SupplierOrderIngredientsViewModel
-                    {
-                        IngredientId = i.IngredientId,
-                        IngredientName = _unitOfWork.Ingredients.GetById(s.SupplierId).Name,
-                        Unit = _unitOfWork.Ingredients.GetById(s.SupplierId).Unit,
-                        Amount = i.MoneyAmount,
-                        OrderId = i.OrderId
-                    })
+                    IngredientId = i.IngredientId,
+                    Name = _unitOfWork.Ingredients.GetById(s.SupplierId).Name,
+                    Unit = _unitOfWork.Ingredients.GetById(s.SupplierId).Unit,
+                    Amount = i.MoneyAmount,
+                    OrderId = i.OrderId
                 })
-            };
+            });
+        
             return View(supplierOrderIndexVm);
         }
 
-        [HttpPost]
-        public PartialViewResult GetIngredientsForSelectedSupplier(int id)
-        {
-            var dbIngredients = _unitOfWork.Ingredients.GetIngredientsBySupplierId(id);
-            var vm = new SupplierOrderIndexViewModel
-            {
-                CreateSupplierOrderViewModel = new CreateSupplierOrderViewModel
-                {
-                    SupplierIngredients = dbIngredients.Select(i => new IngredientViewModel
-                    {
-                        Id = i.Id,
-                        Name = i.Name,
-                        Unit = i.Unit
-                    })
-                }
-            };
-
-            return PartialView("_orderDetails", vm);
-        }
         // GET: SupplierOrder/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var dbSupplierOrder = _unitOfWork.SupplierOrders.GetById(id);
+            var supplierOrderVm = new SupplierOrderViewModel
+            {
+                OrderDate = dbSupplierOrder.Date,
+                OrderId = dbSupplierOrder.Id,
+                SupplierOrderIngredientsList = dbSupplierOrder.IngredientListOrdersSet.Select(i =>
+                    new SupplierOrderIngredientsViewModel
+                    {
+                        Amount = i.MoneyAmount,
+                        IngredientId = i.IngredientId,
+                        OrderId = i.OrderId,
+                        Name = _unitOfWork.Ingredients.GetById(i.IngredientId).Name,
+                        Unit = _unitOfWork.Ingredients.GetById(i.IngredientId).Unit,
+                        OrderIngredientId = i.Id
+                    }),
+                Id = dbSupplierOrder.Id,
+                Address = _unitOfWork.Suppliers.GetById(dbSupplierOrder.SupplierId).Address,
+                Name = _unitOfWork.Suppliers.GetById(dbSupplierOrder.SupplierId).Name,
+                Phone = _unitOfWork.Suppliers.GetById(dbSupplierOrder.SupplierId).Phone
+                
+            };
+        return View();
         }
 
         // GET: SupplierOrder/Create
@@ -164,7 +153,6 @@ namespace RestSupplyMVC.Controllers
                             MoneyAmount = ingredientItem.Amount
                         });
                 }
-
 
                 _unitOfWork.SupplierOrders.Add(supplierOrder);
                 _unitOfWork.Complete();

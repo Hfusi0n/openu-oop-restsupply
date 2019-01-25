@@ -1,11 +1,14 @@
-﻿@model RestSupplyMVC.ViewModels.SupplierViewModel
+﻿@model RestSupplyMVC.ViewModels.SupplierOrderViewModel
 
 @{
     ViewBag.Title = "פרטי ספק";
 }
 
 <h2>פרטי ספק</h2>
+<p>
+    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">הזמנה חדשה</button>
 
+</p>
 <div>
     <hr />
     <dl class="dl-horizontal">
@@ -30,7 +33,7 @@
                                     <th>יחידת מידה</th>
                                 </tr>
                                         
-                                @foreach (var ingredient in Model.SelectedIngredients)
+                                @foreach (var ingredient in Model.AllSupplierIngredientsList)
                                 {
                                     <tr>
                                         <td>@ingredient.Name</td>
@@ -52,3 +55,184 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+
+<div class="modal fade" id="newOrderModal">
+    <div class="modal-dialog modal-lg" style=" width: 900px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>הוספת ספק חדש</h4>
+            </div>
+            <form id="NewOrderForm">
+                <div class="modal-body">
+                    @*Customer Details*@
+                    <h5 style="color:#112247"> הזמנה עבור ספק</h5>
+                    <hr />
+                    <div class="form-horizontal">
+
+                        @Html.HiddenFor(model => model.Id, new {id ="SupplierId"})
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" , disabled = "disabled" , @Value = Model.Name})
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", disabled = "disabled", @Value = Model.Address })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", disabled = "disabled", @Value = Model.Phone })
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Order Details*@
+                    <h5 style="margin-top:10px;color:#112247">Order Details</h5>
+                    <hr />
+                    <div class="form-horizontal">
+                        <input type="hidden" id="IngredientId" />
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                הוסף חומר גלם
+                            </label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(model => model.AllSupplierIngredientsList, new SelectList(Model.AllSupplierIngredientsList, "IngredientId", "Name"), "", new { @id = "ingredient", @class = "form-control" , @onselect = "event()" })
+                            </div>
+                            <label class="control-label col-md-2">
+                                כמות
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="amount" name="amount" placeholder="כמות" class="form-control" />
+                            </div>
+                            <label class="control-label col-md-2">
+                                Unit
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="unit" name="unit" placeholder="Unit" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-1 col-lg-offset-1">
+                                <a id="addToList" class="btn btn-primary">הוסף פריט</a>
+                            </div>
+
+                        </div>
+                        <table id="detailsTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%"></th> @*hidden IngredientId column*@
+                                    <th style="width: 35%">חומר גלם</th>
+                                    <th style="width: 25%">כמות</th>
+                                    <th style="width: 25%"> יחידת מידה</th>
+
+                                    <th style="width: 10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">סגירה</button>
+                    <button id="saveSupplierOrder" type="submit" class="btn btn-danger">שמירה</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        //Show Modal.
+        function addNewOrder() {
+            $("#newOrderModal").modal();
+            // Hiding the IngredientId column
+            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
+        }
+        //Add Multiple Order.
+        $("#addToList").click(function (e) {
+            e.preventDefault();
+
+            if ($.trim($("#ingredient").val()) == "") return;
+
+            var id = $("#ingredient option:selected").val(),
+                name = $("#ingredient option:selected").text(),
+                amount = $("#amount").val(),
+                unit = $("#unit").val(),
+
+                detailsTableBody = $("#detailsTable tbody");
+
+            var productItem = '<tr><td>' + id + '</td><td>' + name + '</td><td>' + amount + '</td><td>' + unit + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            detailsTableBody.append(productItem);
+
+            // Hiding the IngredientId column
+            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
+
+            clearItem();
+
+        });
+        //After Add A New Order In The List, Clear Clean The Form For Add More Order.
+        function clearItem() {
+            $("#name option:selected").remove();
+        }
+        // After Add A New Order In The List, If You Want, You Can Remove It.
+        $(document).on('click', 'a.deleteItem', function (e) {
+            e.preventDefault();
+            var $self = $(this);
+            if ($(this).attr('data-itemId') == "0") {
+                $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
+                    $(this).remove();
+                });
+            }
+        });
+        //After Click Save Button Pass All Data View To Controller For Save Database
+        function saveSupplierOrder(data) {
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/SupplierOrder/SaveSupplierOrder",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("Error!")
+                }
+            });
+        }
+        //Collect Multiple Order List For Pass To Controller
+        $("#saveSupplierOrder").click(function (e) {
+            e.preventDefault();
+
+            var ingredientsArr = [];
+            ingredientsArr.length = 0;
+
+            $.each($("#detailsTable tbody tr"), function () {
+                ingredientsArr.push({
+                    id: $(this).find('td:eq(0)').html()
+                });
+            });
+
+
+            var data = JSON.stringify({
+                supplierName: $("#supplier").val(),
+                supplierAddress: $("#address").val(),
+                supplierPhone: $("#phone").val(),
+                ingredients: ingredientsArr
+            });
+
+            $.when(saveSupplierOrder(data)).then(function (response) {
+                console.log(response);
+            }).fail(function (err) {
+                console.log(err);
+            });
+        });
+    </script>
+}

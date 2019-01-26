@@ -11,16 +11,21 @@ namespace RestSupplyDB.Models.Customer
     [Table("CustomerOrders")]
     public partial class CustomerOrders
     {
+        public CustomerOrders()
+        {
+            CustomerDetailOrders = new HashSet<CustomerDetailOrders>();
+        }
+        
         public int Id { get; set; }
 
         [Required]
-        public string Date { get; set; }
-
-        [Required]
-        public string Time { get; set; }
+        public DateTime Date { get; set; }
 
         public int KitchenId { get; set; }
 
-        public virtual Kitchens Kitchens { get; set; }        
+        public virtual Kitchens Kitchens { get; set; }
+
+        public virtual ICollection<CustomerDetailOrders> CustomerDetailOrders { get; set; }
+
     }
 }

@@ -167,45 +167,11 @@ namespace RestSupplyMVC.Controllers
                         Email = model.Email
                     };
 
-                    string userRole;
-
-                    switch (model.UserType)
-                    {
-                        case "Admin":
-                            userRole = "Admin";
-                            break;
-                        case "Chef":
-                            userRole = "Chef";
-                            break;
-                        case "KitchenManager":
-                            userRole = "KitchenManager";
-                            break;
-                        case "Waitress":
-                            userRole = "Waitress";
-                            break;
-                        default:
-                            throw new NotImplementedException("Unknown user type: " + model.UserType);
-                    }
 
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
                         
-                        var roleManager = new RoleManager<AppRole>(new AppRoleStore(_context));
-
-                        if (!roleManager.RoleExists(userRole))
-                        {
-                            AppRole roleObject = new AppRole()
-                            {
-                                Id = Guid.NewGuid().ToString(),
-                                Name = userRole
-                            };
-
-                            await roleManager.CreateAsync(roleObject);
-                        }
-
-                        await UserManager.AddToRoleAsync(user.Id, userRole);
-
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                         // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -214,7 +180,7 @@ namespace RestSupplyMVC.Controllers
                         // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Dashboard", "UserDashboard");
                     }
 
                     AddErrors(result);

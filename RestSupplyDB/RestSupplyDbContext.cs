@@ -110,6 +110,11 @@ namespace RestSupplyDB
                 .HasMany(e => e.IngredientOrdersSet)
                 .WithRequired(e => e.SupplierSet)
                 .HasForeignKey(e => e.SupplierId).WillCascadeOnDelete(false);
-        }
+
+            modelBuilder.Entity<CustomerOrders>()
+                .HasMany(e => e.CustomerDetailOrders)
+                .WithRequired(e => e.CustomerOrder)
+                .HasForeignKey(e => e.OrderId).WillCascadeOnDelete(false);
+        }    
     }
 }

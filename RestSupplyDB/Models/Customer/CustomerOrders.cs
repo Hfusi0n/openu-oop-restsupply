@@ -11,6 +11,11 @@ namespace RestSupplyDB.Models.Customer
     [Table("CustomerOrders")]
     public partial class CustomerOrders
     {
+        public CustomerOrders()
+        {
+            CustomerDetailOrders = new HashSet<CustomerDetailOrders>();
+        }
+        
         public int Id { get; set; }
 
         [Required]
@@ -18,6 +23,9 @@ namespace RestSupplyDB.Models.Customer
 
         public int KitchenId { get; set; }
 
-        public virtual Kitchens Kitchens { get; set; }        
+        public virtual Kitchens Kitchens { get; set; }
+
+        public virtual ICollection<CustomerDetailOrders> CustomerDetailOrders { get; set; }
+
     }
 }

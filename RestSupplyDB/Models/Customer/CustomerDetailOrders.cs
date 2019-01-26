@@ -8,11 +8,14 @@ namespace RestSupplyDB.Models.Customer
     {
         public int Id { get; set; }
 
+        public int OrderId { get; set; }
+
         public int MenuItemId { get; set; }
 
         public int Quantity { get; set; }
 
         public virtual MenuItems MenuItems { get; set; }
 
+        public virtual CustomerOrders CustomerOrder { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace RestSupplyMVC.Repositories
         }
         public IEnumerable<SupplierOrders> GetAll()
         {
-            return _context.IngredientOrdersSet.AsEnumerable();
+            return _context.IngredientOrdersSet.ToList();
         }
 
         public SupplierOrders GetById(int id)

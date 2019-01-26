@@ -90,6 +90,10 @@
     <Compile Include="Migrations\201901261328517_string_to_datetime_migration.Designer.cs">
       <DependentUpon>201901261328517_string_to_datetime_migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901261412389_unified_duplicate_time_date_migration.cs" />
+    <Compile Include="Migrations\201901261412389_unified_duplicate_time_date_migration.Designer.cs">
+      <DependentUpon>201901261412389_unified_duplicate_time_date_migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppUser\AppRoleStore.cs" />
     <Compile Include="Models\AppUser\AppUserStore.cs" />
@@ -133,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901261328517_string_to_datetime_migration.resx">
       <DependentUpon>201901261328517_string_to_datetime_migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901261412389_unified_duplicate_time_date_migration.resx">
+      <DependentUpon>201901261412389_unified_duplicate_time_date_migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

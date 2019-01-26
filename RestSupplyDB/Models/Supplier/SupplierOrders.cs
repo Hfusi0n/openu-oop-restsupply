@@ -20,10 +20,7 @@ namespace RestSupplyDB.Models.Supplier
         public int Id { get; set; }
 
         [Required]
-        public string Date { get; set; }
-
-        [Required]
-        public DateTime Time { get; set; }
+        public DateTime Date { get; set; }
 
         public int SupplierId { get; set; }
 

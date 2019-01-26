@@ -13,7 +13,7 @@ namespace RestSupplyMVC.ViewModels
         public int OrderId { get; set; }
 
         // TODO change to DateTime after db changes in ingredientOrder table
-        public string OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }
         public IEnumerable<SupplierOrderIngredientsViewModel> SupplierOrderIngredientsList { get; set; }
     }
 

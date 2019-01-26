@@ -32,8 +32,8 @@ namespace RestSupplyMVC.Controllers
                 SupplierOrderIngredientsList = s.SupplierOrderDetails.Select(i => new SupplierOrderIngredientsViewModel
                 {
                     IngredientId = i.IngredientId,
-                    Name = _unitOfWork.Ingredients.GetById(s.SupplierId).Name,
-                    Unit = _unitOfWork.Ingredients.GetById(s.SupplierId).Unit,
+                    Name = _unitOfWork.Ingredients.GetById(i.IngredientId).Name,
+                    Unit = _unitOfWork.Ingredients.GetById(i.IngredientId).Unit,
                     Amount = i.Amount,
                     OrderId = i.OrderId
                 })
@@ -142,8 +142,8 @@ namespace RestSupplyMVC.Controllers
             {
                 var supplierOrder = new SupplierOrders
                 {
-                    SupplierId = supplierId
-                    // TODO pass date
+                    SupplierId = supplierId,
+                    Date = DateTime.Today
                 };
                 foreach (var ingredientItem in ingredients)
                 {

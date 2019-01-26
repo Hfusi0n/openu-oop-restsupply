@@ -1,6 +1,6 @@
 using RestSupplyDB.Models.Supplier;
 
-namespace RestSupplyDB.Models.Ingredient
+namespace RestSupplyDB.Models.Supplier
 {
     using System;
     using System.Collections.Generic;
@@ -8,13 +8,13 @@ namespace RestSupplyDB.Models.Ingredient
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("IngredientOrders")]
-    public partial class IngredientOrders
+    [Table("SupplierOrders")]
+    public partial class SupplierOrders
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public IngredientOrders()
+        public SupplierOrders()
         {
-            IngredientListOrdersSet = new HashSet<IngredientListOrders>();
+            SupplierOrderDetails = new HashSet<SupplierOrderDetails>();
         }
 
         public int Id { get; set; }
@@ -23,12 +23,12 @@ namespace RestSupplyDB.Models.Ingredient
         public string Date { get; set; }
 
         [Required]
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
 
         public int SupplierId { get; set; }
 
-        public virtual Supplier.Supplier SupplierSet { get; set; }
+        public virtual Supplier SupplierSet { get; set; }
         
-        public virtual ICollection<IngredientListOrders> IngredientListOrdersSet { get; set; }
+        public virtual ICollection<SupplierOrderDetails> SupplierOrderDetails { get; set; }
     }
 }

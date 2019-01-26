@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using RestSupplyDB;
 using RestSupplyDB.Models.Ingredient;
+using RestSupplyDB.Models.Supplier;
 
 namespace RestSupplyMVC.Repositories
 {
@@ -14,17 +15,17 @@ namespace RestSupplyMVC.Repositories
         {
             _context = context;
         }
-        public IEnumerable<IngredientOrders> GetAll()
+        public IEnumerable<SupplierOrders> GetAll()
         {
             return _context.IngredientOrdersSet.AsEnumerable();
         }
 
-        public IngredientOrders GetById(int id)
+        public SupplierOrders GetById(int id)
         {
             return _context.IngredientOrdersSet.Find(id);
         }
 
-        public void Add(IngredientOrders order)
+        public void Add(SupplierOrders order)
         {
             _context.IngredientOrdersSet.Add(order);
         }

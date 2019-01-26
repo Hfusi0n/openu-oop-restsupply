@@ -86,6 +86,10 @@
     <Compile Include="Migrations\201901242045492_add_kitchen_users_table_migration.Designer.cs">
       <DependentUpon>201901242045492_add_kitchen_users_table_migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901261328517_string_to_datetime_migration.cs" />
+    <Compile Include="Migrations\201901261328517_string_to_datetime_migration.Designer.cs">
+      <DependentUpon>201901261328517_string_to_datetime_migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppUser\AppRoleStore.cs" />
     <Compile Include="Models\AppUser\AppUserStore.cs" />
@@ -97,8 +101,8 @@
     <Compile Include="Models\Kitchen\KitchenUsers.cs" />
     <Compile Include="Models\Menu\MenuItemIngredients.cs" />
     <Compile Include="Models\Menu\MenuItems.cs" />
-    <Compile Include="Models\Ingredient\IngredientListOrders.cs" />
-    <Compile Include="Models\Ingredient\IngredientOrders.cs" />
+    <Compile Include="Models\Supplier\SupplierOrderDetails.cs" />
+    <Compile Include="Models\Supplier\SupplierOrders.cs" />
     <Compile Include="Models\Supplier\SuppliersIngredients.cs" />
     <Compile Include="Models\AppUser\AppRole.cs" />
     <Compile Include="Models\AppUser\AppUserClaim.cs" />
@@ -126,6 +130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901242045492_add_kitchen_users_table_migration.resx">
       <DependentUpon>201901242045492_add_kitchen_users_table_migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901261328517_string_to_datetime_migration.resx">
+      <DependentUpon>201901261328517_string_to_datetime_migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

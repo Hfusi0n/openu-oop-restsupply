@@ -29,12 +29,12 @@ namespace RestSupplyMVC.Controllers
                 Name = _unitOfWork.Suppliers.GetById(s.SupplierId).Name,
                 Phone = _unitOfWork.Suppliers.GetById(s.SupplierId).Phone,
                 Address = _unitOfWork.Suppliers.GetById(s.SupplierId).Address,
-                SupplierOrderIngredientsList = s.IngredientListOrdersSet.Select(i => new SupplierOrderIngredientsViewModel
+                SupplierOrderIngredientsList = s.SupplierOrderDetails.Select(i => new SupplierOrderIngredientsViewModel
                 {
                     IngredientId = i.IngredientId,
                     Name = _unitOfWork.Ingredients.GetById(s.SupplierId).Name,
                     Unit = _unitOfWork.Ingredients.GetById(s.SupplierId).Unit,
-                    Amount = i.MoneyAmount,
+                    Amount = i.Amount,
                     OrderId = i.OrderId
                 })
             });
@@ -50,10 +50,10 @@ namespace RestSupplyMVC.Controllers
             {
                 OrderDate = dbSupplierOrder.Date,
                 OrderId = dbSupplierOrder.Id,
-                SupplierOrderIngredientsList = dbSupplierOrder.IngredientListOrdersSet.Select(i =>
+                SupplierOrderIngredientsList = dbSupplierOrder.SupplierOrderDetails.Select(i =>
                     new SupplierOrderIngredientsViewModel
                     {
-                        Amount = i.MoneyAmount,
+                        Amount = i.Amount,
                         IngredientId = i.IngredientId,
                         OrderId = i.OrderId,
                         Name = _unitOfWork.Ingredients.GetById(i.IngredientId).Name,
@@ -140,18 +140,18 @@ namespace RestSupplyMVC.Controllers
             string result = "Error! Saving supplier process Is Not Complete!";
             if (supplierId > 0 && ingredients != null)
             {
-                var supplierOrder = new IngredientOrders
+                var supplierOrder = new SupplierOrders
                 {
                     SupplierId = supplierId
                     // TODO pass date
                 };
                 foreach (var ingredientItem in ingredients)
                 {
-                    supplierOrder.IngredientListOrdersSet.Add(
-                        new IngredientListOrders
+                    supplierOrder.SupplierOrderDetails.Add(
+                        new SupplierOrderDetails
                         {
                             IngredientId = ingredientItem.IngredientId,
-                            MoneyAmount = ingredientItem.Amount
+                            Amount = ingredientItem.Amount
                         });
                 }
 

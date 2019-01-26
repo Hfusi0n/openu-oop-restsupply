@@ -15,7 +15,7 @@ namespace RestSupplyDB.Models.Supplier
         public Supplier()
         {
             SuppliersIngredients = new HashSet<SuppliersIngredients>();
-            IngredientOrdersSet = new HashSet<IngredientOrders>();
+            IngredientOrdersSet = new HashSet<SupplierOrders>();
         }
 
         public int Id { get; set; }
@@ -29,6 +29,6 @@ namespace RestSupplyDB.Models.Supplier
 
         public virtual ICollection<SuppliersIngredients> SuppliersIngredients { get; set; }
         
-        public virtual ICollection<IngredientOrders> IngredientOrdersSet { get; set; }
+        public virtual ICollection<SupplierOrders> IngredientOrdersSet { get; set; }
     }
 }

@@ -1,79 +1,64 @@
-﻿
-@model RestSupplyMVC.ViewModels.CustomerOrderViewModel
+﻿@model RestSupplyMVC.ViewModels.CreateCustomerOrderViewModel
 
 @{
-    ViewBag.Title = "Generate Customer Order";
+    ViewBag.Title = "יצירת הזמנת לקוח";
 }
 
-<h2>Generate Customer Order</h2>
+<head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script></head>
+<h2>Create</h2>
+
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
+    <div class="form-horizontal">
+        <h4>הזמנה חדשה</h4>
+        <hr/>
+    </div>
+    for (var i = 0; i < Model.AllMenuItemsToQuantityMap.Keys.Count; i++)
+    {
+        <table>
+            <tr>
+                <th>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Name, Model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Name, htmlAttributes: new { @class = "control-label col-md-2", style = "width: 200px;" })
+                    </div>
+                </th>
+                <th>
+                    @*<div class="center">*@
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[2]">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+                            </span>
+                            @Html.EditorFor(model => model.AllMenuItemsToQuantityMap.ElementAt(i).Value, new { htmlAttributes = new { @class = "form-control input-number", name = "quant[1]", style = "width: 70px;" } })
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </span>
+                        </div>
+                    @*</div>*@
+                </th>
+            </tr>
+        </table>
+    }
     <div class="form-group">
-        <div id="menu-order-group">
-            <div class="cloned-row">
-<div class="row">
-    <div class="col-xs-4">
-        <div class="input-group">
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-minus btn-danger" data-type="minus" data-field="quant[2]" disabled="disabled">
-                    <span class="glyphicon glyphicon-minus"></span>
-                </button>
-            </span>
-            @{
-                 // create a new element id for the drop down list
-                 string elementId = Guid.NewGuid().ToString();
-
-                  // populate the drop down list with the element id
-                 @Html.DropDownListFor(m => m.Orders[elementId], Model.MenuItems,htmlAttributes: new {@class = "form-control order-menu-dropdown", id = elementId});              
-            }
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-plus btn-success" data-type="plus" data-field="quant[2]">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
-            </span>
-        </div>
-    </div>
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default"/>
+                </div>
+            </div>
+    
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-4">
-                <input type="submit" value="Create" class="btn btn-primary"/>
-            </div>
-        </div>
-    </div>
-}
 
-
-@section Scripts
-{
+@section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript" src="@Url.Content("/Scripts/site.form.dynamic.js")"></script>
-
-    <script>
-        var count = 0;
-
-        // remove menu item handler
-        $(".btn-minus").click(function(e) {
-            $(this).closest(".cloned-row").remove();
-            e.preventDefault();
-
-            count--;
-
-            if (count <= 0) {
-                $(".btn-minus").prop("disabled", true);
-            }
-        });
-
-        // add menu item handler
-        $(".btn-plus").click(function() {
-            $(".cloned-row:first").clone(true, true).insertAfter(".cloned-row:last");
-            $(".btn-minus").prop("disabled", false);
-            count++;
-        });
-    </script>
 }
-

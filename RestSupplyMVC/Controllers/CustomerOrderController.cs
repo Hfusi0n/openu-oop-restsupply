@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using RestSupplyDB;
 using RestSupplyMVC.Persistence;
@@ -20,10 +21,14 @@ namespace RestSupplyMVC.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            CustomerOrderViewModel model = new CustomerOrderViewModel()
+            var dbMenuItems = _unitOfWork.MenuItems.GetAll();
+            var model = new CreateCustomerOrderViewModel
             {
-                MenuItems = new SelectList(_unitOfWork.MenuItems.GetAll(), "Id", "Name", 1),
-                Orders = new Dictionary<string, string>()
+                AllMenuItemsToQuantityMap = dbMenuItems.ToDictionary(mi => new MenuItemViewModel
+                {
+                    Id = mi.Id,
+                    Name = mi.Name
+                }, q => 0)
             };
 
             return View(model);
@@ -31,8 +36,9 @@ namespace RestSupplyMVC.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult Create(List<string> Orders)
+        public ActionResult Create(CreateCustomerOrderViewModel model)
         {            
+            // TODO Create customerOrderRepository
             return View();
         }
 

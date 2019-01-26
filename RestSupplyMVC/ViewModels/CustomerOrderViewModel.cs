@@ -8,12 +8,19 @@ namespace RestSupplyMVC.ViewModels
 {
     public class CustomerOrderViewModel
     {
-        [Display(Name = "מנות מהתפריט")]
-        public IEnumerable<SelectListItem> MenuItems { get; set; }
-        [Display(Name = "הזמנות לקוח")]
-
-        public Dictionary<string, string> Orders { get; set; }
+        public int CustomerOrderId { get; set; }
+        public IEnumerable<CustomerOrderDetailViewModel> CustomerOrderDetailsList { get; set; }
     }
 
-    
+    public class CustomerOrderDetailViewModel : MenuItemViewModel
+    {
+        public int CustomerOrderDetailId { get; set; }
+        public int Quantity { get; set; }
+    }
+
+    public class CreateCustomerOrderViewModel : CustomerOrderViewModel
+    {
+        public Dictionary<MenuItemViewModel, int> AllMenuItemsToQuantityMap { get; set; }
+    }
+
 }

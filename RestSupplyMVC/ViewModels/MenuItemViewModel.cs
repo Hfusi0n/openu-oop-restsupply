@@ -9,11 +9,9 @@ namespace RestSupplyMVC.ViewModels
 {
     public class MenuItemViewModel
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public IEnumerable<MenuItemIngredientViewModel> MenuItemIngredients { get; set; }
-        public string Heading { get; set; }
-        public string Action => (Id != 0) ? "Update" : "Create";
     }
 
     public class MenuItemIndexViewModel

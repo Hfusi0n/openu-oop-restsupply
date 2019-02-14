@@ -1,0 +1,58 @@
+﻿@model RestSupplyMVC.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>
+    <p dir="rtl">
+        מסך משתמש
+    </p>
+</h4>
+
+
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title" dir="rtl">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                    דוחות מערכת
+                </a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse">
+            <div class="panel-body">
+                Some text 2...
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title" dir="rtl">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                    משתמשי מערכת
+                </a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse in">
+            <div class="panel-body" id="usersListContent">
+                @Html.ActionLink("Display Users","_SystemUsersList")
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                    Collapsible Group 3
+                </a>
+            </h4>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body">
+                Some text 3...
+            </div>
+        </div>
+    </div>
+</div>

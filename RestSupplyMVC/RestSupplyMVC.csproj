@@ -202,11 +202,13 @@
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\SupplierOrderController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
+    <Compile Include="Controllers\UserDashboardController.cs" />
     <Compile Include="Controllers\UsersSetsController.cs" />
     <Compile Include="Controllers\CustomerOrderController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\ISupplierOrderRepository.cs" />
     <Compile Include="Persistence\IUnitOfWork.cs" />
     <Compile Include="Repositories\IIngredientRepository.cs" />
@@ -228,6 +230,7 @@
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
     <Compile Include="ViewModels\SupplierListViewModel.cs" />
     <Compile Include="ViewModels\SupplierViewModel.cs" />
+    <Compile Include="ViewModels\UsersListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -311,9 +314,13 @@
     <Content Include="Views\MenuItems\Details.cshtml" />
     <Content Include="Views\MenuItems\Edit.cshtml" />
     <Content Include="Views\SupplierOrder\Index.cshtml" />
+    <Content Include="Views\UserDashboard\Admin.cshtml" />
+    <Content Include="Views\UserDashboard\_SystemUsersList.cshtml" />
+    <Content Include="Views\UserDashboard\_SystemUserEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>

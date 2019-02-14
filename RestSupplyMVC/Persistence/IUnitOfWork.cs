@@ -8,6 +8,7 @@ namespace RestSupplyMVC.Persistence
         IIngredientRepository Ingredients { get; }
         IMenuItemsRepository MenuItems { get; }
         ISupplierOrderRepository SupplierOrders { get; }
+        IAccountRepository Users { get; }
         void Complete();
     }
 }

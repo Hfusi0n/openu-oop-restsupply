@@ -1,0 +1,68 @@
+﻿@model RestSupplyMVC.ViewModels.UsersListViewModel
+
+
+<div class="modal fade modal-user-list" id="display-user-modal">
+    <div class="modal-dialog modal-lg" style=" width: 900px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>ערוך משתמש</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table" width="100">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Private Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">EDIT</th>
+                    </tr>
+                    <tbody>
+                        @if (Model.UsersEnumerable.Any())
+                        {
+                            int count = 1;
+                            foreach (var item in Model.UsersEnumerable)
+                            {
+                        <tr>
+                            <th scope="row">@count</th>
+                            @{ count = count + 1;}
+                            <td> @Html.DisplayFor(modelItem => item.Email) </td>
+                            <td> @Html.DisplayFor(modelItem => item.PrivateName) </td>
+                            <td> @Html.DisplayFor(modelItem => item.LastName) </td>
+                            <td>
+                                @Html.Action("_SystemUserEdit",new { model = item})
+                            </td>
+                        </tr>
+                            }
+                        }
+                        else
+                        {
+                            <div class="panel-body">
+                                <h3 style="color:red;">לא קיימים משתמשים במערכת</h3>
+                            </div>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        /*
+        $(document).ready(function () {
+            $(".display-user-link").click(function () {
+
+            });
+        });
+        */
+
+        // Show the modal
+        $("#display-user-modal").modal('show');
+    </script>
+}

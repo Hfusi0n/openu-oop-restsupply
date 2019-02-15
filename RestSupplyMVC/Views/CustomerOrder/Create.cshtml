@@ -34,23 +34,19 @@
                     </div>
                 </th>
                 <th>
-                    @*<div class="center">*@
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[2]">
+                                <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[@i]">
                                     <span class="glyphicon glyphicon-minus"></span>
                                 </button>
                             </span>
-                            <input type="text" name="quant[2]" class="form-control input-number" value="10" min="1" max="100">
-
-                            @*@Html.EditorFor(model => model.AllMenuItemsToQuantityMap.ElementAt(i).Value, new { htmlAttributes = new { @class = "form-control input-number", name = "quant[2]", style = "width: 70px;" , value="0", min="0",max="10", type="text"} })*@
+                            <input type="text" name="quant[@i]" class="form-control input-number" value="10" min="1" max="100">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                                <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[@i]">
                                     <span class="glyphicon glyphicon-plus"></span>
                                 </button>
                             </span>
                         </div>
-                    @*</div>*@
                 </th>
             </tr>
         </table>

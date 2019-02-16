@@ -8,13 +8,12 @@ using System.Web;
 namespace RestSupplyMVC.ViewModels
 {
 
-    public class SupplierOrderViewModel : SupplierViewModel
+    public class SupplierOrderViewModel : CreateSupplierViewModel
     {
         public int OrderId { get; set; }
-
-        // TODO change to DateTime after db changes in ingredientOrder table
         public DateTime OrderDate { get; set; }
         public IEnumerable<SupplierOrderIngredientsViewModel> SupplierOrderIngredientsList { get; set; }
+
     }
 
 

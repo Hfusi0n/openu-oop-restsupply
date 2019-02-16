@@ -81,7 +81,13 @@ namespace RestSupplyMVC.Controllers
                     IngredientId = si.IngredientId,
                     Name = _unitOfWork.Ingredients.GetById(si.IngredientId).Name,
                     Unit = _unitOfWork.Ingredients.GetById(si.IngredientId).Unit
-                })                
+                }),
+                AllIngredients = _unitOfWork.Ingredients.GetAll().Select(i => new IngredientViewModel
+                {
+                    IngredientId = i.Id,
+                    Name = i.Name,
+                    Unit = i.Unit
+                })
             };
 
 

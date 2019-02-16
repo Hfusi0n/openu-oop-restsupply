@@ -1,13 +1,13 @@
 ﻿@model RestSupplyMVC.ViewModels.SupplierIndexViewModel
 
 @{
-    ViewBag.Title = "מנות בתפריט";
+    ViewBag.Title = "Suppliers";
 }
 
 <h2>Index</h2>
 
 <p>
-    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">New Order</button>
+    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">Add New Supplier</button>
 
 </p>
 <table class="table">
@@ -46,12 +46,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="close" data-dismiss="modal">&times;</a>
-                <h4>הוספת ספק חדש</h4>
+                <h4>Add a new supplier</h4>
             </div>
             <form id="NewOrderForm">
                 <div class="modal-body">
                     @*Customer Details*@
-                    <h5 style="color:#112247"> ספק חדש</h5>
+                    <h5 style="color:#112247"> New supplier</h5>
                     <hr />
                     <div class="form-horizontal">
                         <input type="hidden" id="Id" />

@@ -59,6 +59,8 @@ namespace RestSupplyMVC.Controllers
             }
         }
 
+        #region Login
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -98,6 +100,10 @@ namespace RestSupplyMVC.Controllers
             }
         }
 
+        #endregion
+
+        #region VerifyCode
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -127,7 +133,7 @@ namespace RestSupplyMVC.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -140,6 +146,10 @@ namespace RestSupplyMVC.Controllers
                     return View(model);
             }
         }
+
+        #endregion
+
+        #region Register
 
         //
         // GET: /Account/Register
@@ -171,7 +181,7 @@ namespace RestSupplyMVC.Controllers
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        
+
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                         // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -208,6 +218,11 @@ namespace RestSupplyMVC.Controllers
             }
         }
 
+
+        #endregion
+
+        #region ConfirmEmail
+
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
@@ -220,6 +235,11 @@ namespace RestSupplyMVC.Controllers
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
+
+
+        #endregion
+
+        #region Password
 
         //
         // GET: /Account/ForgotPassword
@@ -306,6 +326,19 @@ namespace RestSupplyMVC.Controllers
         {
             return View();
         }
+
+        #endregion
+
+        #region ExternalLogin
+
+        //
+        // GET: /Account/ExternalLoginFailure
+        [AllowAnonymous]
+        public ActionResult ExternalLoginFailure()
+        {
+            return View();
+        }
+
 
         //
         // POST: /Account/ExternalLogin
@@ -402,7 +435,7 @@ namespace RestSupplyMVC.Controllers
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
-                }   
+                }
 
                 var user = new AppUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
@@ -422,6 +455,64 @@ namespace RestSupplyMVC.Controllers
             return View(model);
         }
 
+
+        #endregion
+
+        #region ChangePassword        
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    string userId = User.Identity.GetUserId();
+
+                    // Use the sign in manager to validate the current password and change the password
+                    IdentityResult result = await SignInManager.UserManager.ChangePasswordAsync(userId, model.CurrentPassword, model.Password);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        AddErrors(result);
+                    }
+                }
+
+                // If we got this far, something failed, redisplay form
+                return View(model);
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                Exception raise = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+                        // raise a new exception nesting  
+                        // the current instance as InnerException  
+                        raise = new InvalidOperationException(message, raise);
+                    }
+                }
+                throw raise;
+            }
+        }
+        #endregion
+
         //
         // POST: /Account/LogOff
         [HttpPost]
@@ -432,13 +523,6 @@ namespace RestSupplyMVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //
-        // GET: /Account/ExternalLoginFailure
-        [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
-        {
-            return View();
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -518,5 +602,8 @@ namespace RestSupplyMVC.Controllers
             }
         }
         #endregion
+
+
+
     }
 }

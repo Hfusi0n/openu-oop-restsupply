@@ -17,7 +17,13 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
 
-
+        [HttpPost]
+        public ActionResult IsMenuOrderInStock(CustomerOrderDetailViewModel[] customers)
+        {
+            // here we also need to pass the KitchenId in order to get a result. 
+            // Get kitchenId from currentUser?
+            return Json(true);
+        }
         [Authorize]
         public ActionResult Create()
         {

@@ -24,38 +24,47 @@
         <h4>הזמנה חדשה</h4>
         <hr/>
     </div>
-    for (var i = 0; i < Model.AllMenuItemsToQuantityMap.Keys.Count; i++)
-    {
-        <table>
-            <tr>
-                <th>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Name, Model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Name, htmlAttributes: new { @class = "control-label col-md-2", style = "width: 200px;" })
-                    </div>
-                </th>
-                <th>
-                        <div class="input-group">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[@i]">
-                                    <span class="glyphicon glyphicon-minus"></span>
-                                </button>
-                            </span>
-                            <input type="text" name="quant[@i]" class="form-control input-number" value="10" min="1" max="100">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[@i]">
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                </button>
-                            </span>
-                        </div>
-                </th>
-            </tr>
-        </table>
-    }
     <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default"/>
+        <table id="orderTable">
+        <tbody>
+    @for (var i = 0; i < Model.AllMenuItemsToQuantityMap.Keys.Count; i++)
+    {
+
+        <tr>
+            <td>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Id, Model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Name, htmlAttributes: new { @class = "control-label col-md-2", style = "width: 200px;", id = "MenuItemId" })
                 </div>
-            </div>
+            </td>
+            <th>
+                <td>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[@i]">
+                            <span class="glyphicon glyphicon-minus"></span>
+                        </button>
+                    </span>
+                    <input type="text" id="quant[@i]" name="quant[@i]" class="form-control input-number" value="0" min="0" max="100">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[@i]">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </span>
+                </div>
+            </th>
+        </tr>
+
+    }
+        </tbody>
+        </table>
+
+    <div class="col-md-offset-2 col-md-10" align="left">
+        <hr/>
+        <input type="submit" value="Create" class="btn btn-default"/>
+    </div>
+    </div>
+
+
     
 }
 <div>
@@ -68,37 +77,82 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-$('.btn-number').click(function(e){
-    e.preventDefault();
+        $('.btn-number').click(function(e) {
+            e.preventDefault();
 
-    fieldName = $(this).attr('data-field');
-    type      = $(this).attr('data-type');
-    var input = $("input[name='"+fieldName+"']");
-    var currentVal = parseInt(input.val());
-    if (!isNaN(currentVal)) {
-        if(type == 'minus') {
+            fieldName = $(this).attr('data-field');
+            type = $(this).attr('data-type');
+            var input = $("input[name='" + fieldName + "']");
+            var currentVal = parseInt(input.val());
+            if (!isNaN(currentVal)) {
 
-            if(currentVal > input.attr('min')) {
-                input.val(currentVal - 1).change();
+                // Remove item from order
+                if (type == 'minus') {
+
+                    if (currentVal > input.attr('min')) {
+                        input.val(currentVal - 1).change();
+                    }
+                    if (parseInt(input.val()) == input.attr('min')) {
+                        $(this).attr('disabled', true);
+                    }
+
+                // Add item to order
+                } else if (type == 'plus') {
+                    if (currentVal < input.attr('max')) {
+                        input.val(currentVal + 1).change();
+                    }
+
+                    // Ajax call that checks the restaurant has ingredients for all selected menuItems
+                    function isMenuOrderInStock(data) {
+                        return $.ajax({
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            type: 'POST',
+                            url: "/CustomerOrder/IsMenuOrderInStock",
+                            data: data,
+                            success: function (result) {
+                                alert(result);
+                            },
+                            error: function () {
+                                alert("Error!");
+                            }
+                        });
+                    }
+
+                    // Send all menuItems with their current quantity in order to check if ingredients are in stock
+                    var customers = [];
+                    customers.length = 0;
+                            var menuItems = @Html.Raw(Json.Encode(Model.AllMenuItemsToQuantityMap.Keys))
+                    $.each(menuItems,
+                        function(index, item) {
+                            var selector = "" + index;
+                            selector = "quant[" + selector + "]";
+                            customers.push({
+                                id: item.Id,
+                                quantity: parseInt($('[id="quant['+index+']"]').val(),10) 
+                            });
+                        });
+                    var data = JSON.stringify({
+                        customers
+                    });
+
+                    $.when(isMenuOrderInStock(data)).then(function(response) {
+                        console.log(response);
+                    }).fail(function(err) {
+                        console.log(err);
+                    });
+
+
+                    // TODO refactor this - there should not be a max value
+                    if (parseInt(input.val()) == input.attr('max')) {
+                        $(this).attr('disabled', true);
+                    }
+
+                }
+            } else {
+                input.val(0);
             }
-            if(parseInt(input.val()) == input.attr('min')) {
-                $(this).attr('disabled', true);
-            }
-
-        } else if(type == 'plus') {
-
-            if(currentVal < input.attr('max')) {
-                input.val(currentVal + 1).change();
-            }
-            if(parseInt(input.val()) == input.attr('max')) {
-                $(this).attr('disabled', true);
-            }
-
-        }
-    } else {
-        input.val(0);
-    }
-});
+        });
 $('.input-number').focusin(function(){
    $(this).data('oldValue', $(this).val());
 });

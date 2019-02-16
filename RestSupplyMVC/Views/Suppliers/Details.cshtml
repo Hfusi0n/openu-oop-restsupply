@@ -1,7 +1,7 @@
 ﻿@model RestSupplyMVC.ViewModels.SupplierOrderViewModel
 
 @{
-    ViewBag.Title = "פרטי ספק";
+    ViewBag.Title = "Supplier Details";
 }
 
 <h2>פרטי ספק</h2>
@@ -170,17 +170,17 @@
             });
         });
         
-        //Show Modal.
+        //Show New Order Modal.
         function addNewOrder() {
             $("#newOrderModal").modal();
             // Hiding the IngredientId column
-            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
+            $('table#detailsTable td:nth-child(1), table#detailsTable th:nth-child(1)').hide();
         }
         //Add Multiple Order.
         $("#addToList").click(function (e) {
             e.preventDefault();
 
-            if ($.trim($("#ingredient").val()) == "") return;
+            if ($.trim($("#ingredient").val()) == "" || $.trim($("#quantity").val()) == "") return;
 
             var id = $("#ingredient option:selected").val(),
                 name = $("#ingredient option:selected").text(),
@@ -193,7 +193,7 @@
             detailsTableBody.append(productItem);
 
             // Hiding the IngredientId column
-            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
+            $('table#detailsTable td:nth-child(1),table#detailsTable th:nth-child(1)').hide();
 
             clearItem();
 

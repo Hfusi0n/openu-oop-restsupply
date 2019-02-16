@@ -123,12 +123,19 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ingredients ingredients = _unitOfWork.Ingredients.GetById(id.Value);
-            if (ingredients == null)
+            Ingredients dbIngredient = _unitOfWork.Ingredients.GetById(id.Value);
+
+            var ingredientVm = new IngredientViewModel
+            {
+                IngredientId = dbIngredient.Id,
+                Name = dbIngredient.Name,
+                Unit = dbIngredient.Unit
+            };
+            if (dbIngredient == null)
             {
                 return HttpNotFound();
             }
-            return View(ingredients);
+            return View(ingredientVm);
         }
 
         // POST: Ingredients/Edit/5
@@ -136,15 +143,20 @@ namespace RestSupplyMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Unit")] Ingredients ingredients)
+        public ActionResult Edit([Bind(Include = "IngredientId,Name,Unit")] IngredientViewModel vm)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                new RestSupplyDbContext().Entry(ingredients).State = EntityState.Modified;
-                _unitOfWork.Complete();
                 return RedirectToAction("Index");
             }
-            return View(ingredients);
+
+            var ingredient = _unitOfWork.Ingredients.GetById(vm.IngredientId);
+
+            ingredient.Name = vm.Name;
+            ingredient.Unit = vm.Unit;
+            _unitOfWork.Complete();
+
+            return View(vm);
         }
 
         // GET: Ingredients/Delete/5
@@ -198,11 +210,8 @@ namespace RestSupplyMVC.Controllers
                         });
                 }
 
-
                 _unitOfWork.Ingredients.Add(ingredient);
                 _unitOfWork.Complete();
-
-
                 result = "Success! Ingredient is saved!";
             }
 

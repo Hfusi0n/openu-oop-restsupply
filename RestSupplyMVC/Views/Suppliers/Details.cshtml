@@ -60,7 +60,75 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+<div class="modal fade" id="newIngredientModal">
+    <div class="modal-dialog modal-lg" style=" width: 900px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>Add Ingredients For supplier</h4>
+            </div>
+            <form id="NewOrderForm">
+                <div class="modal-body">
+                    @*Customer Details*@
+                    <h5 style="color:#112247">Pick ingredients</h5>
+                    <hr />
+                    <div class="form-horizontal">
 
+                        @Html.HiddenFor(model => model.Id, new { id = "SupplierId" })
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", disabled = "disabled", @Value = Model.Name })
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Order Details*@
+                    <h5 style="margin-top:10px;color:#112247">Order Details</h5>
+                    <hr />
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                הוסף חומר גלם
+                            </label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(model => model.AllIngredients, new SelectList(Model.AllIngredients, "IngredientId", "Name"), "", new { @id = "ingredient1", @class = "form-control" })
+                            </div>
+                            <label class="control-label col-md-2">
+                                Unit
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="unit1" name="unit" placeholder="Unit" class="form-control" disabled="disabled" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-1 col-lg-offset-1">
+                                <a id="addIngToList" class="btn btn-primary">הוסף פריט</a>
+                            </div>
+
+                        </div>
+                        <table id="ingTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%"></th> @*hidden IngredientId column*@
+                                    <th style="width: 35%">חומר גלם</th>
+                                    <th style="width: 25%"> יחידת מידה</th>
+
+                                    <th style="width: 10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">סגירה</button>
+                    <button id="addIngredients" type="submit" class="btn btn-danger">שמירה</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="newOrderModal">
     <div class="modal-dialog modal-lg" style=" width: 900px !important;">
@@ -152,8 +220,7 @@
 </div>
 @section scripts{
     <script>
-        // Get unit for selected ingredient
-        //function getUnit(val) {
+        // Get unit for selected ingredient (New Order Modal)
         $("#ingredient").change(function () {
             return $.ajax({
                 url: "/Ingredients/GetUnitByIngredientId",
@@ -169,18 +236,67 @@
                 }
             });
         });
+
+        // Get unit for selected ingredient (New ingredeint Modal)
+        $("#ingredient1").change(function () {
+            return $.ajax({
+                url: "/Ingredients/GetUnitByIngredientId",
+                data: { 'id': $("#ingredient1 option:selected").val() },
+                type: 'GET',
+                dataType: "json",
+                cache: false,
+                success: function (response) {
+                    $("#unit1").val(response);
+                },
+                error: function () {
+                    alert("Error finding unit for ingredient!");
+                }
+            });
+        });
         
-        //Show New Order Modal.
+        // ------Show Add ingredient Modal-------
+        function addIngredient() {
+            $("#newIngredientModal").modal();
+            // Hiding the IngredientId column
+            $('table#ingTable td:nth-child(1), table#ingTable th:nth-child(1)').hide();
+        }
+
+        //Add Multiple Ingredients.
+        $("#addIngToList").click(function (e) {
+            e.preventDefault();
+
+            if ($.trim($("#ingredient1").val()) == "") return;
+
+            var id = $("#ingredient1 option:selected").val(),
+                name = $("#ingredient1 option:selected").text(),
+                unit = $("#unit1").val(),
+
+                detailsTableBody = $("#ingTable tbody");
+
+            var productItem = '<tr><td>' + id + '</td><td>' + name + '</td><td>' + unit + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            detailsTableBody.append(productItem);
+
+            // Hiding the IngredientId column
+            $('table#ingTable td:nth-child(1),table#ingTable th:nth-child(1)').hide();
+
+            clearIngItem();
+
+        });
+        //After Add A New Order In The List, Clear Clean The Form For Add More Order.
+        function clearIngItem() {
+            $("#name option:selected").remove();
+        }
+        //----------Show New Order Modal----------
         function addNewOrder() {
             $("#newOrderModal").modal();
             // Hiding the IngredientId column
             $('table#detailsTable td:nth-child(1), table#detailsTable th:nth-child(1)').hide();
         }
-        //Add Multiple Order.
+        //Add Multiple Ingredients.
         $("#addToList").click(function (e) {
             e.preventDefault();
 
-            if ($.trim($("#ingredient").val()) == "" || $.trim($("#quantity").val()) == "") return;
+            if ($.trim($("#ingredient").val()) == "" || $.trim($("#amount").val()) == "") return;
 
             var id = $("#ingredient option:selected").val(),
                 name = $("#ingredient option:selected").text(),

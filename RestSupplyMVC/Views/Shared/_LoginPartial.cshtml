@@ -19,11 +19,14 @@
             </ul>
         </li>
 
-        <li>
-            <a href="@Url.Action("Index", "Manage")">
+        <li class="menu">
+            <a href="@Url.Action("Index", "Manage")" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 @User.Identity.GetUserName()
             </a>
+            <ul class="dropdown-menu">
+                <li><a href="@Url.Action("ChangePassword", "Account")">שנה סיסמא</a></li>
+            </ul>
         </li>
         <li>
             <a href="javascript:document.getElementById('logoutForm').submit()">

@@ -69,7 +69,6 @@
             </div>
             <form id="NewOrderForm">
                 <div class="modal-body">
-                    @*Customer Details*@
                     <h5 style="color:#112247">Pick ingredients</h5>
                     <hr />
                     <div class="form-horizontal">
@@ -83,7 +82,7 @@
                         </div>
                     </div>
 
-                    @*Order Details*@
+                    @*Select Ingredient*@
                     <h5 style="margin-top:10px;color:#112247">Order Details</h5>
                     <hr />
                     <div class="form-horizontal">
@@ -92,7 +91,8 @@
                                 הוסף חומר גלם
                             </label>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.AllIngredients, new SelectList(Model.AllIngredients, "IngredientId", "Name"), "", new { @id = "ingredient1", @class = "form-control" })
+                                
+                                @Html.DropDownListFor(model => model.NotAssociatedIngredients, new SelectList(Model.NotAssociatedIngredients, "IngredientId", "Name"), "", new {@id = "ingredient1", @class = "form-control"})
                             </div>
                             <label class="control-label col-md-2">
                                 Unit

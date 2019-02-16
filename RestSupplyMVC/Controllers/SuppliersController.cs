@@ -36,7 +36,7 @@ namespace RestSupplyMVC.Controllers
                         IngredientId = i.Id,
                         Name = i.Name,
                         Unit = i.Unit
-                    })
+                    }).ToList()
                 },
                 SuppliersList = dbSuppliers.Select(s => new SupplierViewModel
                 {
@@ -47,7 +47,7 @@ namespace RestSupplyMVC.Controllers
                     AllSupplierIngredientsList = s.SuppliersIngredients.Select(i => new IngredientViewModel
                     {
                         IngredientId = i.Id
-                    })
+                    }).ToList()
                 })
             };
             return View(supplierIndexVm);
@@ -81,13 +81,13 @@ namespace RestSupplyMVC.Controllers
                     IngredientId = si.IngredientId,
                     Name = _unitOfWork.Ingredients.GetById(si.IngredientId).Name,
                     Unit = _unitOfWork.Ingredients.GetById(si.IngredientId).Unit
-                }),
+                }).ToList(),
                 AllIngredients = _unitOfWork.Ingredients.GetAll().Select(i => new IngredientViewModel
                 {
                     IngredientId = i.Id,
                     Name = i.Name,
                     Unit = i.Unit
-                })
+                }).ToList()
             };
 
 
@@ -104,7 +104,7 @@ namespace RestSupplyMVC.Controllers
                     IngredientId = i.Id,
                     Name = i.Name,
                     Unit = i.Unit
-                })
+                }).ToList()
             };
             return View(viewModel);
         }
@@ -191,7 +191,7 @@ namespace RestSupplyMVC.Controllers
                     IngredientId = si.IngredientId,
                     Name = _unitOfWork.Ingredients.GetById(si.IngredientId).Name,
                     Unit = _unitOfWork.Ingredients.GetById(si.IngredientId).Unit
-                })
+                }).ToList()
             };
             
             return View(supplierVm);

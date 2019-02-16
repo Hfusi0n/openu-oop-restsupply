@@ -17,15 +17,20 @@ namespace RestSupplyMVC.ViewModels
         [Display(Name = "טלפון")]
         public string Phone { get; set; }
         [Display(Name = "רשימת חומרי גלם")]
-        public IEnumerable<IngredientViewModel> AllSupplierIngredientsList { get; set; }
+        public List<IngredientViewModel> AllSupplierIngredientsList { get; set; }
 
 
     }
+
     public class CreateSupplierViewModel : SupplierViewModel
     {
-        public IEnumerable<IngredientViewModel> AllIngredients { get; set; }
-        //public IEnumerable<IngredientViewModel> SelectedIngredientsForSupplier { get; set; }
+        public List<IngredientViewModel> AllIngredients { get; set; }
 
+        public List<IngredientViewModel> NotAssociatedIngredients
+        {
+            get { return AllIngredients.Where(i => !AllSupplierIngredientsList.Any(si => si.IngredientId == i.IngredientId)).ToList(); }
+
+        }
     }
 
     public class SupplierIndexViewModel

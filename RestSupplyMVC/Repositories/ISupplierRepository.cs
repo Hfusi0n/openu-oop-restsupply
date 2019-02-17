@@ -9,5 +9,6 @@ namespace RestSupplyMVC.Repositories
         Supplier GetById(int id);
         void Add(Supplier supplier);
         void AddSupplierIngredients(int supplierId, List<int> ingredientIdsList);
+        void RemoveSupplierIngredient(int supplierId, int ingredientId);
     }
 }

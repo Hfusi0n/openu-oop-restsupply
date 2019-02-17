@@ -194,7 +194,7 @@ namespace RestSupplyMVC.Controllers
                 return HttpNotFound();
             }
 
-            SupplierViewModel supplierVm = new SupplierViewModel
+            var supplierVm = new SupplierViewModel
             {
                 Address = supplier.Address,
                 Id = supplier.Id,

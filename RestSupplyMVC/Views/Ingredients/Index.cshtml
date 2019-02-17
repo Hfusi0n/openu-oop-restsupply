@@ -1,13 +1,13 @@
 ﻿@model RestSupplyMVC.ViewModels.IngredientIndexViewModel
 
 @{
-    ViewBag.Title = "חומרי גלם";
+    ViewBag.Title = "Ingredients";
 }
 
-<h2>Index</h2>
+<h2>Ingredients</h2>
 
 <p>
-    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">New Order</button>
+    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">Add New</button>
 
 </p>
 <table class="table">
@@ -34,7 +34,7 @@
     else
     {
         <div class="panel-body">
-            <h3 style="color:red;">אין חומרי גלם!</h3>
+            <h3 style="color:red;">No Ingredients!</h3>
         </div>
     }
 
@@ -46,41 +46,41 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="close" data-dismiss="modal">&times;</a>
-                <h4>הוספת חומר גלם חדש</h4>
+                <h4>Add New Ingredient</h4>
             </div>
             <form id="NewOrderForm">
                 <div class="modal-body">
                     @*Customer Details*@
-                    <h5 style="color:#112247"> חומר גלם חדש</h5>
+                    <h5 style="color:#112247"> Ingredient</h5>
                     <hr />
                     <div class="form-horizontal">
                         <input type="hidden" id="Id" />
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                שם חומר גלם
+                                Ingredient Name
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="ingredient" name="ingredient" placeholder="שם חומר גלם" class="form-control" />
+                                <input type="text" id="ingredient" name="ingredient" placeholder="insert name" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                יחידת מידה
+                                Unit 
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="unit" name="unit" placeholder="יחידת מידה" class="form-control" />
+                                <input type="text" id="unit" name="unit" placeholder="gram, kilo etc." class="form-control" />
                             </div>
-                        </div
+                        </div>
                     </div>
 
                     @*Order Details*@
-                    <h5 style="margin-top:10px;color:#112247">Order Details</h5>
+                    <h5 style="margin-top:10px;color:#112247">Choose Suppliers</h5>
                     <hr />
                     <div class="form-horizontal">
                         <input type="hidden" id="IngredientId" />
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                הוסף ספק
+                                Add New
                             </label>
                             <div class="col-md-4">
                                 @Html.DropDownListFor(model => model.CreateIngredientViewModel.AllSuppliers, new SelectList(Model.CreateIngredientViewModel.AllSuppliers, "Id", "Name"), "", new { @id = "name", @class = "form-control" })
@@ -121,7 +121,7 @@
         function addNewOrder() {
             $("#newOrderModal").modal();
             // Hiding the SupplierId column
-            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
+            $('table#detailsTable td:nth-child(1),table#detailsTable th:nth-child(1)').hide();
         }
         //Add Multiple Order.
         $("#addToList").click(function (e) {
@@ -137,16 +137,16 @@
             detailsTableBody.append(productItem);
 
             // Hiding the SupplierId column
-            $('table#detailsTable td:nth-child(1),th:nth-child(1)').hide();
+            $('table#detailsTable td:nth-child(1),table#detailsTable th:nth-child(1)').hide();
 
             clearItem();
 
         });
-        //After Add A New Order In The List, Clear Clean The Form For Add More Order.
+        //After Add A New Ingredient In The List, Clear Clean The Form For Add More Order.
         function clearItem() {
             $("#name option:selected").remove();
         }
-        // After Add A New Order In The List, If You Want, You Can Remove It.
+        // After Add A New Ingredient In The List, If You Want, You Can Remove It.
         $(document).on('click', 'a.deleteItem', function (e) {
             e.preventDefault();
             var $self = $(this);

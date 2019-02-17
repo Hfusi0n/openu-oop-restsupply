@@ -42,5 +42,16 @@ namespace RestSupplyMVC.Repositories
                     });
             }
         }
+
+        public void RemoveSupplierIngredient(int supplierId, int ingredientId)
+        {
+            var dbSupplier = _context.SuppliersSet.Find(supplierId);
+
+            if (dbSupplier == null) return;
+
+            var supplierIngredient =
+                dbSupplier.SuppliersIngredients.FirstOrDefault(i => i.IngredientId == ingredientId);
+            dbSupplier.SuppliersIngredients.Remove(supplierIngredient);
+        }
     }
 }

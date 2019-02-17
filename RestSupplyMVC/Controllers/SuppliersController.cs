@@ -94,7 +94,6 @@ namespace RestSupplyMVC.Controllers
             return View(supplierDetailsVm);
         }
 
-        //[Authorize]
         public ActionResult Create()
         {
             var viewModel = new CreateSupplierViewModel
@@ -213,6 +212,25 @@ namespace RestSupplyMVC.Controllers
         return RedirectToAction("Index");
         }
 
+
+        [HttpPost]
+        public ActionResult AddSupplierIngredients(int supplierId,
+            IngredientViewModel[] ingredients)
+        {
+            string result = "Error! Unable to add ingredients!";
+            if (supplierId > 0 && ingredients.Any())
+            {
+                _unitOfWork.Suppliers.AddSupplierIngredients(supplierId,
+                    ingredients.Select(i => i.IngredientId).ToList());
+                _unitOfWork.Complete();
+
+                 result = "Success! Ingredients were added!";
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public ActionResult SaveSupplier(string supplierName, string supplierAddress, string supplierPhone,
             IngredientViewModel[] ingredients)
         {

@@ -73,7 +73,7 @@
                     <hr />
                     <div class="form-horizontal">
 
-                        @Html.HiddenFor(model => model.Id, new { id = "SupplierId" })
+                        @Html.HiddenFor(model => model.Id, new { id = "SupplierId1" })
                         <div class="form-group">
                             @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
                             <div class="col-md-10">
@@ -103,7 +103,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-1 col-lg-offset-1">
-                                <a id="addIngToList" class="btn btn-primary">הוסף פריט</a>
+                                <a id="addIngToList" class="btn btn-primary">Add Item</a>
                             </div>
 
                         </div>
@@ -111,8 +111,8 @@
                             <thead>
                                 <tr>
                                     <th style="width:5%"></th> @*hidden IngredientId column*@
-                                    <th style="width: 35%">חומר גלם</th>
-                                    <th style="width: 25%"> יחידת מידה</th>
+                                    <th style="width: 35%">Ingredient</th>
+                                    <th style="width: 25%"> Unit</th>
 
                                     <th style="width: 10%"></th>
                                 </tr>
@@ -122,8 +122,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn btn-default" data-dismiss="modal">סגירה</button>
-                    <button id="addIngredients" type="submit" class="btn btn-danger">שמירה</button>
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="addIngredients" type="submit" class="btn btn-danger">Save</button>
                 </div>
             </form>
         </div>
@@ -135,12 +135,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="close" data-dismiss="modal">&times;</a>
-                <h4>הוספת ספק חדש</h4>
+                <h4>Add a new supplier</h4>
             </div>
             <form id="NewOrderForm">
                 <div class="modal-body">
                     @*Customer Details*@
-                    <h5 style="color:#112247"> הזמנה עבור ספק</h5>
+                    <h5 style="color:#112247">Ingredients Order</h5>
                     <hr />
                     <div class="form-horizontal">
 
@@ -237,7 +237,7 @@
             });
         });
 
-        // Get unit for selected ingredient (New ingredeint Modal)
+        // Get unit for selected ingredient (New ingredient Modal)
         $("#ingredient1").change(function () {
             return $.ajax({
                 url: "/Ingredients/GetUnitByIngredientId",
@@ -286,7 +286,53 @@
         function clearIngItem() {
             $("#name option:selected").remove();
         }
-        //----------Show New Order Modal----------
+
+        //After Click Save Button Pass All Data View To Controller For Save Database
+        function addSupplierIngredients(data) {
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Suppliers/AddSupplierIngredients",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        };
+
+        //Collect Multiple Ingredient List For Pass To Controller
+        $("#addIngredients").click(function (e) {
+            e.preventDefault();
+
+            var ingredientsArr = [];
+            ingredientsArr.length = 0;
+
+            $.each($("#ingTable tbody tr"), function () {
+                ingredientsArr.push({
+                    ingredientId: $(this).find('td:eq(0)').html()
+                });
+                debugger;
+            });
+
+
+            var data = JSON.stringify({
+                supplierId: $("#SupplierId1").val(),
+                ingredients: ingredientsArr
+                
+        });
+
+            $.when(addSupplierIngredients(data)).then(function (response) {
+                console.log(response);
+            }).fail(function (err) {
+                console.log(err);
+            });
+        });
+        //-----------------------Show New Supplier Order Modal---------------------
         function addNewOrder() {
             $("#newOrderModal").modal();
             // Hiding the IngredientId column

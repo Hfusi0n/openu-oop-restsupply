@@ -8,5 +8,6 @@ namespace RestSupplyMVC.Repositories
         IEnumerable<Supplier> GetAll();
         Supplier GetById(int id);
         void Add(Supplier supplier);
+        void AddSupplierIngredients(int supplierId, List<int> ingredientIdsList);
     }
 }

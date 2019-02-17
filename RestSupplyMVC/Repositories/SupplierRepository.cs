@@ -23,11 +23,24 @@ namespace RestSupplyMVC.Repositories
         public Supplier GetById(int id)
         {
             return _context.SuppliersSet.Find(id);
-        } 
-        // TODO all saveChanges should be done be UnitOfWork.Complete();
+        }
+
         public void Add(Supplier supplier)
         {
             _context.SuppliersSet.Add(supplier);
+        }
+
+        public void AddSupplierIngredients(int supplierId, List<int> ingredientIdsList)
+        {
+            var dbSupplier = _context.SuppliersSet.Find(supplierId);
+            foreach (var ingredientId in ingredientIdsList)
+            {
+                dbSupplier?.SuppliersIngredients.Add(
+                    new SuppliersIngredients
+                    {
+                        IngredientId = ingredientId
+                    });
+            }
         }
     }
 }

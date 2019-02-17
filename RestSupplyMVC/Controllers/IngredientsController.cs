@@ -79,9 +79,9 @@ namespace RestSupplyMVC.Controllers
                 AllIngredientSuppliersList = ingredients.SuppliersIngredients.Select(si => new SupplierViewModel
                 {
                     Id = si.Id,
-                    Name = _unitOfWork.Suppliers.GetById(si.IngredientId).Name,
-                    Address = _unitOfWork.Suppliers.GetById(si.IngredientId).Address,
-                    Phone = _unitOfWork.Suppliers.GetById(si.IngredientId).Phone
+                    Name = si.Supplier.Name,
+                    Address = si.Supplier.Address,
+                    Phone = si.Supplier.Phone
                 })
             };
             return View(ingredientVm);

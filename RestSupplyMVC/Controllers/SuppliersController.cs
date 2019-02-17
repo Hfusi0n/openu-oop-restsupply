@@ -146,7 +146,16 @@ namespace RestSupplyMVC.Controllers
             {
                 return HttpNotFound();
             }
-            return View(supplier);
+
+            var supplierVm = new SupplierViewModel
+            {
+                Id = supplier.Id,
+                Address = supplier.Address,
+                Name = supplier.Name,
+                Phone = supplier.Phone
+            };
+
+            return View(supplierVm);
         }
 
         // POST: Suppliers/Edit/5
@@ -154,15 +163,21 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] Supplier supplier)
+        public ActionResult Edit(SupplierViewModel supplierVm)
         {
             if (ModelState.IsValid)
             {
-                new RestSupplyDbContext().Entry(supplier).State = EntityState.Modified;
+                var dbSupplier = _unitOfWork.Suppliers.GetById(supplierVm.Id);
+
+                // TODO - should this be in an update method in the repo??
+                dbSupplier.Address = supplierVm.Address;
+                dbSupplier.Name = supplierVm.Name;
+                dbSupplier.Phone = supplierVm.Phone;
+                
                 _unitOfWork.Complete();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new {id = dbSupplier.Id});
             }
-            return View(supplier);
+            return View(supplierVm);
         }
 
         // GET: Suppliers/Delete/5

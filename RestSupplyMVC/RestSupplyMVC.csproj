@@ -209,11 +209,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\IKitchenRepository.cs" />
     <Compile Include="Repositories\ISupplierOrderRepository.cs" />
     <Compile Include="Persistence\IUnitOfWork.cs" />
     <Compile Include="Repositories\IIngredientRepository.cs" />
     <Compile Include="Repositories\IMenuItemsRepository.cs" />
     <Compile Include="Repositories\ISupplierRepository.cs" />
+    <Compile Include="Repositories\KitchenRepository.cs" />
     <Compile Include="Repositories\MenuItemsRepository.cs" />
     <Compile Include="Repositories\SupplierOrderRepository.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />

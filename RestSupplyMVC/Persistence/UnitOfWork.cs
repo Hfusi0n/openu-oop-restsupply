@@ -6,10 +6,11 @@ namespace RestSupplyMVC.Persistence
     public class UnitOfWork : IUnitOfWork
     {
         private readonly RestSupplyDbContext _context;
-        public ISupplierRepository Suppliers { get; private set; }
-        public IIngredientRepository Ingredients { get; private set; }
-        public IMenuItemsRepository MenuItems { get; private set; }
-        public ISupplierOrderRepository SupplierOrders { get; set; }
+        public ISupplierRepository Suppliers { get; }
+        public IIngredientRepository Ingredients { get; }
+        public IMenuItemsRepository MenuItems { get; }
+        public ISupplierOrderRepository SupplierOrders { get; }
+        public IKitchenRepository Kitchens { get; }
         public IAccountRepository Users { get; set; }
 
         public UnitOfWork(RestSupplyDbContext context)
@@ -20,6 +21,7 @@ namespace RestSupplyMVC.Persistence
             MenuItems = new MenuItemsRepository(context);
             SupplierOrders = new SupplierOrderRepository(context);
             Users = new AccountRepository(context);
+            Kitchens = new KitchenRepository(context);
         }
 
         public void Complete()

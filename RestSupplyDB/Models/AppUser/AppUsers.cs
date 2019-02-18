@@ -12,6 +12,9 @@ namespace RestSupplyDB.Models.AppUser
 
     public class AppUser : IdentityUser<string, AppUserLogin, AppUserRole, AppUserClaim>
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
         public AppUser()
         {
             UserKitchens = new HashSet<KitchenUsers>();

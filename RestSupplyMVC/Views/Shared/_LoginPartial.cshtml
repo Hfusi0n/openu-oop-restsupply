@@ -30,8 +30,17 @@
                     var userRoles = userManager.GetRoles(User.Identity.GetUserId());
                     var userRole = userRoles.FirstOrDefault();
 
+                    // Get the current user 
+                    var user = userManager.FindById(User.Identity.GetUserId());
+
                     // construct the display name
-                    string userName = User.Identity.GetUserName();
+                    string userName = user.Email;
+
+                    if(!string.IsNullOrEmpty(user.FirstName))
+                    {
+                        userName = user.FirstName + " " + user.LastName;
+                    }
+
                     string displayName = userName + "(" + userRole + ")";
                 }
                 @displayName

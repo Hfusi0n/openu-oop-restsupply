@@ -102,6 +102,10 @@
     <Compile Include="Migrations\201901261645496_link_customer_order_details_migration.Designer.cs">
       <DependentUpon>201901261645496_link_customer_order_details_migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902182102303_add_firstname_lastname_migration.cs" />
+    <Compile Include="Migrations\201902182102303_add_firstname_lastname_migration.Designer.cs">
+      <DependentUpon>201902182102303_add_firstname_lastname_migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppUser\AppRoleStore.cs" />
     <Compile Include="Models\AppUser\AppUserStore.cs" />
@@ -154,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901261645496_link_customer_order_details_migration.resx">
       <DependentUpon>201901261645496_link_customer_order_details_migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902182102303_add_firstname_lastname_migration.resx">
+      <DependentUpon>201902182102303_add_firstname_lastname_migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

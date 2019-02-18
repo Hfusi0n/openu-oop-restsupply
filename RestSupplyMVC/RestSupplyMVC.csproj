@@ -196,6 +196,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IngredientsController.cs" />
+    <Compile Include="Controllers\KitchensController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MenuIngredientsController.cs" />
     <Compile Include="Controllers\MenuItemsController.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Repositories\SupplierOrderRepository.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\CustomerOrderViewModel.cs" />
+    <Compile Include="ViewModels\KitchenViewModel.cs" />
     <Compile Include="ViewModels\SupplierOrderViewModel.cs" />
     <Compile Include="ViewModels\IngredientViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -320,6 +322,11 @@
     <Content Include="Views\UserDashboard\_SystemUsersList.cshtml" />
     <Content Include="Views\UserDashboard\_SystemUserEdit.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Kitchens\Create.cshtml" />
+    <Content Include="Views\Kitchens\Delete.cshtml" />
+    <Content Include="Views\Kitchens\Details.cshtml" />
+    <Content Include="Views\Kitchens\Edit.cshtml" />
+    <Content Include="Views\Kitchens\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

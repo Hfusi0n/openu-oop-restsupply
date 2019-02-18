@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.Owin;
+@using RestSupplyDB.Models.AppUser;
 
 @if (Request.IsAuthenticated)
 {
@@ -22,7 +24,17 @@
         <li class="menu">
             <a href="@Url.Action("Index", "Manage")" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                @User.Identity.GetUserName()
+                @{ 
+                    // Get the user current role
+                    var userManager = Request.GetOwinContext().GetUserManager<AppUserManager>();
+                    var userRoles = userManager.GetRoles(User.Identity.GetUserId());
+                    var userRole = userRoles.FirstOrDefault();
+
+                    // construct the display name
+                    string userName = User.Identity.GetUserName();
+                    string displayName = userName + "(" + userRole + ")";
+                }
+                @displayName
             </a>
             <ul class="dropdown-menu">
                 <li><a href="@Url.Action("ChangePassword", "Account")">שנה סיסמא</a></li>
@@ -40,7 +52,7 @@ else
 {
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <a href="@Url.Action("Register", "Account")" id="registerLink">                
+            <a href="@Url.Action("Register", "Account")" id="registerLink">
                 Not around here? Sign up
             </a>
         </li>

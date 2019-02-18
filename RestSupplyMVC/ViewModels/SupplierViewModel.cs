@@ -10,13 +10,13 @@ namespace RestSupplyMVC.ViewModels
     public class SupplierViewModel
     {
         public int Id { get; set; }
-        [Display(Name = "שם ספק")]
+        [Display(Name = "Supplier Name")]
         public string Name { get; set; }
-        [Display(Name = "כתובת")]
+        [Display(Name = "Address")]
         public string Address { get; set; }
-        [Display(Name = "טלפון")]
+        [Display(Name = "Phone")]
         public string Phone { get; set; }
-        [Display(Name = "רשימת חומרי גלם")]
+        [Display(Name = "List of Ingredients")]
         public List<IngredientViewModel> AllSupplierIngredientsList { get; set; }
 
 
@@ -28,7 +28,7 @@ namespace RestSupplyMVC.ViewModels
 
         public List<IngredientViewModel> NotAssociatedIngredients
         {
-            get { return AllIngredients.Where(i => !AllSupplierIngredientsList.Any(si => si.IngredientId == i.IngredientId)).ToList(); }
+            get { return AllIngredients.Where(i => AllSupplierIngredientsList.All(si => si.IngredientId != i.IngredientId)).ToList(); }
 
         }
     }

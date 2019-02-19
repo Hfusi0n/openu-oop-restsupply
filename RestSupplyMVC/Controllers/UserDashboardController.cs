@@ -26,7 +26,7 @@ namespace RestSupplyMVC.Controllers
         public ActionResult _SystemUserEdit(ViewModels.UserViewModel model)
         {
             // Get all roles from the database
-            var user = _unitOfWork.Users.GetById(model.Id);
+            var user = _unitOfWork.Account.GetById(model.Id);
             AppUserRole userRole = user.Roles.FirstOrDefault();
 
             if(userRole == null)
@@ -40,7 +40,7 @@ namespace RestSupplyMVC.Controllers
                 model.SelectedUserRole = _dbContext.Roles.FirstOrDefault(x => x.Id == roleId).Name;
             }
 
-            model.RoleList = _unitOfWork.Users.GetAppRoles();
+            model.RoleList = _unitOfWork.Account.GetAppRoles();
 
             return View(model);
         }
@@ -56,7 +56,7 @@ namespace RestSupplyMVC.Controllers
             if (ModelState.IsValid)
             {
                 // Get the current application user
-                AppUser user = _unitOfWork.Users.GetById(model.Id);
+                AppUser user = _unitOfWork.Account.GetById(model.Id);
 
                 // Create a user manager
                 AppUserManager userManager = new AppUserManager(new AppUserStore(_dbContext));
@@ -77,7 +77,7 @@ namespace RestSupplyMVC.Controllers
         [Authorize]
         public ActionResult _SystemUsersList()
         {
-            var users = _unitOfWork.Users.GetAll();
+            var users = _unitOfWork.Account.GetAll();
             
             ViewModels.UsersListViewModel usersListViewModel = 
                 new ViewModels.UsersListViewModel();

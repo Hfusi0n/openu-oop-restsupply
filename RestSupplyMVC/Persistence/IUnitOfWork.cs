@@ -9,7 +9,7 @@ namespace RestSupplyMVC.Persistence
         IMenuItemsRepository MenuItems { get; }
         ISupplierOrderRepository SupplierOrders { get; }
         IKitchenRepository Kitchens { get; }
-        IAccountRepository Users { get; }
+        IAccountRepository Account { get; }
         void Complete();
     }
 }

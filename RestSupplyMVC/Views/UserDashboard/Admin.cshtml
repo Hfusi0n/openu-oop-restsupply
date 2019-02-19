@@ -37,15 +37,41 @@
         </div>
         <div id="collapse2" class="panel-collapse collapse in">
             <div class="panel-body" id="usersListContent">
-                @Html.ActionLink("Display Users","_SystemUsersList")
-            </div>
-        </div>
-    </div>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <p>Search a user by an email address</p>
+                            @Html.LabelFor(m => m.Email)
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <p>Search a user by first name and last name</p>
+                            @Html.LabelFor(m => m.FirstName)
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                            @Html.LabelFor(m => m.LastName)
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+
+                        </div>
+                    </div>
+                        <p>
+                            @Html.ActionLink("Show all registered users", "ForgotPassword")
+                        </p>
+                        }
+                    </div>
+                </div>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                    Collapsible Group 3
+                    Kitchens
                 </a>
             </h4>
         </div>

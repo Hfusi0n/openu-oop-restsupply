@@ -45,6 +45,23 @@ namespace RestSupplyMVC.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [Authorize]
+        [ActionName("SearchUsers")]
+        public async Task<ActionResult> SearchUsers(ViewModels.UserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if(!string.IsNullOrEmpty(model.Email))
+                {
+                    // Create a user manager
+                    var userManager = new AppUserManager(new AppUserStore(_dbContext));
+                    userManager.FindByEmailAsync("");
+                }                
+            }
+
+            return View();
+        }
 
         //
         // POST: Update the user data

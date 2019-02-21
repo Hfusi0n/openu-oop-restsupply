@@ -1,39 +1,213 @@
-﻿@model IEnumerable<RestSupplyDB.Models.Kitchen.Kitchens>
+﻿@model RestSupplyMVC.ViewModels.KitchenIndexViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Kitchens";
 }
 
-<h2>Index</h2>
+<h2>All Kitchens</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">Add New</button>
 </p>
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @if (Model.KitchensList.Count() != 0)
+    {
+        foreach (var item in Model.KitchensList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KitchenName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.KitchenId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.KitchenId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.KitchenId })
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <div class="panel-body">
+            <h3 style="color:red;">No Kitchens!</h3>
+        </div>
+    }
 
 </table>
+
+<div class="modal fade" id="newUserModal">
+    <div class="modal-dialog modal-lg" style=" width: 900px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>Add New Kitchen</h4>
+            </div>
+            <form id="NewOrderForm">
+                <div class="modal-body">
+                    @*Customer Details*@
+                    <h5 style="color:#112247"> Kitchen</h5>
+                    <hr />
+                    <div class="form-horizontal">
+                        <input type="hidden" id="Id" />
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Kitchen Name
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="kitchenName" name="kitchenName" placeholder="" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Address
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="address" name="address" placeholder="" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Order Details*@
+                    <h5 style="margin-top:10px;color:#112247">Add Users</h5>
+                    <hr />
+                    <div class="form-horizontal">
+                        @*<input type="hidden" id="UserId" />*@
+                        <div class="form-group">
+                            <label class="control-label col-md-2">
+                                Users
+                            </label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(model => model.KitchenToCreate.AllUsersList, new SelectList(Model.KitchenToCreate.AllUsersList, "Id", "Email"), "", new { @id = "email", @class = "form-control" })
+                            </div>
+
+                        </div>
+
+                       
+                        <div class="form-group">
+                            <div class="col-md-1 col-lg-offset-1">
+                                <a id="addToList" class="btn btn-primary">Add To List</a>
+                            </div>
+                        </div>
+                        <table id="detailsTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%"></th> @*hidden UserId column*@
+                                    <th style="width: 95%">Email</th>
+                                    @*<th style="width: 30%">First Name </th>
+                                    <th style="width: 30%">Surname</th>
+                                    <th style="width: 35%">Role</th>*@
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="saveKitchen" type="submit" class="btn btn-danger">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        //Show Modal.
+        function addNewOrder() {
+            $("#newUserModal").modal();
+            // Hiding the SupplierId column
+            $('table#detailsTable td:nth-child(1),table#detailsTable th:nth-child(1)').hide();
+        }
+
+        //Add Multiple Order.
+        $("#addToList").click(function(e) {
+            e.preventDefault();
+
+            if ($.trim($("#email").val()) == "") return;
+
+            var id = $("#email option:selected").val(),
+                email = $("#email option:selected").text(),
+                
+                detailsTableBody = $("#detailsTable tbody");
+
+            var productItem = '<tr><td>' +
+                id +
+                '</td><td>' +
+                email +
+                '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            detailsTableBody.append(productItem);
+
+            // Hiding the SupplierId column
+            $('table#detailsTable td:nth-child(1),table#detailsTable th:nth-child(1)').hide();
+
+            clearItem();
+
+        });
+
+        //After Add A New Ingredient In The List, Clear Clean The Form For Add More Order.
+        function clearItem() {
+            $("#name option:selected").remove();
+        }
+
+        // After Add A New Ingredient In The List, If You Want, You Can Remove It.
+        $(document).on('click',
+            'a.deleteItem',
+            function(e) {
+                e.preventDefault();
+                var $self = $(this);
+                if ($(this).attr('data-itemId') == "0") {
+                    $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800,
+                        function() {
+                            $(this).remove();
+                        });
+                }
+            });
+
+        //After Click Save Button Pass All Data View To Controller For Save Database
+        function saveKitchen(data) {
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Kitchens/SaveKitchen",
+                data: data,
+                success: function(result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function() {
+                    alert("Error!");
+                }
+            });
+        }
+
+        //Collect Multiple Order List For Pass To Controller
+        $("#saveKitchen").click(function(e) {
+            e.preventDefault();
+
+            var usersArr = [];
+            usersArr.length = 0;
+
+            $.each($("#detailsTable tbody tr"),
+                function() {
+                    usersArr.push({
+                        id: $(this).find('td:eq(0)').html()
+                    });
+                });
+
+
+            var data = JSON.stringify({
+                kitchenName: $("#kitchenName").val(),
+                kitchenAddress: $("#address").val(),
+                users: usersArr
+            });
+
+            $.when(saveKitchen(data)).then(function(response) {
+                console.log(response);
+            }).fail(function(err) {
+                console.log(err);
+            });
+        });
+    </script>
+
+}

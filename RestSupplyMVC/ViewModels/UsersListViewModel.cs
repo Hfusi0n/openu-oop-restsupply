@@ -12,6 +12,8 @@ namespace RestSupplyMVC.ViewModels
         public string Email { get; set; }
         public string PrivateName { get; set; }
         public string LastName { get; set; }
+
+        public string FullName => PrivateName + " " + LastName;
         public string SelectedUserRole { get; set; }
         public IEnumerable<AppRole> RoleList { get; set; }
     }

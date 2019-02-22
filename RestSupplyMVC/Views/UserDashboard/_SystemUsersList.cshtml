@@ -30,7 +30,7 @@
                             <td> @Html.DisplayFor(modelItem => item.PrivateName) </td>
                             <td> @Html.DisplayFor(modelItem => item.LastName) </td>
                             <td>
-                                @Html.Action("_SystemUserEdit",new { model = item})
+                                @Html.ActionLink("display-edit-user-link", "_SystemUserEdit", "UserDashboard", new { id = item.Id },new { @id="display-user-link"})
                             </td>
                         </tr>
                             }
@@ -54,14 +54,6 @@
 @section scripts
 {
     <script>
-        /*
-        $(document).ready(function () {
-            $(".display-user-link").click(function () {
-
-            });
-        });
-        */
-
         // Show the modal
         $("#display-user-modal").modal('show');
     </script>

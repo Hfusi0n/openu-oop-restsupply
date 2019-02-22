@@ -1,7 +1,5 @@
 ﻿@model RestSupplyMVC.ViewModels.UserViewModel
 
-<a href="#" class="display-edit-user-link" dir="rtl">Edit and Details</a>
-
 @using (Html.BeginForm())
 {
     <div class="modal fade modal-user-edit" id="display-edit-modal">
@@ -54,7 +52,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>                    
-                    <button formaction="@Url.Action("UpdateUserProfile")" id="save-user-edit" type="submit" class="btn btn-danger" name="UpdateUserProfile" value="UpdateUserProfile">Save Changes</button>
+                    <button formaction="@Url.Action("UpdateUserProfile","UserDashboard")" id="save-user-edit" type="submit" class="btn btn-danger" name="UpdateUserProfile" value="UpdateUserProfile">Save Changes</button>
                 </div>
             </div>
         </div>
@@ -63,11 +61,7 @@
 @section scripts
 {
     <script>
-        $(document).ready(function () {
-            $(".display-edit-user-link").click(function () {
-                // Show the modal
-                $("#display-edit-modal").modal('show');
-            });
-        });
+        // Show the modal
+        $("#display-edit-modal").modal('show');
     </script>
 }

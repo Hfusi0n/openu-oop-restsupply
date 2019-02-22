@@ -11,7 +11,7 @@ namespace RestSupplyMVC.Repositories
     public interface IAccountRepository
     {
         List<AppUserDTO> GetAll();
-        IEnumerable<AppRole> GetAppRoles();
+        List<AppRole> GetAppRoles();
          AppUserDTO GetById(string id);
     }
 
@@ -44,7 +44,7 @@ namespace RestSupplyMVC.Repositories
             return AppUserConvertor.ToDto(dbUser);
         }
 
-        public IEnumerable<AppRole> GetAppRoles()
+        public List<AppRole> GetAppRoles()
         {
             // Don't get the roles from the database for no reason, use the cached data
             // The Roles list shouldn't change during the active session of the database context
@@ -54,7 +54,7 @@ namespace RestSupplyMVC.Repositories
                 Roles = _context.Roles.ToList();
             }
 
-            return Roles;
+            return Roles.ToList();
         }
     }
 }

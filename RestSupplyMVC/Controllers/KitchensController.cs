@@ -41,8 +41,10 @@ namespace RestSupplyMVC.Controllers
                             Email = u.Email,
                             LastName = u.LastName,
                             PrivateName = u.FirstName,
-                            SelectedUserRole = dbRoles.FirstOrDefault(r => r.Id == u.Role.RoleId)
-                                ?.Name
+                            SelectedUserRole = (u.Role != null)
+                                ? dbRoles.FirstOrDefault(r => r.Id == u.Role.RoleId)?.Name
+                                : null
+
                         }).ToList()
 
                 },

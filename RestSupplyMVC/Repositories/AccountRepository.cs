@@ -29,7 +29,7 @@ namespace RestSupplyMVC.Repositories
         public List<AppUserDTO> GetAll()
         {
             var appUsers = new List<AppUserDTO>();
-            foreach (var appUser in _context.Users)
+            foreach (var appUser in _context.Users.ToList())
             {
                 appUsers.Add(AppUserConvertor.ToDto(appUser));
             }

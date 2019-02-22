@@ -27,7 +27,7 @@ namespace RestSupplyMVC.Controllers
         {
             // Get all roles from the database
             var user = _unitOfWork.Account.GetById(model.Id);
-            AppUserRole userRole = user.Roles.FirstOrDefault();
+            AppUserRole userRole = user.Role;
 
             if(userRole == null)
             {
@@ -35,9 +35,9 @@ namespace RestSupplyMVC.Controllers
             }
             else
             {
-                var roleId = user.Roles.FirstOrDefault().RoleId;
+                var roleId = user.Role.RoleId;
 
-                model.SelectedUserRole = _dbContext.Roles.FirstOrDefault(x => x.Id == roleId).Name;
+                model.SelectedUserRole = _dbContext.Roles.FirstOrDefault(x => x.Id == roleId)?.Name;
             }
 
             model.RoleList = _unitOfWork.Account.GetAppRoles();
@@ -73,12 +73,12 @@ namespace RestSupplyMVC.Controllers
             if (ModelState.IsValid)
             {
                 // Get the current application user
-                AppUser user = _unitOfWork.Account.GetById(model.Id);
+                var user = _unitOfWork.Account.GetById(model.Id);
 
                 // Create a user manager
                 AppUserManager userManager = new AppUserManager(new AppUserStore(_dbContext));
 
-                var roleResult = userManager.AddToRole(user.Id, model.SelectedUserRole);
+                var roleResult = userManager.AddToRole(user.UserId, model.SelectedUserRole);
 
                 if (roleResult.Succeeded)
                 {
@@ -109,7 +109,7 @@ namespace RestSupplyMVC.Controllers
                 ViewModels.UserViewModel userViewModel =
                     new ViewModels.UserViewModel
                 {
-                        Id = user.Id,
+                        Id = user.UserId,
                         Email = user.Email,
                         PrivateName = "Or",
                         LastName = "Groman"

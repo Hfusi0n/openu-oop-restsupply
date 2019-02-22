@@ -9,7 +9,7 @@ namespace RestSupplyMVC.DTOs
 {
     public class AppUserConvertor
     {
-        public static AppUser _toDomainModel(AppUserDTO dtoModel)
+        public static AppUser ToDomainModel(AppUserDTO dtoModel)
         {
             return new AppUser
             {
@@ -23,7 +23,7 @@ namespace RestSupplyMVC.DTOs
             };
         }
 
-        public static AppUserDTO _toDTO(AppUser domainModel)
+        public static AppUserDTO ToDto(AppUser domainModel)
         {
             return new AppUserDTO
             {

@@ -37,11 +37,11 @@ namespace RestSupplyMVC.Controllers
                     AllUsersList = dbUsers.Select(
                         u => new UserViewModel
                         {
-                            Id = u.Id,
+                            Id = u.UserId,
                             Email = u.Email,
                             LastName = u.LastName,
                             PrivateName = u.FirstName,
-                            SelectedUserRole = dbRoles.FirstOrDefault(r => r.Id == u.Roles.FirstOrDefault()?.RoleId)
+                            SelectedUserRole = dbRoles.FirstOrDefault(r => r.Id == u.Role.RoleId)
                                 ?.Name
                         }).ToList()
 
@@ -78,8 +78,8 @@ namespace RestSupplyMVC.Controllers
                 }).ToList(),
                 AllUsersList = allUsers.Select(us => new UserViewModel
                 {
-                    Id = us.Id,
-                    Email = _unitOfWork.Account.GetById(us.Id).Email
+                    Id = us.UserId,
+                    Email = _unitOfWork.Account.GetById(us.UserId).Email
                 }).ToList(),
                 KitchenName = kitchen.Name,
                 KitchenAddress = kitchen.Address,

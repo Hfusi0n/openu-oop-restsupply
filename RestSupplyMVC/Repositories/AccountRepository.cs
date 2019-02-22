@@ -4,14 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using RestSupplyMVC.DTOs;
 
 namespace RestSupplyMVC.Repositories
 {
     public interface IAccountRepository
     {
-        IEnumerable<AppUser> GetAll();
+        List<AppUserDTO> GetAll();
         IEnumerable<AppRole> GetAppRoles();
-         AppUser GetById(string id);
+         AppUserDTO GetById(string id);
     }
 
     public class AccountRepository : IAccountRepository
@@ -25,15 +26,22 @@ namespace RestSupplyMVC.Repositories
             Roles = new List<AppRole>();
         }
 
-        public IEnumerable<AppUser> GetAll()
+        public List<AppUserDTO> GetAll()
         {
-            return _context.Users.ToList();            
+            var appUsers = new List<AppUserDTO>();
+            foreach (var appUser in _context.Users)
+            {
+                appUsers.Add(AppUserConvertor.ToDto(appUser));
+            }
+
+            return appUsers;
         }
         
 
-        public AppUser GetById(string id)
+        public AppUserDTO GetById(string id)
         {
-            return _context.Users.FirstOrDefault(user => user.Id == id);
+            var dbUser = _context.Users.FirstOrDefault(user => user.Id == id);
+            return AppUserConvertor.ToDto(dbUser);
         }
 
         public IEnumerable<AppRole> GetAppRoles()

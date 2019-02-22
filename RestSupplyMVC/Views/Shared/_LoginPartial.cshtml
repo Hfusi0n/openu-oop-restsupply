@@ -4,6 +4,14 @@
 
 @if (Request.IsAuthenticated)
 {
+    // Get the user current role
+    var userManager = Request.GetOwinContext().GetUserManager<AppUserManager>();
+    var userRoles = userManager.GetRoles(User.Identity.GetUserId());
+    var userRole = userRoles.FirstOrDefault();
+
+    // Get the current user 
+    var user = userManager.FindById(User.Identity.GetUserId());
+
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "nav navbar-nav navbar-right" }))
     {
         @Html.AntiForgeryToken()
@@ -18,7 +26,13 @@
                 <li><a href="@Url.Action("Index", "Ingredients")">Ingredients</a></li>
                 <li><a href="@Url.Action("Index", "MenuItems")">Menu</a></li>
                 <li><a href="@Url.Action("Index", "SupplierOrder")">Supplier Orders</a></li>
-                <li><a href="@Url.Action("Admin", "UserDashboard")">Admin Dashboard</a></li>
+                @{
+                    // Displaying the admin panel option only to admin...
+                    if (userRole == "Admin")
+                    {
+                        <li><a href="@Url.Action("Admin", "UserDashboard")">Admin Dashboard</a></li>
+                    }
+                }
             </ul>
         </li>
 
@@ -26,14 +40,6 @@
             <a href="@Url.Action("Index", "Manage")" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 @{ 
-                    // Get the user current role
-                    var userManager = Request.GetOwinContext().GetUserManager<AppUserManager>();
-                    var userRoles = userManager.GetRoles(User.Identity.GetUserId());
-                    var userRole = userRoles.FirstOrDefault();
-
-                    // Get the current user 
-                    var user = userManager.FindById(User.Identity.GetUserId());
-
                     // construct the display name
                     string userName = user.Email;
 

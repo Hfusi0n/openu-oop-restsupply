@@ -23,25 +23,30 @@
                             int count = 1;
                             foreach (var item in Model.UsersEnumerable)
                             {
-                        <tr>
-                            <th scope="row">@count</th>
-                            @{ count = count + 1;}
-                            <td> @Html.DisplayFor(modelItem => item.Email) </td>
-                            <td> @Html.DisplayFor(modelItem => item.PrivateName) </td>
-                            <td> @Html.DisplayFor(modelItem => item.LastName) </td>
-                            <td>
-                                @Html.ActionLink("display-edit-user-link", "_SystemUserEdit", "UserDashboard", new { id = item.Id },new { @id="display-user-link"})
-                            </td>
-                        </tr>
+                                <tr>
+                                    <th scope="row">@count</th>
+                                    @{ count = count + 1;}
+                                    <td> @Html.DisplayFor(modelItem => item.Email) </td>
+                                    <td> @Html.DisplayFor(modelItem => item.PrivateName) </td>
+                                    <td> @Html.DisplayFor(modelItem => item.LastName) </td>
+                                    <td>
+                                        @Html.ActionLink("display-edit-user-link", "_SystemUserEdit", "UserDashboard", new { id = item.Id }, new { @id = "display-user-link" })
+                                    </td>
+                                </tr>
                             }
                         }
                         else
                         {
-                            <div class="panel-body">
-                                <h3 style="color:red;">לא קיימים משתמשים במערכת</h3>
-                            </div>
-                        }
-                    </tbody>
+                                <tr>
+                                    <td>
+                                        <div class="panel-body">
+                                            <h3 style="color:red;">לא קיימים משתמשים במערכת</h3>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                }
+                        </tbody>
                 </table>
             </div>
             <div class="modal-footer">

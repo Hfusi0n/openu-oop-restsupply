@@ -22,55 +22,46 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork = new UnitOfWork(_dbContext);
         }
 
-        [Authorize]
-        public ActionResult _SystemUserEdit(ViewModels.UserViewModel model)
+        [Authorize(Roles = "Admin")]
+        public ActionResult _SystemUserEdit(string id)
         {
             // Get all roles from the database
-            var user = _unitOfWork.Account.GetById(model.Id);
+            var user = _unitOfWork.Account.GetById(id);            
             AppUserRole userRole = user.Roles.FirstOrDefault();
 
-            if(userRole == null)
+            ViewModels.UserViewModel model = new ViewModels.UserViewModel
             {
-                model.SelectedUserRole = null;
-            }
-            else
+                Id = user.Id,
+                Email = user.Email,
+                PrivateName = user.FirstName,
+                LastName = user.LastName                
+            };
+
+            // Search if the user got an assigned role
+            var roleId = user.Roles.FirstOrDefault()?.RoleId;
+
+            AppRole selectedRole = null;
+            if(roleId != null)
             {
-                var roleId = user.Roles.FirstOrDefault().RoleId;
-
-                model.SelectedUserRole = _dbContext.Roles.FirstOrDefault(x => x.Id == roleId).Name;
+               selectedRole = _dbContext.Roles.FirstOrDefault(x => x.Id == roleId);
             }
 
+            // Get the user role if exist
+            model.SelectedUserRole = selectedRole?.Name;
+
+            // Get all roles
             model.RoleList = _unitOfWork.Account.GetAppRoles();
 
             return View(model);
         }
 
-        [HttpPost]
-        [Authorize]
-        [ActionName("SearchUsers")]
-        public async Task<ActionResult> SearchUsers(ViewModels.UserViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                if(!string.IsNullOrEmpty(model.Email))
-                {
-                    // Create a user manager
-                    var userManager = new AppUserManager(new AppUserStore(_dbContext));
-                    userManager.FindByEmailAsync("");
-                }                
-            }
-
-            return View();
-        }
-
         //
         // POST: Update the user data
         [HttpPost]
-        [Authorize]
-        [ActionName("UpdateUserProfile")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateUserProfile(ViewModels.UserViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!string.IsNullOrEmpty(model.Id))
             {
                 // Get the current application user
                 AppUser user = _unitOfWork.Account.GetById(model.Id);
@@ -78,20 +69,23 @@ namespace RestSupplyMVC.Controllers
                 // Create a user manager
                 AppUserManager userManager = new AppUserManager(new AppUserStore(_dbContext));
 
-                var roleResult = userManager.AddToRole(user.Id, model.SelectedUserRole);
-
-                if (roleResult.Succeeded)
+                if (!string.IsNullOrEmpty(model.SelectedUserRole))
                 {
-                    // Update the user
-                    var userResult = await userManager.UpdateAsync(user);
+                    // Add the new role if needed
+                    var roleResult = userManager.AddToRole(user.Id, model.SelectedUserRole);
                 }
+
+                // Update the user
+                user.FirstName = model.PrivateName;
+                user.LastName = model.LastName;
+                var userResult = await userManager.UpdateAsync(user);
             }
 
-            return RedirectToAction("_SystemUsersList");
+            return RedirectToAction("Admin");
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult _SystemUsersList()
         {
             var users = _unitOfWork.Account.GetAll();
@@ -108,11 +102,11 @@ namespace RestSupplyMVC.Controllers
                 // and push the user database data to the viewmodel
                 ViewModels.UserViewModel userViewModel =
                     new ViewModels.UserViewModel
-                {
+                    {
                         Id = user.Id,
                         Email = user.Email,
-                        PrivateName = "Or",
-                        LastName = "Groman"
+                        PrivateName = user.FirstName,
+                        LastName = user.LastName
                 };
 
                 usersList.Add(userViewModel);
@@ -123,11 +117,43 @@ namespace RestSupplyMVC.Controllers
             return View(usersListViewModel);
         }
 
-        // GET: UserDashboard
-        [Authorize]
-        public ActionResult Admin()
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ActionName("SearchUsers")]
+        public async Task<ActionResult> SearchUsers(ViewModels.UserViewModel model)
         {
-            return View();
+            AppUser user = null;
+
+            if (ModelState.IsValid)
+            {
+                if (!string.IsNullOrEmpty(model.Email))
+                {
+                    // Create a user manager
+                    var userManager = new AppUserManager(new AppUserStore(_dbContext));
+                    user = await userManager.FindByEmailAsync(model.Email);
+                }
+
+                if (user != null)
+                {
+                    return RedirectToAction("Admin", new { id = user.Id });
+                }
+            }
+
+
+            return RedirectToAction("Admin");
+        }
+
+        // GET: UserDashboard
+        [Authorize(Roles = "Admin")]
+        public ActionResult Admin(string id)
+        {
+            ViewModels.UserViewModel model = new ViewModels.UserViewModel
+            {
+                Id = id
+            };
+
+            return View(model);
         }
     }
 }

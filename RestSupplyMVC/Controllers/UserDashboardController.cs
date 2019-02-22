@@ -73,17 +73,22 @@ namespace RestSupplyMVC.Controllers
             if (ModelState.IsValid)
             {
                 // Get the current application user
-                var user = _unitOfWork.Account.GetById(model.Id);
+                //var user = _unitOfWork.Account.GetById(model.Id);
+                // Temporary
+                var user = _dbContext.Users.FirstOrDefault(u => u.Id == model.Id);
 
                 // Create a user manager
                 AppUserManager userManager = new AppUserManager(new AppUserStore(_dbContext));
 
-                var roleResult = userManager.AddToRole(user.UserId, model.SelectedUserRole);
-
-                if (roleResult.Succeeded)
+                if (user != null)
                 {
-                    // Update the user
-                    var userResult = await userManager.UpdateAsync(user);
+                    var roleResult = userManager.AddToRole(user.Id, model.SelectedUserRole);
+
+                    if (roleResult.Succeeded)
+                    {
+                        // Update the user
+                        var userResult = await userManager.UpdateAsync(user);
+                    }
                 }
             }
 

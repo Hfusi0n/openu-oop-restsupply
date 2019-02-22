@@ -38,7 +38,7 @@ namespace RestSupplyMVC.Controllers
             };
 
             // Search if the user got an assigned role
-            var roleId = user.Role.RoleId;
+            var roleId = user.Role?.RoleId;
 
             AppRole selectedRole = null;
             if(roleId != null)

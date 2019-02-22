@@ -1,34 +1,202 @@
-﻿@model RestSupplyDB.Models.Kitchen.Kitchens
+﻿@model RestSupplyMVC.ViewModels.CreateKitchenViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Kitchen Info";
 }
 
 <h2>Details</h2>
 
 <div>
-    <h4>Kitchens</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+    <h4>Kitchen Info and Actions</h4>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+            <dd>
+                <div class="panel-body">
+                    <table class="table table-striped table-responsive">
+                        <tbody>
+                            <tr>
+                                <td><b>Kitchen Name:</b> @Model.KitchenName </ td >
+                                <td> <b>Address:</b>@Model.KitchenAddress </ td >
+                                <td> @Html.ActionLink("Edit", "Edit", new { id = Model.KitchenId })</ td >
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th>User Email</th>
+                                                <th>Role</th>
+                                            </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
+                                            @foreach (var kitchenUser in Model.KitchenUsersList)
+                                            {
+                                                <tr>
+                                                    <td>@kitchenUser.Email</td>
+                                                    <td>@kitchenUser.SelectedUserRole</td>
+                                                </tr>
+                                            }
+                                        </tbody>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        <button style="margin-right:10px" class="btn btn-primary " onclick="addUser()">Add users</button>
+                    </p>
+                </div>
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+    <div class="modal fade" id="assignUserModal">
+        <div class="modal-dialog modal-lg" style=" width: 900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h4>Assign users</h4>
+                </div>
+                <form id="AssignUserForm">
+                    <div class="modal-body">
+                        <h5 style="color:#112247">Pick users</h5>
+                        <hr />
+                        <div class="form-horizontal">
+
+                            @Html.HiddenFor(model => model.KitchenId, new { id = "KitchenId" })
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.KitchenName, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(m => m.KitchenName, new { @class = "form-control", disabled = "disabled", @Value = Model.KitchenName })
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Select User*@
+                        <h5 style="margin-top:10px;color:#112247">Order Details</h5>
+                        <hr />
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Assign users
+                                </label>
+                                <div class="col-md-4">
+
+                                    @Html.DropDownListFor(model => model.NotAssociatedUsers, new SelectList(Model.NotAssociatedUsers, "Id", "Email"), "", new { @id = "user1", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-1 col-lg-offset-1">
+                                    <a id="addIngToList" class="btn btn-primary">Add Item</a>
+                                </div>
+
+                            </div>
+                            <table id="ingTable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%"></th> @*hidden UserId column*@
+                                        <th style="width: 95%">User</th>
+
+                                        <th style="width: 10%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="addUsers" type="submit" class="btn btn-danger">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    @section scripts{
+        <script>
+            // ------Show Add ingredient Modal-------
+            function addUser() {
+                $("#assignUserModal").modal();
+                // Hiding the UserId column
+                $('table#ingTable td:nth-child(1), table#ingTable th:nth-child(1)').hide();
+            }
+
+            //Add Multiple Users.
+            $("#addIngToList").click(function (e) {
+                e.preventDefault();
+
+                if ($.trim($("#user1").val()) == "") return;
+
+                var id = $("#user1 option:selected").val(),
+                    name = $("#user1 option:selected").text();
+
+                    detailsTableBody = $("#ingTable tbody");
+
+                var productItem = '<tr><td>' + id + '</td><td>' + name  + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+                detailsTableBody.append(productItem);
+
+                // Hiding the UserId column
+                $('table#ingTable td:nth-child(1),table#ingTable th:nth-child(1)').hide();
+
+                clearIngItem();
+
+            });
+            //After Add A New Order In The List, Clear Clean The Form For Add More Order.
+            function clearIngItem() {
+                $("#user1 option:selected").remove();
+            }
+
+            //After Click Save Button Pass All Data View To Controller For Save Database
+            function addUsersToKitchen(data) {
+                return $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: "/Kitchens/AddUsersToKitchen",
+                    data: data,
+                    success: function (result) {
+                        alert(result);
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Error!");
+                    }
+                });
+            };
+
+            //Collect Multiple User List For Pass To Controller
+            $("#addUsers").click(function (e) {
+                e.preventDefault();
+
+                var usersArr = [];
+                usersArr.length = 0;
+
+                $.each($("#ingTable tbody tr"), function () {
+                    usersArr.push({
+                        ingredientId: $(this).find('td:eq(0)').html()
+                    });
+                });
+
+
+                var data = JSON.stringify({
+                    kitchenId: $("#KitchenId").val(),
+                    users: usersArr
+
+                });
+
+                $.when(addUsersToKitchen(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+            });
+        </script>
+    }

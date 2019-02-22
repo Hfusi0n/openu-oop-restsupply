@@ -16,5 +16,7 @@ namespace RestSupplyMVC.Repositories
         void Add(Kitchens kitchen);
         void AddUserToKitchen(int kitchenId, string userId);
         void RemoveUserFromKitchen(int kitchenId, string userId);
+        void AddUsersToKitchen(int kitchenId, List<string> userIds);
+
     }
 }

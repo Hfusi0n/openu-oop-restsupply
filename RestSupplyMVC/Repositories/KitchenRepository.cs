@@ -40,6 +40,19 @@ namespace RestSupplyMVC.Repositories
             });
         }
 
+        public void AddUsersToKitchen(int kitchenId, List<string> userIds)
+        {
+            var dbKitchen = _context.KitchensSet.Find(kitchenId);
+            foreach (var userId in userIds)
+            {
+                dbKitchen?.KitchenUsers.Add(new KitchenUsers
+                {
+                    UserId = userId
+                });
+            }
+
+        }
+
         public void RemoveUserFromKitchen(int kitchenId, string userId)
         {
             var dbKitchen = _context.KitchensSet.Find(kitchenId);

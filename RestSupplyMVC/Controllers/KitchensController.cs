@@ -64,12 +64,30 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Kitchens kitchens = db.KitchensSet.Find(id);
-            if (kitchens == null)
+            var allUsers = _unitOfWork.Account.GetAll();
+            var kitchen = _unitOfWork.Kitchens.GetById(id.Value);
+
+            // TODO add user role
+            var dbRoles = _unitOfWork.Account.GetAppRoles();
+            var kitchenVm = new CreateKitchenViewModel
             {
-                return HttpNotFound();
-            }
-            return View(kitchens);
+                KitchenUsersList = kitchen.KitchenUsers.Select(u => new UserViewModel
+                {
+                    Id = u.UserId,
+                    Email = _unitOfWork.Account.GetById(u.UserId).Email
+                }).ToList(),
+                AllUsersList = allUsers.Select(us => new UserViewModel
+                {
+                    Id = us.Id,
+                    Email = _unitOfWork.Account.GetById(us.Id).Email
+                }).ToList(),
+                KitchenName = kitchen.Name,
+                KitchenAddress = kitchen.Address,
+                KitchenId = kitchen.Id
+
+            };
+
+            return View(kitchenVm);
         }
 
         public ActionResult SaveKitchen(string kitchenName, string kitchenAddress, UserViewModel[] users)
@@ -99,6 +117,21 @@ namespace RestSupplyMVC.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult AddUsersToKitchen(int kitchenId, UserViewModel[] users)
+        {
+            string result = "Error! Unable to add ingredients!";
+            if (kitchenId > 0 && users.Any())
+            {
+                var userIds = users.Select(u => u.Id).ToList();
+                _unitOfWork.Kitchens.AddUsersToKitchen(kitchenId, userIds);
+                _unitOfWork.Complete();
+
+                result = "Success! Users were added!";
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         // GET: Kitchens/Create
         public ActionResult Create()
         {

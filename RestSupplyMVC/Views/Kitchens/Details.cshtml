@@ -122,7 +122,7 @@
 
     @section scripts{
         <script>
-            // ------Show Add ingredient Modal-------
+            // ------Show Assign User Modal-------
             function addUser() {
                 $("#assignUserModal").modal();
                 // Hiding the UserId column
@@ -142,7 +142,6 @@
 
                 var productItem = '<tr><td>' + id + '</td><td>' + name  + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
                 detailsTableBody.append(productItem);
-
                 // Hiding the UserId column
                 $('table#ingTable td:nth-child(1),table#ingTable th:nth-child(1)').hide();
 
@@ -181,7 +180,7 @@
 
                 $.each($("#ingTable tbody tr"), function () {
                     usersArr.push({
-                        ingredientId: $(this).find('td:eq(0)').html()
+                        id: $(this).find('td:eq(0)').html()
                     });
                 });
 

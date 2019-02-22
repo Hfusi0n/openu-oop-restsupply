@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using RestSupplyDB.Models.Menu;
+﻿using RestSupplyDB.Models.Menu;
 
 namespace RestSupplyMVC.Repositories
 {
-    public interface IMenuItemsRepository
+    public interface IMenuItemsRepository : IRepository<MenuItems>
     {
-        IEnumerable<RestSupplyDB.Models.Menu.MenuItems> GetAll();
-        RestSupplyDB.Models.Menu.MenuItems GetById(int id);
-        MenuItems Add(MenuItems item);
     }
 }

@@ -214,6 +214,7 @@
     </Compile>
     <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\IKitchenRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ISupplierOrderRepository.cs" />
     <Compile Include="Persistence\IUnitOfWork.cs" />
     <Compile Include="Repositories\IIngredientRepository.cs" />

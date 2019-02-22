@@ -9,14 +9,10 @@ using RestSupplyDB.Models.Supplier;
 
 namespace RestSupplyMVC.Repositories
 {
-    public interface IKitchenRepository
+    public interface IKitchenRepository : IRepository<Kitchens>
     {
-        IEnumerable<Kitchens> GetAll();
-        Kitchens GetById(int id);
-        void Add(Kitchens kitchen);
         void AddUserToKitchen(int kitchenId, string userId);
         void RemoveUserFromKitchen(int kitchenId, string userId);
         void AddUsersToKitchen(int kitchenId, List<string> userIds);
-
     }
 }

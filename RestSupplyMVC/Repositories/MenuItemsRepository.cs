@@ -25,10 +25,9 @@ namespace RestSupplyMVC.Repositories
             return _context.MenuItemsSet.Find(id);
         }
 
-        public MenuItems Add(MenuItems item)
+        public void Add(MenuItems item)
         {
-            return _context.MenuItemsSet.Add(item);
+            _context.MenuItemsSet.Add(item);
         }
-
     }
 }

@@ -27,18 +27,18 @@ namespace RestSupplyMVC.Controllers
         {
             // Get all roles from the database
             var user = _unitOfWork.Account.GetById(id);            
-            AppUserRole userRole = user.Roles.FirstOrDefault();
+            AppUserRole userRole = user.Role;
 
             ViewModels.UserViewModel model = new ViewModels.UserViewModel
             {
-                Id = user.Id,
+                Id = user.UserId,
                 Email = user.Email,
                 PrivateName = user.FirstName,
                 LastName = user.LastName                
             };
 
             // Search if the user got an assigned role
-            var roleId = user.Roles.FirstOrDefault()?.RoleId;
+            var roleId = user.Role.RoleId;
 
             AppRole selectedRole = null;
             if(roleId != null)
@@ -64,15 +64,19 @@ namespace RestSupplyMVC.Controllers
             if (!string.IsNullOrEmpty(model.Id))
             {
                 // Get the current application user
-                AppUser user = _unitOfWork.Account.GetById(model.Id);
-
+                //AppUser user = _unitOfWork.Account.GetById(model.Id);
+                // Temporary
+                var user = _dbContext.Users.FirstOrDefault(u => u.Id == model.Id);
                 // Create a user manager
                 AppUserManager userManager = new AppUserManager(new AppUserStore(_dbContext));
 
                 if (!string.IsNullOrEmpty(model.SelectedUserRole))
                 {
                     // Add the new role if needed
-                    var roleResult = userManager.AddToRole(user.Id, model.SelectedUserRole);
+                    if (user != null)
+                    {
+                        var roleResult = userManager.AddToRole(user.Id, model.SelectedUserRole);
+                    }
                 }
 
                 // Update the user
@@ -103,7 +107,7 @@ namespace RestSupplyMVC.Controllers
                 ViewModels.UserViewModel userViewModel =
                     new ViewModels.UserViewModel
                     {
-                        Id = user.Id,
+                        Id = user.UserId,
                         Email = user.Email,
                         PrivateName = user.FirstName,
                         LastName = user.LastName

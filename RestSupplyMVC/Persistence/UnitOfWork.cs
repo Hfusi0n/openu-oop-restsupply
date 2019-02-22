@@ -1,4 +1,7 @@
-﻿using RestSupplyDB;
+﻿using System;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
+using RestSupplyDB;
 using RestSupplyMVC.Repositories;
 
 namespace RestSupplyMVC.Persistence
@@ -26,7 +29,24 @@ namespace RestSupplyMVC.Persistence
 
         public void Complete()
         {
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Debug.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Debug.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
         }
     }
 }

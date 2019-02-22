@@ -10,8 +10,8 @@ namespace RestSupplyMVC.Repositories
     public interface IAccountRepository
     {
         IEnumerable<AppUser> GetAll();
-        AppUser GetById<TKey>(TKey id);
         IEnumerable<AppRole> GetAppRoles();
+         AppUser GetById(string id);
     }
 
     public class AccountRepository : IAccountRepository
@@ -30,9 +30,10 @@ namespace RestSupplyMVC.Repositories
             return _context.Users.ToList();            
         }
         
-        public AppUser GetById<TKey>(TKey id)
+
+        public AppUser GetById(string id)
         {
-            return _context.Users.Find(id);
+            return _context.Users.FirstOrDefault(user => user.Id == id);
         }
 
         public IEnumerable<AppRole> GetAppRoles()

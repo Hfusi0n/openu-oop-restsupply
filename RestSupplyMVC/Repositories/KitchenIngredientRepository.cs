@@ -16,7 +16,7 @@ namespace RestSupplyMVC.Repositories
         }
         public IEnumerable<KitchenIngredients> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _context.KitchenIngredientsSet.ToList();
         }
 
         public KitchenIngredients GetById<TKey>(TKey id)
@@ -29,7 +29,7 @@ namespace RestSupplyMVC.Repositories
 
         public void Add(KitchenIngredients item)
         {
-            throw new System.NotImplementedException();
+            _context.KitchenIngredientsSet.Add(item);
         }
         
         public void Remove<TKey>(TKey id)
@@ -41,13 +41,13 @@ namespace RestSupplyMVC.Repositories
         {
             var kitchenIngredients = _context.KitchenIngredientsSet.Include(k => k.IngredientsSet).Include(k => k.KitchensSet).Where(k => k.KitchenId == kitchenId);
 
-            var dictionary = new Dictionary<int,KitchenIngredients>();
+            var map = new Dictionary<int,KitchenIngredients>();
             foreach (var ingredient in kitchenIngredients)
             {
-                dictionary.Add(ingredient.IngredientId, ingredient);
+                map.Add(ingredient.IngredientId, ingredient);
             }
 
-            return dictionary;
+            return map;
 
         }
     }

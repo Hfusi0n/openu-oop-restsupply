@@ -26,19 +26,14 @@ namespace RestSupplyMVC.Controllers
 
         // id param = kitchenId
         // getting all ingredients for specific kitchen
-        public ActionResult Index(int? id)
+        public ActionResult Index(int kitchenId)
 
         {
-            if (id == null)
-            {
-                return RedirectToAction("index", "Kitchens");
-            }
-
             // TODO security: check that KitchenId belong to current user
             // TODO GetIngredientIdToKitchenIngredientMap can return All ingredients in the keys
             // TODo Add Kitchen Name 
             var ingredientToKitchenIngredientMap =
-               _unitOfWork.KitchenIngredient.GetIngredientIdToKitchenIngredientMap(id.Value);
+               _unitOfWork.KitchenIngredient.GetIngredientIdToKitchenIngredientMap(kitchenId);
             var allIngredients = _unitOfWork.Ingredients.GetAll();
             var vm = new KitchenIngredientIndexViewModel
             {
@@ -50,7 +45,7 @@ namespace RestSupplyMVC.Controllers
                     MinimalQuantity = ingredientToKitchenIngredientMap.ContainsKey(i.Id) ? ingredientToKitchenIngredientMap[i.Id].MinimalQuantity : (double?)null,
                     KitchenIngredientId = ingredientToKitchenIngredientMap.ContainsKey(i.Id) ? ingredientToKitchenIngredientMap[i.Id].Id : (int?)null,
                     IngredientName = i.Name,
-                    KitchenId = id.Value
+                    KitchenId = kitchenId
 
                 }).ToList()
             };
@@ -75,11 +70,28 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: KitchenIngredients/Create
-        public ActionResult Create()
+        public ActionResult Create(int kitchenId, int ingredientId)
         {
-            ViewBag.IngredientId = new SelectList(db.IngredientsSet, "Id", "Name");
-            ViewBag.KitchenId = new SelectList(db.KitchensSet, "Id", "Name");
-            return View();
+            // Checking that KitchenIngredient doesn't already exist
+            var ingredientToKitchenIngredientMap = _unitOfWork.KitchenIngredient.GetIngredientIdToKitchenIngredientMap(kitchenId);
+            if (ingredientToKitchenIngredientMap.ContainsKey(ingredientId))
+            {
+                var kitchenIngredientId = ingredientToKitchenIngredientMap[ingredientId].Id;
+                return RedirectToAction("Edit", new {id = kitchenIngredientId});
+            }
+
+            // Create new
+            var kitchen = _unitOfWork.Kitchens.GetById(kitchenId);
+            var ingredient = _unitOfWork.Ingredients.GetById(ingredientId);
+            var vm = new KitchenIngredientViewModel
+            {
+                IngredientName = ingredient.Name,
+                IngredientId = ingredient.Id,
+                KitchenId = kitchen.Id,
+                KitchenName = kitchen.Name,
+                Unit = ingredient.Unit
+            };
+            return View(vm);
         }
 
         // POST: KitchenIngredients/Create
@@ -87,18 +99,24 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Valid,KitchenId,IngredientId,MinimalQuantity,CurrentQuantity")] KitchenIngredients kitchenIngredients)
+        public ActionResult Create(KitchenIngredientViewModel kitchenIngredientVm)
         {
             if (ModelState.IsValid)
             {
-                db.KitchenIngredientsSet.Add(kitchenIngredients);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                KitchenIngredients kitchenIngredient = new KitchenIngredients
+                {
+                    CurrentQuantity = kitchenIngredientVm.CurrentQuantity ?? 0,
+                    MinimalQuantity = kitchenIngredientVm.MinimalQuantity ?? 0,
+                    IngredientId = kitchenIngredientVm.IngredientId,
+                    KitchenId = kitchenIngredientVm.KitchenId
+                };
+                _unitOfWork.KitchenIngredient.Add(kitchenIngredient);
+                _unitOfWork.Complete();
+
+                return RedirectToAction("Index", new {kitchenId = kitchenIngredientVm.KitchenId});
             }
 
-            ViewBag.IngredientId = new SelectList(db.IngredientsSet, "Id", "Name", kitchenIngredients.IngredientId);
-            ViewBag.KitchenId = new SelectList(db.KitchensSet, "Id", "Name", kitchenIngredients.KitchenId);
-            return View(kitchenIngredients);
+            return View(kitchenIngredientVm);
         }
 
         // GET: KitchenIngredients/Edit/5
@@ -150,7 +168,7 @@ namespace RestSupplyMVC.Controllers
             kitchenIngredient.MinimalQuantity = kitchenIngredientVm.MinimalQuantity ?? kitchenIngredient.MinimalQuantity;
             _unitOfWork.Complete();
 
-            return RedirectToAction("Index", new { id = kitchenIngredientVm.KitchenId });
+            return RedirectToAction("Index", new { kitchenId = kitchenIngredientVm.KitchenId });
 
         }
 
@@ -177,7 +195,8 @@ namespace RestSupplyMVC.Controllers
             KitchenIngredients kitchenIngredients = db.KitchenIngredientsSet.Find(id);
             db.KitchenIngredientsSet.Remove(kitchenIngredients);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            var kitchenId = kitchenIngredients.KitchenId;
+            return RedirectToAction("Index", new{kitchenId});
         }
 
         protected override void Dispose(bool disposing)

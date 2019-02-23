@@ -20,6 +20,10 @@ namespace RestSupplyMVC
             );
 
             // create routes
+            routes.MapRoute("CreateKitchenIngredient",
+                "{controller}/{action}/{kitchenId}/{ingredientId}",
+                new { controller = "KitchenIngredients", action = "Create"
+                 });
             routes.MapRoute("CreateIngredients",
                 "{controller}/{action}",
                 new { controller = "Ingredients", action = "Create" });
@@ -38,8 +42,8 @@ namespace RestSupplyMVC
 
             // index (GET) routes
             routes.MapRoute("GetKitchenIngredients",
-                "{controller}/{action}/{id}",
-                new { controller = "KitchenIngredients", action = "Index" , id = UrlParameter.Optional });
+                "{controller}/{action}/{kitchenId}",
+                new { controller = "KitchenIngredients", action = "Index" });
             routes.MapRoute("GetKitchens",
                 "{controller}/{action}",
                 new { controller = "Kitchens", action = "Index" });

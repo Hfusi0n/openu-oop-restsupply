@@ -36,6 +36,8 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.MinimalQuantity, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.MinimalQuantity, "", new { @class = "text-danger" })
+                @Html.LabelFor(model => model.Unit, "(" + Model.Unit + ")", htmlAttributes: new { @class = "small" })
+
             </div>
         </div>
 
@@ -44,6 +46,8 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.CurrentQuantity, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.CurrentQuantity, "", new { @class = "text-danger" })
+                @Html.LabelFor(model => model.Unit, "(" + Model.Unit + ")", htmlAttributes: new { @class = "small" })
+
             </div>
         </div>
 
@@ -56,5 +60,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index", new {id = Model.KitchenId})
+    @Html.ActionLink("Back to List", "Index", new {kitchenId = Model.KitchenId})
 </div>

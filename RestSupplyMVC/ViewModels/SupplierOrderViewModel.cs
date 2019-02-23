@@ -37,6 +37,8 @@ namespace RestSupplyMVC.ViewModels
     public class SupplierOrderViewModel : CreateSupplierViewModel
     {
         public int OrderId { get; set; }
+        public int KitchenId { get; set; }
+        public List<KitchenViewModel> UserKitchens { get; set; }
         public DateTime OrderDate { get; set; }
         public double TotalAmount { get; set; }
         public IEnumerable<SupplierOrderIngredientsViewModel> SupplierOrderIngredientsList { get; set; }

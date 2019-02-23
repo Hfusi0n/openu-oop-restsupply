@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestSupplyMVC.Models
+namespace RestSupplyMVC.ViewModels
 {
     public class LoginViewModel
     {

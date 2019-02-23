@@ -8,11 +8,12 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using RestSupplyMVC.Models;
 using RestSupplyDB.Models;
 using RestSupplyDB.Models.AppUser;
 using RestSupplyMVC;
 using Microsoft.AspNet.Identity.EntityFramework;
+using RestSupplyMVC.ViewModels;
+using RestSupplyMVC.ViewModels.Account;
 
 namespace RestSupplyMVC.Controllers
 {

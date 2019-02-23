@@ -213,6 +213,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\IAccountRepository.cs" />
+    <Compile Include="Repositories\IKitchenIngredientRepository.cs" />
     <Compile Include="Repositories\IKitchenRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ISupplierOrderRepository.cs" />
@@ -220,6 +222,7 @@
     <Compile Include="Repositories\IIngredientRepository.cs" />
     <Compile Include="Repositories\IMenuItemsRepository.cs" />
     <Compile Include="Repositories\ISupplierRepository.cs" />
+    <Compile Include="Repositories\KitchenIngredientRepository.cs" />
     <Compile Include="Repositories\KitchenRepository.cs" />
     <Compile Include="Repositories\MenuItemsRepository.cs" />
     <Compile Include="Repositories\SupplierOrderRepository.cs" />

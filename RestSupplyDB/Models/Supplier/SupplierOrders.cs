@@ -1,4 +1,4 @@
-using RestSupplyDB.Models.Supplier;
+using RestSupplyDB.Models.Kitchen;
 
 namespace RestSupplyDB.Models.Supplier
 {
@@ -6,7 +6,6 @@ namespace RestSupplyDB.Models.Supplier
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("SupplierOrders")]
     public partial class SupplierOrders
@@ -23,6 +22,10 @@ namespace RestSupplyDB.Models.Supplier
         public DateTime Date { get; set; }
 
         public int SupplierId { get; set; }
+
+        public int KitchenId { get; set; }
+
+        //public virtual Kitchens Kitchen { get; set; }
 
         public virtual Supplier SupplierSet { get; set; }
         

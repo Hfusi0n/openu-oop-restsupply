@@ -2,6 +2,7 @@ using RestSupplyDB.Models.Customer;
 
 namespace RestSupplyDB.Models.Kitchen
 {
+    using RestSupplyDB.Models.Supplier;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -16,6 +17,7 @@ namespace RestSupplyDB.Models.Kitchen
         {
             KitchenIngredientsSet = new HashSet<KitchenIngredients>();
             KitchenUsers = new List<KitchenUsers>();
+            //SupplierOrders = new HashSet<SupplierOrders>();
         }
 
         public int Id { get; set; }
@@ -31,5 +33,6 @@ namespace RestSupplyDB.Models.Kitchen
 
         public virtual ICollection<KitchenUsers> KitchenUsers { get; set; }
 
+        //public virtual ICollection<SupplierOrders> SupplierOrders { get; set; }
     }
 }

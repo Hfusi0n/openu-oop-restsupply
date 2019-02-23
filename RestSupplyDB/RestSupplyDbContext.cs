@@ -19,7 +19,7 @@ namespace RestSupplyDB
         {
             return new RestSupplyDbContext();
         }
-        
+
         public virtual DbSet<Ingredients> IngredientsSet { get; set; }
         public virtual DbSet<KitchenIngredients> KitchenIngredientsSet { get; set; }
         public virtual DbSet<Kitchens> KitchensSet { get; set; }
@@ -80,12 +80,17 @@ namespace RestSupplyDB
                 .HasMany(e => e.CustomerOrdersSet)
                 .WithRequired(e => e.Kitchens)
                 .HasForeignKey(e => e.KitchenId);
-            
+
             modelBuilder.Entity<Kitchens>()
                 .HasMany(e => e.KitchenUsers)
                 .WithRequired(e => e.Kitchen)
                 .HasForeignKey(e => e.KitchenId);
-               
+/*
+            modelBuilder.Entity<Kitchens>()
+                .HasMany(e => e.SupplierOrders)
+                .WithRequired(e => e.Kitchen)
+                .HasForeignKey(e => e.KitchenId).WillCascadeOnDelete(false);
+*/
             modelBuilder.Entity<MenuItems>()
                 .HasMany(e => e.MenuIngredientsSet)
                 .WithRequired(e => e.MenuItemsSet)
@@ -95,7 +100,7 @@ namespace RestSupplyDB
                 .HasMany(e => e.CustomerDetailOrdersSet)
                 .WithRequired(e => e.MenuItems)
                 .HasForeignKey(e => e.MenuItemId).WillCascadeOnDelete(false);
-            
+
             modelBuilder.Entity<SupplierOrders>()
                 .HasMany(e => e.SupplierOrderDetails)
                 .WithRequired(e => e.OrdersSet)
@@ -115,6 +120,6 @@ namespace RestSupplyDB
                 .HasMany(e => e.CustomerDetailOrders)
                 .WithRequired(e => e.CustomerOrder)
                 .HasForeignKey(e => e.OrderId).WillCascadeOnDelete(false);
-        }    
+        }
     }
 }

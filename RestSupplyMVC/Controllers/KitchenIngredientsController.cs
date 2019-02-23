@@ -31,25 +31,26 @@ namespace RestSupplyMVC.Controllers
         {
             if (id == null)
             {
-                // TODO 
                 return RedirectToAction("index", "Kitchens");
             }
 
             // TODO security: check that KitchenId belong to current user
-
+            // TODO GetIngredientIdToKitchenIngredientMap can return All ingredients in the keys
+            // TODo Add Kitchen Name 
             var ingredientToKitchenIngredientMap =
-                _unitOfWork.KitchenIngredient.GetIngredientIdToKitchenIngredientMap(id.Value);
+               _unitOfWork.KitchenIngredient.GetIngredientIdToKitchenIngredientMap(id.Value);
             var allIngredients = _unitOfWork.Ingredients.GetAll();
             var vm = new KitchenIngredientIndexViewModel
             {
-                KitchenId = id.Value,
                 KitchenIngredientsList = allIngredients.Select(i => new KitchenIngredientViewModel
                 {
                     IngredientId = i.Id,
                     Unit = i.Unit,
                     CurrentQuantity = ingredientToKitchenIngredientMap.ContainsKey(i.Id) ? ingredientToKitchenIngredientMap[i.Id].CurrentQuantity : (double?) null,
                     MinimalQuantity = ingredientToKitchenIngredientMap.ContainsKey(i.Id) ? ingredientToKitchenIngredientMap[i.Id].MinimalQuantity : (double?)null,
-                    KitchenIngredientId = ingredientToKitchenIngredientMap.ContainsKey(i.Id) ? ingredientToKitchenIngredientMap[i.Id].Id : (int?)null
+                    KitchenIngredientId = ingredientToKitchenIngredientMap.ContainsKey(i.Id) ? ingredientToKitchenIngredientMap[i.Id].Id : (int?)null,
+                    IngredientName = i.Name,
+                    KitchenId = id.Value
 
                 }).ToList()
             };
@@ -101,20 +102,32 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: KitchenIngredients/Edit/5
+        // @param id = KitchenIngredientId
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            KitchenIngredients kitchenIngredients = db.KitchenIngredientsSet.Find(id);
-            if (kitchenIngredients == null)
+
+            var kitchenIngredient = _unitOfWork.KitchenIngredient.GetById(id.Value);
+            if (kitchenIngredient == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IngredientId = new SelectList(db.IngredientsSet, "Id", "Name", kitchenIngredients.IngredientId);
-            ViewBag.KitchenId = new SelectList(db.KitchensSet, "Id", "Name", kitchenIngredients.KitchenId);
-            return View(kitchenIngredients);
+
+            var vm = new KitchenIngredientViewModel
+            {
+                KitchenId = kitchenIngredient.KitchenId,
+                CurrentQuantity = kitchenIngredient.CurrentQuantity,
+                KitchenIngredientId = kitchenIngredient.Id,
+                IngredientId = kitchenIngredient.IngredientId,
+                IngredientName = kitchenIngredient.IngredientsSet.Name,
+                Unit = kitchenIngredient.IngredientsSet.Unit,
+                KitchenName = kitchenIngredient.KitchensSet.Name,
+                MinimalQuantity = kitchenIngredient.MinimalQuantity
+            };
+            return View(vm);
         }
 
         // POST: KitchenIngredients/Edit/5
@@ -122,17 +135,23 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Valid,KitchenId,IngredientId,MinimalQuantity,CurrentQuantity")] KitchenIngredients kitchenIngredients)
+        public ActionResult Edit(KitchenIngredientViewModel kitchenIngredientVm)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid || kitchenIngredientVm.KitchenIngredientId == null)
             {
-                db.Entry(kitchenIngredients).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return View(kitchenIngredientVm);
+                
             }
-            ViewBag.IngredientId = new SelectList(db.IngredientsSet, "Id", "Name", kitchenIngredients.IngredientId);
-            ViewBag.KitchenId = new SelectList(db.KitchensSet, "Id", "Name", kitchenIngredients.KitchenId);
-            return View(kitchenIngredients);
+
+            // Updating Quantites
+            var kitchenIngredient =
+                _unitOfWork.KitchenIngredient.GetById(kitchenIngredientVm.KitchenIngredientId.Value);
+            kitchenIngredient.CurrentQuantity = kitchenIngredientVm.CurrentQuantity ?? kitchenIngredient.CurrentQuantity;
+            kitchenIngredient.MinimalQuantity = kitchenIngredientVm.MinimalQuantity ?? kitchenIngredient.MinimalQuantity;
+            _unitOfWork.Complete();
+
+            return RedirectToAction("Index", new { id = kitchenIngredientVm.KitchenId });
+
         }
 
         // GET: KitchenIngredients/Delete/5

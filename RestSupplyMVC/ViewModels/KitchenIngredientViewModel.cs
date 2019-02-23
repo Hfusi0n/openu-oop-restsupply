@@ -10,11 +10,12 @@ namespace RestSupplyMVC.ViewModels
         public double? MinimalQuantity { get; set; }
         public double? CurrentQuantity { get; set; }
         public string Unit { get; set; }
+        public int KitchenId { get; set; }
+        public string KitchenName { get; set; }
     }
 
     public class KitchenIngredientIndexViewModel
     {
-        public int KitchenId { get; set; }
         public List<KitchenIngredientViewModel> KitchenIngredientsList { get; set; }
     }
 }

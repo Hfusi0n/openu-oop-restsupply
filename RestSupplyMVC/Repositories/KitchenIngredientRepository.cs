@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using RestSupplyDB;
+using RestSupplyDB.Models.Ingredient;
 using RestSupplyDB.Models.Kitchen;
 
 namespace RestSupplyMVC.Repositories
@@ -20,8 +21,11 @@ namespace RestSupplyMVC.Repositories
 
         public KitchenIngredients GetById(int id)
         {
-            throw new System.NotImplementedException();
+            var res = _context.KitchenIngredientsSet.Find(id);
+            return res;
         }
+
+
 
         public void Add(KitchenIngredients item)
         {

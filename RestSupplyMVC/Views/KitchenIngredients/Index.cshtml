@@ -1,19 +1,12 @@
 ﻿@model RestSupplyMVC.ViewModels.KitchenIngredientIndexViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Ingredients Supply";
 }
 
 <h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.KitchenIngredientsList.First().IngredientName)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.KitchenIngredientsList.First().IngredientName)
         </th>
@@ -33,19 +26,32 @@
             @Html.DisplayFor(modelItem => item.IngredientName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.IngredientName)
+            @{
+                var minQuantity = item.MinimalQuantity.HasValue ? item.MinimalQuantity + " " + item.Unit : "";
+                    @Html.DisplayFor(modelItem => minQuantity)
+            }
         </td>
+        <td>
+            @{
+                var currentQuantity = item.CurrentQuantity.HasValue ? item.CurrentQuantity + " " + item.Unit : "";
 
-        <td>
-            @Html.DisplayFor(modelItem => item.MinimalQuantity)
+                @Html.DisplayFor(modelItem => currentQuantity)
+            }
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CurrentQuantity)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.KitchenIngredientId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.KitchenIngredientId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.KitchenIngredientId })
+            @{
+                if (item.KitchenIngredientId.HasValue)
+                {
+                    @Html.ActionLink("Edit", "Edit", new {id = item.KitchenIngredientId})
+                }
+                else
+                {
+                    @Html.ActionLink("Add Values","Create", new {kitchenId = Model.KitchenIngredientsList.FirstOrDefault()?.KitchenId, ingredientId = item.IngredientId})
+                }
+            }
+            @* NOT ALLOWING DELETION OF KITCHEN-INGREDIENTS AT THE MOMENT
+            |
+            @Html.ActionLink("Delete", "Delete", new { id = item.KitchenIngredientId }) *@
         </td>
     </tr>
 }

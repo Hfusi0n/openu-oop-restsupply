@@ -25,7 +25,7 @@ namespace RestSupplyDB.Models.Supplier
 
         public int KitchenId { get; set; }
 
-        //public virtual Kitchens Kitchen { get; set; }
+        public virtual Kitchens Kitchen { get; set; }
 
         public virtual Supplier SupplierSet { get; set; }
         

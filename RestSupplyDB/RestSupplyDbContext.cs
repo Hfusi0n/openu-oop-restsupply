@@ -85,12 +85,12 @@ namespace RestSupplyDB
                 .HasMany(e => e.KitchenUsers)
                 .WithRequired(e => e.Kitchen)
                 .HasForeignKey(e => e.KitchenId);
-/*
+
             modelBuilder.Entity<Kitchens>()
                 .HasMany(e => e.SupplierOrders)
                 .WithRequired(e => e.Kitchen)
                 .HasForeignKey(e => e.KitchenId).WillCascadeOnDelete(false);
-*/
+
             modelBuilder.Entity<MenuItems>()
                 .HasMany(e => e.MenuIngredientsSet)
                 .WithRequired(e => e.MenuItemsSet)

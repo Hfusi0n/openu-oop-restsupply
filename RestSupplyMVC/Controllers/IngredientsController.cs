@@ -37,7 +37,7 @@ namespace RestSupplyMVC.Controllers
                     AllSuppliers = dbSuppliers.Select(i => new SupplierViewModel
                     {
                         Id = i.Id,
-                        Name = i.Name,
+                        SupplierName = i.Name,
                         Address = i.Address,
                         Phone = i.Phone
                     })
@@ -79,7 +79,7 @@ namespace RestSupplyMVC.Controllers
                 AllIngredientSuppliersList = ingredients.SuppliersIngredients.Select(si => new SupplierViewModel
                 {
                     Id = si.Id,
-                    Name = si.Supplier.Name,
+                    SupplierName = si.Supplier.Name,
                     Address = si.Supplier.Address,
                     Phone = si.Supplier.Phone
                 })

@@ -11,7 +11,7 @@ namespace RestSupplyMVC.ViewModels
     {
         public int Id { get; set; }
         [Display(Name = "Supplier Name")]
-        public string Name { get; set; }
+        public string SupplierName { get; set; }
         [Display(Name = "Address")]
         public string Address { get; set; }
         [Display(Name = "Phone")]

@@ -1,7 +1,7 @@
 ﻿@model RestSupplyMVC.ViewModels.CreateCustomerOrderViewModel
 
 @{
-    ViewBag.Title = "יצירת הזמנת לקוח";
+    ViewBag.Title = "Create a new customer order";
 }
 
 <head>
@@ -21,51 +21,49 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>הזמנה חדשה</h4>
-        <hr/>
+        <h4>New Order</h4>
+        <hr />
     </div>
     <div class="form-group">
         <table id="orderTable">
-        <tbody>
-    @for (var i = 0; i < Model.AllMenuItemsToQuantityMap.Keys.Count; i++)
-    {
+            <tbody>
+                @for (var i = 0; i < Model.AllMenuItemsToQuantityMap.Keys.Count; i++)
+                {
 
-        <tr>
-            <td>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Id, Model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Name, htmlAttributes: new { @class = "control-label col-md-2", style = "width: 200px;", id = "MenuItemId" })
-                </div>
-            </td>
-            <th>
-                <td>
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[@i]">
-                            <span class="glyphicon glyphicon-minus"></span>
-                        </button>
-                    </span>
-                    <input type="text" id="quant[@i]" name="quant[@i]" class="form-control input-number" value="0" min="0" max="100">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[@i]">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                    </span>
-                </div>
-            </th>
-        </tr>
-
-    }
-        </tbody>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Id, Model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Name, htmlAttributes: new { @class = "control-label col-md-2", style = "width: 200px;", id = "MenuItemId" })
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[@i]">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </span>
+                                <input type="text" id="quant[@i]" name="quant[@i]" class="form-control input-number" value="0" min="0" max="100">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[@i]">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
         </table>
 
-    <div class="col-md-offset-2 col-md-10" align="left">
-        <hr/>
-        <input type="submit" value="Create" class="btn btn-default"/>
-    </div>
+        <div class="col-md-offset-2 col-md-10" align="left">
+            <hr />
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
     </div>
 
 
-    
+
 }
 <div>
     @Html.ActionLink("Back to List", "Index")
@@ -129,7 +127,7 @@
                             selector = "quant[" + selector + "]";
                             customers.push({
                                 id: item.Id,
-                                quantity: parseInt($('[id="quant['+index+']"]').val(),10) 
+                                quantity: parseInt($('[id="quant['+index+']"]').val(),10)
                             });
                         });
                     var data = JSON.stringify({
@@ -193,6 +191,6 @@ $(".input-number").keydown(function (e) {
             e.preventDefault();
         }
 });
-    </script> 
+    </script>
 
 }

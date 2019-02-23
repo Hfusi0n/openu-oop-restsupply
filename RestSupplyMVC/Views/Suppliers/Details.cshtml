@@ -15,7 +15,7 @@
                 <table class="table table-striped table-responsive" >
                     <tbody>
                     <tr>
-                        <td><b>Supplier Name:</b> @Model.Name </ td >
+                        <td><b>Supplier Name:</b> @Model.SupplierName </ td >
                         <td> <b>Address:</b>@Model.Address </ td >
                         <td><b>Phone:</b> @Model.Phone </ td >
                         <td> @Html.ActionLink("Edit", "Edit", new { id = Model.Id })</ td >
@@ -74,9 +74,9 @@
 
                         @Html.HiddenFor(model => model.Id, new { id = "SupplierId1" })
                         <div class="form-group">
-                            @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                            @Html.LabelFor(m => m.SupplierName, new { @class = "col-md-2 control-label" })
                             <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", disabled = "disabled", @Value = Model.Name })
+                                @Html.TextBoxFor(m => m.SupplierName, new { @class = "form-control", disabled = "disabled", @Value = Model.SupplierName })
                             </div>
                         </div>
                     </div>
@@ -145,9 +145,9 @@
 
                         @Html.HiddenFor(model => model.Id, new {id ="SupplierId"})
                         <div class="form-group">
-                            @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                            @Html.LabelFor(m => m.SupplierName, new { @class = "col-md-2 control-label" })
                             <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" , disabled = "disabled" , @Value = Model.Name})
+                                @Html.TextBoxFor(m => m.SupplierName, new { @class = "form-control" , disabled = "disabled" , @Value = Model.SupplierName})
                             </div>
                         </div>
                         <div class="form-group">

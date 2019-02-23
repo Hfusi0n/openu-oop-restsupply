@@ -9,11 +9,15 @@ namespace RestSupplyMVC.ViewModels
 {
     public class IngredientViewModel
     {
-        [Display(Name = "שם חומר גלם")] public string Name { get; set; }
         public int IngredientId { get; set; }
-        [Display(Name = "יחידת מידה")] public string Unit { get; set; }
-        public IEnumerable<SupplierViewModel> AllIngredientSuppliersList{ get; set; }
 
+        [Display(Name = "Ingredient Name")]
+        public string Name { get; set; }
+
+        [Display(Name = "Ingredient Unit")]
+        public string Unit { get; set; }
+
+        public IEnumerable<SupplierViewModel> AllIngredientSuppliersList{ get; set; }
     }
 
     public class CreateIngredientViewModel : IngredientViewModel

@@ -165,15 +165,19 @@ namespace RestSupplyMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] MenuItems menuItems)
+        public ActionResult Edit([Bind(Include = "Id,Name")] MenuItems model)
         {
             if (ModelState.IsValid)
             {
-                new RestSupplyDbContext().Entry(menuItems).State = EntityState.Modified;
+                var menuItem = _unitOfWork.MenuItems.GetById(model.Id);
+                menuItem.Name = model.Name;
+
+                // Update the unit of work 
                 _unitOfWork.Complete();
+
                 return RedirectToAction("Index");
             }
-            return View(menuItems);
+            return View(model);
         }
 
         // GET: MenuItems/Delete/5

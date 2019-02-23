@@ -42,7 +42,7 @@ namespace RestSupplyMVC.Controllers
                 {
                     Id = s.Id,
                     Address = s.Address,
-                    Name = s.Name,
+                    SupplierName = s.Name,
                     Phone = s.Phone,
                     AllSupplierIngredientsList = s.SuppliersIngredients.Select(i => new IngredientViewModel
                     {
@@ -72,7 +72,7 @@ namespace RestSupplyMVC.Controllers
             {
                 Address = dbSupplier.Address,
                 Id = dbSupplier.Id,
-                Name = dbSupplier.Name,
+                SupplierName = dbSupplier.Name,
                 Phone = dbSupplier.Phone,
 
                 // All ingredients that supplier supplies
@@ -119,7 +119,7 @@ namespace RestSupplyMVC.Controllers
             {
                 var supplier = new Supplier
                 {
-                    Name = viewModel.Name,
+                    Name = viewModel.SupplierName,
                     Address = viewModel.Address,
                     //IngredientsSet = new List<Ingredients>() TODO
                     Phone = viewModel.Phone
@@ -151,7 +151,7 @@ namespace RestSupplyMVC.Controllers
             {
                 Id = supplier.Id,
                 Address = supplier.Address,
-                Name = supplier.Name,
+                SupplierName = supplier.Name,
                 Phone = supplier.Phone
             };
 
@@ -171,10 +171,11 @@ namespace RestSupplyMVC.Controllers
 
                 // TODO - should this be in an update method in the repo??
                 dbSupplier.Address = supplierVm.Address;
-                dbSupplier.Name = supplierVm.Name;
+                dbSupplier.Name = supplierVm.SupplierName;
                 dbSupplier.Phone = supplierVm.Phone;
                 
                 _unitOfWork.Complete();
+
                 return RedirectToAction("Details", new {id = dbSupplier.Id});
             }
             return View(supplierVm);
@@ -198,7 +199,7 @@ namespace RestSupplyMVC.Controllers
             {
                 Address = supplier.Address,
                 Id = supplier.Id,
-                Name = supplier.Name,
+                SupplierName = supplier.Name,
                 Phone = supplier.Phone,
                 AllSupplierIngredientsList = supplier.SuppliersIngredients.Select(si => new IngredientViewModel
                 {

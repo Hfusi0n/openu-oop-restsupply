@@ -57,17 +57,17 @@ namespace RestSupplyMVC.Controllers
                         totalAmount += ingredientListViewModel.Amount;
 
                         return ingredientListViewModel;
-                    })
+                    }),
+                    TotalAmount = totalAmount
                 };
 
                 // Update the order total price
-                orderViewModel.TotalAmount = totalAmount;
 
                 return orderViewModel;
             });
 
 
-            var viewModel = new OrdersViewModel()
+            var viewModel = new OrdersViewModel
             {
                 Orders = orderListViewModel
             };

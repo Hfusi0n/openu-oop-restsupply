@@ -87,7 +87,7 @@
                                 Add New
                             </label>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.CreateIngredientViewModel.AllSuppliers, new SelectList(Model.CreateIngredientViewModel.AllSuppliers, "Id", "SupplierName"), "", new { @id = "name", @class = "form-control" })
+                                @Html.DropDownListFor(model => model.IngredientToCreate.AllSuppliers, new SelectList(Model.IngredientToCreate.AllSuppliers, "Id", "SupplierName"), "", new { @id = "name", @class = "form-control" })
                             </div>
                         </div>
                             

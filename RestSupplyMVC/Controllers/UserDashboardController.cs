@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using RestSupplyMVC.ViewModels;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -29,7 +30,7 @@ namespace RestSupplyMVC.Controllers
             var user = _unitOfWork.Account.GetById(id);            
             AppUserRole userRole = user.Role;
 
-            ViewModels.UserViewModel model = new ViewModels.UserViewModel
+            UserViewModel model = new UserViewModel
             {
                 Id = user.UserId,
                 Email = user.Email,
@@ -59,7 +60,7 @@ namespace RestSupplyMVC.Controllers
         // POST: Update the user data
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> UpdateUserProfile(ViewModels.UserViewModel model)
+        public async Task<ActionResult> UpdateUserProfile(UserViewModel model)
         {
             if (!string.IsNullOrEmpty(model.Id))
             {
@@ -80,9 +81,12 @@ namespace RestSupplyMVC.Controllers
                 }
 
                 // Update the user
-                user.FirstName = model.PrivateName;
-                user.LastName = model.LastName;
-                var userResult = await userManager.UpdateAsync(user);
+                if (user != null)
+                {
+                    user.FirstName = model.PrivateName;
+                    user.LastName = model.LastName;
+                    var userResult = await userManager.UpdateAsync(user);
+                }
             }
 
             return RedirectToAction("Admin");
@@ -94,18 +98,18 @@ namespace RestSupplyMVC.Controllers
         {
             var users = _unitOfWork.Account.GetAll();
             
-            ViewModels.UsersListViewModel usersListViewModel = 
-                new ViewModels.UsersListViewModel();
+            UsersListViewModel usersListViewModel = 
+                new UsersListViewModel();
             
-            List<ViewModels.UserViewModel> usersList = 
-                new List<ViewModels.UserViewModel>();
+            List<UserViewModel> usersList = 
+                new List<UserViewModel>();
 
             foreach (var user in users)
             {
                 // Create a new view model for the user
                 // and push the user database data to the viewmodel
-                ViewModels.UserViewModel userViewModel =
-                    new ViewModels.UserViewModel
+                UserViewModel userViewModel =
+                    new UserViewModel
                     {
                         Id = user.UserId,
                         Email = user.Email,
@@ -125,7 +129,7 @@ namespace RestSupplyMVC.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ActionName("SearchUsers")]
-        public async Task<ActionResult> SearchUsers(ViewModels.UserViewModel model)
+        public async Task<ActionResult> SearchUsers(UserViewModel model)
         {
             AppUser user = null;
 
@@ -152,7 +156,7 @@ namespace RestSupplyMVC.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Admin(string id)
         {
-            ViewModels.UserViewModel model = new ViewModels.UserViewModel
+            UserViewModel model = new UserViewModel
             {
                 Id = id
             };

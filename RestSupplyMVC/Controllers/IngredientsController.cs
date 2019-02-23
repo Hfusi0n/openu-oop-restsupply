@@ -32,7 +32,7 @@ namespace RestSupplyMVC.Controllers
 
             var ingredientIndexVm = new IngredientIndexViewModel
             {
-                CreateIngredientViewModel = new CreateIngredientViewModel
+                IngredientToCreate = new CreateIngredientViewModel
                 {
                     AllSuppliers = dbSuppliers.Select(i => new SupplierViewModel
                     {

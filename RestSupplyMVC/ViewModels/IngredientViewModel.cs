@@ -27,7 +27,7 @@ namespace RestSupplyMVC.ViewModels
 
     public class IngredientIndexViewModel
     {
-        public CreateIngredientViewModel CreateIngredientViewModel { get; set; }
+        public CreateIngredientViewModel IngredientToCreate { get; set; }
         public IEnumerable<IngredientViewModel> IngredientsList { get; set; }
     }
 }

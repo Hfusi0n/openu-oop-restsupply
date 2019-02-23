@@ -8,13 +8,6 @@ using RestSupplyMVC.DTOs;
 
 namespace RestSupplyMVC.Repositories
 {
-    public interface IAccountRepository
-    {
-        List<AppUserDTO> GetAll();
-        List<AppRole> GetAppRoles();
-         AppUserDTO GetById(string id);
-    }
-
     public class AccountRepository : IAccountRepository
     {
         private IEnumerable<AppRole> Roles { get; set; }

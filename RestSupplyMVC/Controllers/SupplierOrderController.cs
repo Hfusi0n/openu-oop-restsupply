@@ -14,37 +14,104 @@ namespace RestSupplyMVC.Controllers
     public class SupplierOrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+
         public SupplierOrderController()
         {
             _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
-        // GET: SupplierOrder
-        public ActionResult Index()
+
+        private OrdersViewModel GetOrdersViewModel()
         {
             var dbSupplierOrders = _unitOfWork.SupplierOrders.GetAll();
 
-            var supplierOrderIndexVm = dbSupplierOrders.Select(s => new SupplierOrderViewModel
+            var orderListViewModel = dbSupplierOrders.Select(s =>
             {
-                Id = s.SupplierId,
-                Name = _unitOfWork.Suppliers.GetById(s.SupplierId).Name,
-                Phone = _unitOfWork.Suppliers.GetById(s.SupplierId).Phone,
-                Address = _unitOfWork.Suppliers.GetById(s.SupplierId).Address,
-                SupplierOrderIngredientsList = s.SupplierOrderDetails.Select(i => new SupplierOrderIngredientsViewModel
+                // Get the relevant supplier details
+                var supplier = _unitOfWork.Suppliers.GetById(s.SupplierId);
+                double totalAmount = 0;
+
+                var orderViewModel = new SupplierOrderViewModel
                 {
-                    IngredientId = i.IngredientId,
-                    Name = _unitOfWork.Ingredients.GetById(i.IngredientId).Name,
-                    Unit = _unitOfWork.Ingredients.GetById(i.IngredientId).Unit,
-                    Amount = i.Amount,
-                    OrderId = i.OrderId
-                })
+                    Id = s.SupplierId,
+                    SupplierName = supplier?.Name,
+                    Phone = supplier?.Phone,
+                    Address = supplier?.Address,
+                    OrderId = s.Id,
+                    OrderDate = s.Date,
+
+                    // populate the all ingredient orders from the supplier
+                    SupplierOrderIngredientsList = s.SupplierOrderDetails.Select(i =>
+                    {
+                        var ingredient = _unitOfWork.Ingredients.GetById(i.IngredientId);
+
+                        var ingredientListViewModel = new SupplierOrderIngredientsViewModel
+                        {
+                            IngredientId = i.IngredientId,
+                            Name = ingredient?.Name,
+                            Unit = ingredient?.Unit,
+                            Amount = i.Amount,
+                            OrderId = i.OrderId
+                        };
+
+                        // Add to the order total price...
+                        totalAmount += ingredientListViewModel.Amount;
+
+                        return ingredientListViewModel;
+                    })
+                };
+
+                // Update the order total price
+                orderViewModel.TotalAmount = totalAmount;
+
+                return orderViewModel;
             });
-        
-            return View(supplierOrderIndexVm);
+
+
+            var viewModel = new OrdersViewModel()
+            {
+                Orders = orderListViewModel
+            };
+            
+
+            return viewModel;
+        }
+
+        // GET: SupplierOrder
+        [Authorize]
+        public ActionResult Index(int? modalOrderId, string modalString)
+        {
+            OrdersViewModel viewModel = GetOrdersViewModel();
+
+            viewModel = GetOrdersViewModel();
+
+            if (!string.IsNullOrEmpty(modalString))
+            {
+                // Set the modal popup to the input order id
+                viewModel.ModalOrderId = modalOrderId;
+
+                switch (modalString)
+                {
+                    case "ShowEdit":
+                        viewModel.DisplayEdit = true;
+                        break;
+
+                    case "ShowDetails":
+                        viewModel.DisplayDetails = true;
+                        break;
+
+                    case "ShowDelete":        
+                        viewModel.DisplayDelete = true;
+                        break;
+                }
+            }
+
+            return View(viewModel);
         }
 
         // GET: SupplierOrder/Details/5
         public ActionResult Details(int id)
         {
+            /*
             var dbSupplierOrder = _unitOfWork.SupplierOrders.GetById(id);
             var supplierOrderVm = new SupplierOrderViewModel
             {
@@ -62,11 +129,13 @@ namespace RestSupplyMVC.Controllers
                     }),
                 Id = dbSupplierOrder.Id,
                 Address = _unitOfWork.Suppliers.GetById(dbSupplierOrder.SupplierId).Address,
-                Name = _unitOfWork.Suppliers.GetById(dbSupplierOrder.SupplierId).Name,
+                SupplierName = _unitOfWork.Suppliers.GetById(dbSupplierOrder.SupplierId).Name,
                 Phone = _unitOfWork.Suppliers.GetById(dbSupplierOrder.SupplierId).Phone
-                
+
             };
-        return View();
+            */
+            return RedirectToAction("Index",
+                new { modalOrderId = id, modalString ="ShowDetails" });
         }
 
         // GET: SupplierOrder/Create
@@ -96,7 +165,7 @@ namespace RestSupplyMVC.Controllers
         {
             return View();
         }
-       
+
         // POST: SupplierOrder/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)

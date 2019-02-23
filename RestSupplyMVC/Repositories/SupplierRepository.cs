@@ -20,7 +20,7 @@ namespace RestSupplyMVC.Repositories
             return _context.SuppliersSet.ToList();
         }
 
-        public Supplier GetById(int id)
+        public Supplier GetById<TKey>(TKey id)
         {
             return _context.SuppliersSet.Find(id);
         }
@@ -28,6 +28,15 @@ namespace RestSupplyMVC.Repositories
         public void Add(Supplier supplier)
         {
             _context.SuppliersSet.Add(supplier);
+        }
+        
+        public void Remove<TKey>(TKey id)
+        {
+            // Get the item...
+            var item = _context.SuppliersSet.Find(id);
+
+            // Remove the entry
+            _context.SuppliersSet.Remove(item);
         }
 
         public void AddSupplierIngredients(int supplierId, List<int> ingredientIdsList)

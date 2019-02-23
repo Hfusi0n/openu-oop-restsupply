@@ -19,7 +19,7 @@ namespace RestSupplyMVC.Repositories
             throw new System.NotImplementedException();
         }
 
-        public KitchenIngredients GetById(int id)
+        public KitchenIngredients GetById<TKey>(TKey id)
         {
             var res = _context.KitchenIngredientsSet.Find(id);
             return res;
@@ -28,6 +28,11 @@ namespace RestSupplyMVC.Repositories
 
 
         public void Add(KitchenIngredients item)
+        {
+            throw new System.NotImplementedException();
+        }
+        
+        public void Remove<TKey>(TKey id)
         {
             throw new System.NotImplementedException();
         }

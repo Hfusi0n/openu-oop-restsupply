@@ -20,7 +20,7 @@ namespace RestSupplyMVC.Repositories
             return _context.MenuItemsSet.ToList();
         }
 
-        public MenuItems GetById(int id)
+        public MenuItems GetById<TKey>(TKey id)
         {
             return _context.MenuItemsSet.Find(id);
         }
@@ -28,6 +28,15 @@ namespace RestSupplyMVC.Repositories
         public void Add(MenuItems item)
         {
             _context.MenuItemsSet.Add(item);
+        }
+
+        public void Remove<TKey>(TKey id)
+        {
+            // Get the item...
+            var item = _context.MenuItemsSet.Find(id);
+
+            // Remove the entry
+            _context.MenuItemsSet.Remove(item);
         }
     }
 }

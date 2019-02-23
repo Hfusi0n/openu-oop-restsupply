@@ -33,9 +33,13 @@
     }
     else
     {
-        <div class="panel-body">
-            <h3 style="color:red;">No Ingredients!</h3>
-        </div>
+        <tr>
+            <td>
+                <div class="panel-body">
+                    <h3 style="color:red;">No Ingredients!</h3>
+                </div>
+            </td>
+        </tr>
     }
 
 
@@ -83,13 +87,10 @@
                                 Add New
                             </label>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.CreateIngredientViewModel.AllSuppliers, new SelectList(Model.CreateIngredientViewModel.AllSuppliers, "Id", "Name"), "", new { @id = "name", @class = "form-control" })
+                                @Html.DropDownListFor(model => model.CreateIngredientViewModel.AllSuppliers, new SelectList(Model.CreateIngredientViewModel.AllSuppliers, "Id", "SupplierName"), "", new { @id = "name", @class = "form-control" })
                             </div>
                         </div>
-                        
-                        @*
-                        הוספת השדות כתובת וטלפון הספק
-                        *@
+                            
                         <div class="form-group">
                             <div class="col-md-1 col-lg-offset-1">
                                 <a id="addToList" class="btn btn-primary">Add To List</a>
@@ -99,7 +100,7 @@
                             <thead>
                                 <tr>
                                     <th style="width:5%"></th> @*hidden SupplierId column*@
-                                    <th style="width: 85%"> שם ספק</th>
+                                    <th style="width: 85%"> Supplier Name</th>
                                     <th style="width: 10%"></th>
                                 </tr>
                             </thead>
@@ -108,8 +109,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn btn-default" data-dismiss="modal">סגירה</button>
-                    <button id="saveIngredient" type="submit" class="btn btn-danger">שמירה</button>
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="saveIngredient" type="submit" class="btn btn-danger">Save</button>
                 </div>
             </form>
         </div>

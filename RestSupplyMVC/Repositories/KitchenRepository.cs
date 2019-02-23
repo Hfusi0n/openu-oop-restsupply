@@ -21,7 +21,7 @@ namespace RestSupplyMVC.Repositories
             return _context.KitchensSet.ToList();
         }
 
-        public Kitchens GetById(int id)
+        public Kitchens GetById<TKey>(TKey id)
         {
             return _context.KitchensSet.Find(id);
         }
@@ -29,6 +29,15 @@ namespace RestSupplyMVC.Repositories
         public void Add(Kitchens kitchen)
         {
             _context.KitchensSet.Add(kitchen);
+        }
+
+        public void Remove<TKey>(TKey id)
+        {
+            // Get the object from the database by id
+            var item = _context.KitchensSet.Find(id);
+
+            // Delete the entry
+            _context.KitchensSet.Remove(item);
         }
 
         public void AddUserToKitchen(int kitchenId, string userId)

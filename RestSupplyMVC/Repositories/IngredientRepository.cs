@@ -24,7 +24,7 @@ namespace RestSupplyMVC.Repositories
             return _context.IngredientsSet.Where(i => i.SuppliersIngredients.Any(si => si.SupplierId == id));
         }
 
-        public DBModels.Ingredients GetById(int id)
+        public DBModels.Ingredients GetById<TKey>(TKey id)
         {
             return _context.IngredientsSet.Find(id);
         }
@@ -34,9 +34,13 @@ namespace RestSupplyMVC.Repositories
             _context.IngredientsSet.Add(item);
         }
 
-        public void Remove(DBModels.Ingredients ingredients)
+        public void Remove<TKey>(TKey id)
         {
-            throw new System.NotImplementedException();
+            // Get the item...
+            var item = _context.IngredientsSet.Find(id);
+
+            // Remove the entry
+            _context.IngredientsSet.Remove(item);
         }
     }
 }

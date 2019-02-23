@@ -9,7 +9,8 @@ namespace RestSupplyMVC.Repositories
     public interface IRepository<T>
     {
         IEnumerable<T> GetAll();
-        T GetById(int id);
+        T GetById<TKey>(TKey id);
         void Add(T item);
+        void Remove<TKey>(TKey id);
     }
 }

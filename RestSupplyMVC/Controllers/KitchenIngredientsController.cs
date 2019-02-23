@@ -8,19 +8,55 @@ using System.Web;
 using System.Web.Mvc;
 using RestSupplyDB;
 using RestSupplyDB.Models.Kitchen;
+using RestSupplyMVC.Persistence;
+using RestSupplyMVC.ViewModels;
 
 namespace RestSupplyMVC.Controllers
 {
     public class KitchenIngredientsController : Controller
     {
         private RestSupplyDbContext db = new RestSupplyDbContext();
+        private readonly IUnitOfWork _unitOfWork;
 
-        // GET: KitchenIngredients
-        public ActionResult Index()
+        public KitchenIngredientsController()
         {
-            var kitchenIngredientsSet = db.KitchenIngredientsSet.Include(k => k.IngredientsSet).Include(k => k.KitchensSet);
-            return View(kitchenIngredientsSet.ToList());
+            _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
+        
+
+        // id param = kitchenId
+        // getting all ingredients for specific kitchen
+        public ActionResult Index(int? id)
+
+        {
+            if (id == null)
+            {
+                // TODO 
+                return RedirectToAction("index", "Kitchens");
+            }
+
+            // TODO security: check that KitchenId belong to current user
+
+            var ingredientToKitchenIngredientMap =
+                _unitOfWork.KitchenIngredient.GetIngredientIdToKitchenIngredientMap(id.Value);
+            var allIngredients = _unitOfWork.Ingredients.GetAll();
+            var vm = new KitchenIngredientIndexViewModel
+            {
+                KitchenId = id.Value,
+                KitchenIngredientsList = allIngredients.Select(i => new KitchenIngredientViewModel
+                {
+                    IngredientId = i.Id,
+                    Unit = i.Unit,
+                    CurrentQuantity = ingredientToKitchenIngredientMap.ContainsKey(i.Id) ? ingredientToKitchenIngredientMap[i.Id].CurrentQuantity : (double?) null,
+                    MinimalQuantity = ingredientToKitchenIngredientMap.ContainsKey(i.Id) ? ingredientToKitchenIngredientMap[i.Id].MinimalQuantity : (double?)null,
+                    KitchenIngredientId = ingredientToKitchenIngredientMap.ContainsKey(i.Id) ? ingredientToKitchenIngredientMap[i.Id].Id : (int?)null
+
+                }).ToList()
+            };
+            return View(vm);
+        }
+
+
 
         // GET: KitchenIngredients/Details/5
         public ActionResult Details(int? id)

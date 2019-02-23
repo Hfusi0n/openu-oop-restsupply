@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RestSupplyDB.Models.Kitchen.KitchenIngredients>
+﻿@model RestSupplyMVC.ViewModels.KitchenIngredientIndexViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -12,34 +12,30 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.IngredientsSet.Name)
+            @Html.DisplayNameFor(model => model.KitchenIngredientsList.First().IngredientName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.KitchensSet.Name)
+            @Html.DisplayNameFor(model => model.KitchenIngredientsList.First().IngredientName)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.KitchenIngredientsList.First().MinimalQuantity)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Valid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MinimalQuantity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CurrentQuantity)
+            @Html.DisplayNameFor(model => model.KitchenIngredientsList.First().CurrentQuantity)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.KitchenIngredientsList) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.IngredientsSet.Name)
+            @Html.DisplayFor(modelItem => item.IngredientName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.KitchensSet.Name)
+            @Html.DisplayFor(modelItem => item.IngredientName)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Valid)
-        </td>
+
         <td>
             @Html.DisplayFor(modelItem => item.MinimalQuantity)
         </td>
@@ -47,9 +43,9 @@
             @Html.DisplayFor(modelItem => item.CurrentQuantity)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id=item.KitchenIngredientId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.KitchenIngredientId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.KitchenIngredientId })
         </td>
     </tr>
 }

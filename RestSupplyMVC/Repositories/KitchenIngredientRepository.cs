@@ -18,12 +18,17 @@ namespace RestSupplyMVC.Repositories
             throw new System.NotImplementedException();
         }
 
-        public KitchenIngredients GetById(int id)
+        public KitchenIngredients GetById<TKey>(TKey id)
         {
             throw new System.NotImplementedException();
         }
 
         public void Add(KitchenIngredients item)
+        {
+            throw new System.NotImplementedException();
+        }
+        
+        public void Remove<TKey>(TKey id)
         {
             throw new System.NotImplementedException();
         }

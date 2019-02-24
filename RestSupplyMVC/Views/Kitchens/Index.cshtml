@@ -1,4 +1,5 @@
-﻿@model RestSupplyMVC.ViewModels.KitchenIndexViewModel
+﻿@using System.Web.Mvc.Html
+@model RestSupplyMVC.ViewModels.KitchenIndexViewModel
 
 @{
     ViewBag.Title = "Kitchens";
@@ -43,7 +44,6 @@
             </div>
             <form id="NewOrderForm">
                 <div class="modal-body">
-                    @*Customer Details*@
                     <h5 style="color:#112247"> Kitchen</h5>
                     <hr />
                     <div class="form-horizontal">
@@ -73,10 +73,18 @@
                         @*<input type="hidden" id="UserId" />*@
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                Users
+                                User
                             </label>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.KitchenToCreate.AllUsersList, new SelectList(Model.KitchenToCreate.AllUsersList, "Id", "Email"), "", new { @id = "email", @class = "form-control" })
+                                @Html.DropDownListFor(model => model.KitchenToCreate.AllUsersList, new SelectList(Model.KitchenToCreate.AllUsersList,"Id", "Email"), "", new { @id = "email", @class = "form-control" })
+                            </div>
+                            <label class="control-label col-md-2">
+                                User's Role
+                            </label>
+                            <div class="col-md-4">
+                                <div class="col-md-4">
+                                    <input type="text" id="role" name="role" placeholder="" class="form-control", disabled="disabled" />
+                                </div>
                             </div>
 
                         </div>
@@ -91,10 +99,10 @@
                             <thead>
                                 <tr>
                                     <th style="width:5%"></th> @*hidden UserId column*@
-                                    <th style="width: 95%">Email</th>
+                                    <th style="width: 65%">Email</th>
                                     @*<th style="width: 30%">First Name </th>
-                                    <th style="width: 30%">Surname</th>
-                                    <th style="width: 35%">Role</th>*@
+                                    <th style="width: 30%">Surname</th>*@
+                                    <th style="width: 35%">Role</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -111,6 +119,23 @@
 </div>
 @section scripts{
     <script>
+
+        // Get RoleName for selected user
+        $("#email").change(function () {
+            return $.ajax({
+                url: "/Account/GetRoleNameByUserId",
+                data: { 'userId': $("#email option:selected").val() },
+                type: 'GET',
+                dataType: "json",
+                cache: false,
+                success: function (response) {
+                    $("#role").val(response);
+                },
+                error: function () {
+                    alert("Error finding unit for ingredient!");
+                }
+            });
+        });
         //Show Modal.
         function addNewOrder() {
             $("#newUserModal").modal();

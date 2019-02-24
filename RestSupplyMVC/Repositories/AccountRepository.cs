@@ -37,6 +37,14 @@ namespace RestSupplyMVC.Repositories
             return AppUserConvertor.ToDto(dbUser);
         }
 
+        public string GetRoleNameByUserId(int userId)
+        {
+            var roleId = _context.Users.Find(userId).Roles.FirstOrDefault()?.RoleId;
+            var roleName = roleId != null ? _context.Roles.Find(roleId).Name : "";
+            return roleName;
+
+        }
+
         public List<AppRole> GetAppRoles()
         {
             // Don't get the roles from the database for no reason, use the cached data

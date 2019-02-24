@@ -12,6 +12,8 @@ using RestSupplyDB.Models;
 using RestSupplyDB.Models.AppUser;
 using RestSupplyMVC;
 using Microsoft.AspNet.Identity.EntityFramework;
+using RestSupplyDB;
+using RestSupplyMVC.Persistence;
 using RestSupplyMVC.ViewModels;
 using RestSupplyMVC.ViewModels.Account;
 
@@ -24,10 +26,13 @@ namespace RestSupplyMVC.Controllers
         private ApplicationSignInManager _signInManager;
         private AppUserManager _userManager;
 
+        private readonly IUnitOfWork _unitOfWork;
 
         public AccountController()
         {
+            // TODO Remove _context
             _context = new RestSupplyDB.RestSupplyDbContext();
+            _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
 
         public AccountController(AppUserManager userManager, ApplicationSignInManager signInManager )
@@ -565,6 +570,14 @@ namespace RestSupplyMVC.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        [HttpGet]
+        public ActionResult GetRoleNameByUserId(int userId)
+        {
+            var response = _unitOfWork.Account.GetRoleNameByUserId(userId);
+            return Json(response, JsonRequestBehavior.AllowGet);
+
         }
 
         private ActionResult RedirectToLocal(string returnUrl)

@@ -41,7 +41,7 @@ namespace RestSupplyMVC.Controllers
                             Email = u.Email,
                             LastName = u.LastName,
                             PrivateName = u.FirstName,
-                            SelectedUserRole = (u.Role != null)
+                            RoleName = (u.Role != null)
                                 ? dbRoles.FirstOrDefault(r => r.Id == u.Role.RoleId)?.Name
                                 : null
 
@@ -68,7 +68,6 @@ namespace RestSupplyMVC.Controllers
             }
             var allUsers = _unitOfWork.Account.GetAll();
             var kitchen = _unitOfWork.Kitchens.GetById(id.Value);
-
             // TODO add user role
             var dbRoles = _unitOfWork.Account.GetAppRoles();
             var kitchenVm = new CreateKitchenViewModel
@@ -76,12 +75,13 @@ namespace RestSupplyMVC.Controllers
                 KitchenUsersList = kitchen.KitchenUsers.Select(u => new UserViewModel
                 {
                     Id = u.UserId,
-                    Email = _unitOfWork.Account.GetById(u.UserId).Email
+                    Email = u.AppUser.Email,
+                    RoleName = dbRoles.FirstOrDefault(r => r.Id == u.AppUser.Roles.FirstOrDefault()?.RoleId)?.Name
                 }).ToList(),
                 AllUsersList = allUsers.Select(us => new UserViewModel
                 {
                     Id = us.UserId,
-                    Email = _unitOfWork.Account.GetById(us.UserId).Email
+                    Email = us.Email
                 }).ToList(),
                 KitchenName = kitchen.Name,
                 KitchenAddress = kitchen.Address,

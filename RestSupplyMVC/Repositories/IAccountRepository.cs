@@ -9,5 +9,6 @@ namespace RestSupplyMVC.Repositories
         List<AppUserDTO> GetAll();
         List<AppRole> GetAppRoles();
         AppUserDTO GetById(string id);
+        string GetRoleNameByUserId(int userId);
     }
 }

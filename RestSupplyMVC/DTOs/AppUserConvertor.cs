@@ -17,9 +17,11 @@ namespace RestSupplyMVC.DTOs
                 FirstName = dtoModel.FirstName,
                 LastName = dtoModel.LastName,
                 Email = dtoModel.Email,
-                Id = dtoModel.UserId
-
-                // TODO Convert Role from dto
+                Id = dtoModel.UserId,
+                // TODO test this
+                Roles = { dtoModel.Role}
+                
+                
             };
         }
 

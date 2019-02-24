@@ -35,6 +35,7 @@ namespace RestSupplyMVC.Controllers
             var ingredientToKitchenIngredientMap =
                _unitOfWork.KitchenIngredient.GetIngredientIdToKitchenIngredientMap(kitchenId);
             var allIngredients = _unitOfWork.Ingredients.GetAll();
+            var currentKitchen = _unitOfWork.Kitchens.GetById(kitchenId);
             var vm = new KitchenIngredientIndexViewModel
             {
                 KitchenIngredientsList = allIngredients.Select(i => new KitchenIngredientViewModel
@@ -46,8 +47,10 @@ namespace RestSupplyMVC.Controllers
                     KitchenIngredientId = ingredientToKitchenIngredientMap.ContainsKey(i.Id) ? ingredientToKitchenIngredientMap[i.Id].Id : (int?)null,
                     IngredientName = i.Name,
                     KitchenId = kitchenId
+                }).ToList(),
+                KitchenId = kitchenId,
+                KitchenName = currentKitchen.Name
 
-                }).ToList()
             };
             return View(vm);
         }

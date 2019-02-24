@@ -223,6 +223,20 @@ namespace RestSupplyMVC.Controllers
                             IngredientId = ingredientItem.IngredientId,
                             Amount = ingredientItem.Amount
                         });
+                    
+                    // Add new quantity to kitchen ingredient
+                    var kitchenIngredient =
+                        _unitOfWork.KitchenIngredient.GetByKitchenAndIngredientIds(kitchenId,
+                            ingredientItem.IngredientId);
+                    if (kitchenIngredient != null)
+                    {
+                        kitchenIngredient.CurrentQuantity += ingredientItem.Amount;
+                    }
+                    else
+                    {
+                        result = "Error! Unable to update ingredient quantity for selected kitchen!";
+                        return Json(result, JsonRequestBehavior.AllowGet);
+                    }
                 }
 
                 _unitOfWork.SupplierOrders.Add(supplierOrder);

@@ -7,5 +7,6 @@ namespace RestSupplyMVC.Repositories
     {
         Dictionary<int, KitchenIngredients> GetIngredientIdToKitchenIngredientMap(int kitchenId);
 
+        KitchenIngredients GetByKitchenAndIngredientIds(int kitchenId, int ingredientItemIngredientId);
     }
 }

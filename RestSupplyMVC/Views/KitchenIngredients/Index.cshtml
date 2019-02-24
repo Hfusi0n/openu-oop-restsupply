@@ -4,7 +4,10 @@
     ViewBag.Title = "Ingredients Supply";
 }
 
-<h2>Index</h2>
+<h2><b>Ingredient Quantities In Kitchen</b></h2>
+<hr/>
+<h4><b>Kitchen Name:</b> @Model.KitchenName</h4>
+<hr/>
 <table class="table">
     <tr>
         <th>
@@ -20,40 +23,41 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model.KitchenIngredientsList) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.IngredientName)
-        </td>
-        <td>
-            @{
-                var minQuantity = item.MinimalQuantity.HasValue ? item.MinimalQuantity + " " + item.Unit : "";
+    @foreach (var item in Model.KitchenIngredientsList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IngredientName)
+            </td>
+            <td>
+                @{
+                    var minQuantity = item.MinimalQuantity.HasValue ? item.MinimalQuantity + " " + item.Unit : "";
                     @Html.DisplayFor(modelItem => minQuantity)
-            }
-        </td>
-        <td>
-            @{
-                var currentQuantity = item.CurrentQuantity.HasValue ? item.CurrentQuantity + " " + item.Unit : "";
+                }
+            </td>
+            <td>
+                @{
+                    var currentQuantity = item.CurrentQuantity.HasValue ? item.CurrentQuantity + " " + item.Unit : "";
 
-                @Html.DisplayFor(modelItem => currentQuantity)
-            }
-        </td>
-        <td>
-            @{
-                if (item.KitchenIngredientId.HasValue)
-                {
-                    @Html.ActionLink("Edit", "Edit", new {id = item.KitchenIngredientId})
+                    @Html.DisplayFor(modelItem => currentQuantity)
                 }
-                else
-                {
-                    @Html.ActionLink("Add Values","Create", new {kitchenId = Model.KitchenIngredientsList.FirstOrDefault()?.KitchenId, ingredientId = item.IngredientId})
+            </td>
+            <td>
+                @{
+                    if (item.KitchenIngredientId.HasValue)
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.KitchenIngredientId })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Add Values", "Create", new { kitchenId = Model.KitchenIngredientsList.FirstOrDefault()?.KitchenId, ingredientId = item.IngredientId })
+                    }
                 }
-            }
-            @* NOT ALLOWING DELETION OF KITCHEN-INGREDIENTS AT THE MOMENT
-            |
-            @Html.ActionLink("Delete", "Delete", new { id = item.KitchenIngredientId }) *@
-        </td>
-    </tr>
-}
+                @* NOT ALLOWING DELETION OF KITCHEN-INGREDIENTS AT THE MOMENT
+                    |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.KitchenIngredientId }) *@
+            </td>
+        </tr>
+    }
 
 </table>

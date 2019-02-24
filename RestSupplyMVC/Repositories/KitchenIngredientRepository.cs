@@ -50,5 +50,13 @@ namespace RestSupplyMVC.Repositories
             return map;
 
         }
+
+        public KitchenIngredients GetByKitchenAndIngredientIds(int kitchenId, int ingredientId)
+        {
+            var kitchenIngredient =
+                _context.KitchenIngredientsSet.FirstOrDefault(ki =>
+                    ki.KitchenId == kitchenId && ki.IngredientId == ingredientId);
+            return kitchenIngredient;
+        }
     }
 }

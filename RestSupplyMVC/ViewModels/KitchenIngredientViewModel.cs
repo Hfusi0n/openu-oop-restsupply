@@ -21,6 +21,8 @@ namespace RestSupplyMVC.ViewModels
 
     public class KitchenIngredientIndexViewModel
     {
+        public string KitchenName { get; set; }
+        public int KitchenId { get; set; }
         public List<KitchenIngredientViewModel> KitchenIngredientsList { get; set; }
     }
 }

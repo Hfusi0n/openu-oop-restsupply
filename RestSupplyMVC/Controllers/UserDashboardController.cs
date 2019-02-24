@@ -85,6 +85,8 @@ namespace RestSupplyMVC.Controllers
                 {
                     user.FirstName = model.PrivateName;
                     user.LastName = model.LastName;
+
+                    // TODO consider overriding UpdateAsync so it passes AppUserDTO and not AppUser
                     var userResult = await userManager.UpdateAsync(user);
                 }
             }

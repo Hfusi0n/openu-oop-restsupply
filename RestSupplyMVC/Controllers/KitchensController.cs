@@ -92,6 +92,17 @@ namespace RestSupplyMVC.Controllers
             return View(kitchenVm);
         }
 
+        public ActionResult GetIngredientsByKitchenId(int kitchenId)
+        {
+            var ingredients = _unitOfWork.Ingredients.GetIngredientsByKitchenId(kitchenId);
+            var response = ingredients.Select(i => new IngredientViewModel
+            {
+                IngredientId = i.Id,
+                Name = i.Name
+            }).ToList();
+
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult SaveKitchen(string kitchenName, string kitchenAddress, UserViewModel[] users)
         {
             string result = "Error! Saving Kitchen Process Is Not Complete!";

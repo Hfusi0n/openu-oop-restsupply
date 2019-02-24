@@ -1,7 +1,7 @@
 ﻿using RestSupplyDB;
 using System.Collections.Generic;
 using System.Linq;
-using DBModels = RestSupplyDB.Models.Ingredient;
+using RestSupplyDB.Models.Ingredient;
 
 namespace RestSupplyMVC.Repositories
 {
@@ -14,22 +14,29 @@ namespace RestSupplyMVC.Repositories
             _context = context;
         }
 
-        public IEnumerable<DBModels.Ingredients> GetAll()
+        public IEnumerable<Ingredients> GetAll()
         {
             return _context.IngredientsSet.ToList();
         }
 
-        public IEnumerable<DBModels.Ingredients> GetIngredientsBySupplierId(int id)
+        public IEnumerable<Ingredients> GetIngredientsBySupplierId(int id)
         {
             return _context.IngredientsSet.Where(i => i.SuppliersIngredients.Any(si => si.SupplierId == id));
         }
 
-        public DBModels.Ingredients GetById<TKey>(TKey id)
+        public List<Ingredients> GetIngredientsByKitchenId(int kitchenId)
+        {
+            var ingredients =
+                _context.IngredientsSet.Where(i => i.KitchenIngredients.Any(ki => ki.KitchenId == kitchenId)).ToList();
+            return ingredients;
+        }
+
+        public Ingredients GetById<TKey>(TKey id)
         {
             return _context.IngredientsSet.Find(id);
         }
 
-        public void Add(DBModels.Ingredients item)
+        public void Add(Ingredients item)
         {
             _context.IngredientsSet.Add(item);
         }

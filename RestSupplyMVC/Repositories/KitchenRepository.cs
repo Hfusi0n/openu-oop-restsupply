@@ -62,6 +62,16 @@ namespace RestSupplyMVC.Repositories
 
         }
 
+        public List<Kitchens> GetKitchensByUserId(string userId)
+        {
+            if(userId == null)
+                return new List<Kitchens>();
+
+            var kitchens = _context.KitchensSet.Where(k => k.KitchenUsers.Any(ku => ku.UserId == userId)).ToList();
+
+            return kitchens;
+        }
+
         public void RemoveUserFromKitchen(int kitchenId, string userId)
         {
             var dbKitchen = _context.KitchensSet.Find(kitchenId);

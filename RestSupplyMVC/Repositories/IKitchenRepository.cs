@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RestSupplyDB;
 using RestSupplyDB.Models.Kitchen;
 using RestSupplyDB.Models.Supplier;
+using RestSupplyMVC.ViewModels;
 
 namespace RestSupplyMVC.Repositories
 {
@@ -14,5 +15,6 @@ namespace RestSupplyMVC.Repositories
         void AddUserToKitchen(int kitchenId, string userId);
         void RemoveUserFromKitchen(int kitchenId, string userId);
         void AddUsersToKitchen(int kitchenId, List<string> userIds);
+        List<Kitchens> GetKitchensByUserId(string userId);
     }
 }

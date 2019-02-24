@@ -169,27 +169,36 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                הוסף חומר גלם
+                                Select Kitchen
                             </label>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.AllSupplierIngredientsList, new SelectList(Model.AllSupplierIngredientsList, "IngredientId", "Name"), "", new {@id = "ingredient", @class = "form-control"})
+                                @Html.DropDownListFor(model => model.UserKitchens, new SelectList(Model.UserKitchens, "KitchenId", "KitchenName"), "", new {@id = "kitchen", @class = "form-control"})
                             </div>
                             <label class="control-label col-md-2">
-                                כמות
+                                Order Ingredients
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="amount" name="amount" placeholder="כמות" class="form-control" />
+                                @*
+        @Html.DropDownListFor(model => model.AllSupplierIngredientsList, new SelectList(""), "", new {@id = "ingredient", @class = "form-control"})
+                                *@
+                                <select class="form-control" id="ingredient" name="ingredient"></select>
+                            </div>
+                            <label class="control-label col-md-2">
+                                Quantity
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" id="amount" name="amount" placeholder="quantity" class="form-control"/>
                             </div>
                             <label class="control-label col-md-2">
                                 Unit
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="unit" name="unit" placeholder="Unit" class="form-control" disabled = "disabled"  />
+                                <input type="text" id="unit" name="unit" placeholder="unit" class="form-control" disabled="disabled"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-1 col-lg-offset-1">
-                                <a id="addToList" class="btn btn-primary">הוסף פריט</a>
+                                <a id="addToList" class="btn btn-primary">Add Item</a>
                             </div>
 
                         </div>
@@ -197,9 +206,9 @@
                             <thead>
                                 <tr>
                                     <th style="width:5%"></th> @*hidden IngredientId column*@
-                                    <th style="width: 35%">חומר גלם</th>
-                                    <th style="width: 25%">כמות</th>
-                                    <th style="width: 25%"> יחידת מידה</th>
+                                    <th style="width: 35%">Ingredient</th>
+                                    <th style="width: 25%">Quantity</th>
+                                    <th style="width: 25%"> Unit</th>
 
                                     <th style="width: 10%"></th>
                                 </tr>
@@ -209,8 +218,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn btn-default" data-dismiss="modal">סגירה</button>
-                    <button id="saveSupplierOrder" type="submit" class="btn btn-danger">שמירה</button>
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="saveSupplierOrder" type="submit" class="btn btn-danger">Save</button>
                 </div>
             </form>
         </div>
@@ -219,39 +228,79 @@
 @section scripts{
     <script>
         // Get unit for selected ingredient (New Order Modal)
-        $("#ingredient").change(function () {
+        $("#ingredient").change(function() {
             return $.ajax({
                 url: "/Ingredients/GetUnitByIngredientId",
                 data: { 'id': $("#ingredient option:selected").val() },
                 type: 'GET',
                 dataType: "json",
                 cache: false,
-                success: function (response) {
+                success: function(response) {
                     $("#unit").val(response);
                 },
-                error: function () {
+                error: function() {
                     alert("Error finding unit for ingredient!");
                 }
             });
         });
 
+
+        // Get ingredients for selected kitchen (New Order Modal)
+        $("#kitchen").change(function() {
+            if ($("#kitchen option:selected").val() === "") {
+                var s = '<option value="-1">No Kitchen Selected</option>';
+                $("#ingredient").html(s);
+                $("#unit").val("");
+                $("#amount").val("");
+            } else {
+                return $.ajax({
+                    url: "/Kitchens/GetIngredientsByKitchenId",
+                    data: { 'kitchenId': $("#kitchen option:selected").val() },
+                    type: 'GET',
+                    dataType: "json",
+                    cache: false,
+                    success: function(response) {
+                        if (response.length > 0) {
+                            var s = '<option value="-1">Select Ingredient</option>';
+                            for (var i = 0; i < response.length; i++) {
+                                s += '<option value="' +
+                                    response[i].IngredientId +
+                                    '">' +
+                                    response[i].Name +
+                                    '</option>';
+                            }
+                            $("#ingredient").html(s);
+                        } else {
+                            var n = '<option value="-1">No Ingredients</option>';
+                            $("#ingredient").html(n);
+
+                        }
+                    },
+                    error: function() {
+                        alert("Error finding ingredients for kitchen!");
+                    }
+                });
+            }
+        });
+
+
         // Get unit for selected ingredient (New ingredient Modal)
-        $("#ingredient1").change(function () {
+        $("#ingredient1").change(function() {
             return $.ajax({
                 url: "/Ingredients/GetUnitByIngredientId",
                 data: { 'id': $("#ingredient1 option:selected").val() },
                 type: 'GET',
                 dataType: "json",
                 cache: false,
-                success: function (response) {
+                success: function(response) {
                     $("#unit1").val(response);
                 },
-                error: function () {
+                error: function() {
                     alert("Error finding unit for ingredient!");
                 }
             });
         });
-        
+
         // ------Show Add ingredient Modal-------
         function addIngredient() {
             $("#newIngredientModal").modal();
@@ -260,7 +309,7 @@
         }
 
         //Add Multiple Ingredients.
-        $("#addIngToList").click(function (e) {
+        $("#addIngToList").click(function(e) {
             e.preventDefault();
 
             if ($.trim($("#ingredient1").val()) == "") return;
@@ -271,7 +320,13 @@
 
                 detailsTableBody = $("#ingTable tbody");
 
-            var productItem = '<tr><td>' + id + '</td><td>' + name + '</td><td>' + unit + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            var productItem = '<tr><td>' +
+                id +
+                '</td><td>' +
+                name +
+                '</td><td>' +
+                unit +
+                '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
             detailsTableBody.append(productItem);
 
             // Hiding the IngredientId column
@@ -280,6 +335,7 @@
             clearIngItem();
 
         });
+
         //After Add A New Order In The List, Clear Clean The Form For Add More Order.
         function clearIngItem() {
             $("#name option:selected").remove();
@@ -293,50 +349,53 @@
                 type: 'POST',
                 url: "/Suppliers/AddSupplierIngredients",
                 data: data,
-                success: function (result) {
+                success: function(result) {
                     alert(result);
                     location.reload();
                 },
-                error: function () {
+                error: function() {
                     alert("Error!");
                 }
             });
         };
 
         //Collect Multiple Ingredient List For Pass To Controller
-        $("#addIngredients").click(function (e) {
+        $("#addIngredients").click(function(e) {
             e.preventDefault();
 
             var ingredientsArr = [];
             ingredientsArr.length = 0;
 
-            $.each($("#ingTable tbody tr"), function () {
-                ingredientsArr.push({
-                    ingredientId: $(this).find('td:eq(0)').html()
+            $.each($("#ingTable tbody tr"),
+                function() {
+                    ingredientsArr.push({
+                        ingredientId: $(this).find('td:eq(0)').html()
+                    });
                 });
-            });
 
 
             var data = JSON.stringify({
                 supplierId: $("#SupplierId1").val(),
                 ingredients: ingredientsArr
-                
-        });
 
-            $.when(addSupplierIngredients(data)).then(function (response) {
+            });
+
+            $.when(addSupplierIngredients(data)).then(function(response) {
                 console.log(response);
-            }).fail(function (err) {
+            }).fail(function(err) {
                 console.log(err);
             });
         });
+
         //-----------------------Show New Supplier Order Modal---------------------
         function addNewOrder() {
             $("#newOrderModal").modal();
             // Hiding the IngredientId column
             $('table#detailsTable td:nth-child(1), table#detailsTable th:nth-child(1)').hide();
         }
+
         //Add Multiple Ingredients.
-        $("#addToList").click(function (e) {
+        $("#addToList").click(function(e) {
             e.preventDefault();
 
             if ($.trim($("#ingredient").val()) == "" || $.trim($("#amount").val()) == "") return;
@@ -348,7 +407,15 @@
 
                 detailsTableBody = $("#detailsTable tbody");
 
-            var productItem = '<tr><td>' + id + '</td><td>' + name + '</td><td>' + amount + '</td><td>' + unit + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            var productItem = '<tr><td>' +
+                id +
+                '</td><td>' +
+                name +
+                '</td><td>' +
+                amount +
+                '</td><td>' +
+                unit +
+                '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
             detailsTableBody.append(productItem);
 
             // Hiding the IngredientId column
@@ -357,20 +424,26 @@
             clearItem();
 
         });
+
         //After Add A New Order In The List, Clear Clean The Form For Add More Order.
         function clearItem() {
             $("#name option:selected").remove();
         }
+
         // After Add A New Order In The List, If You Want, You Can Remove It.
-        $(document).on('click', 'a.deleteItem', function (e) {
-            e.preventDefault();
-            var $self = $(this);
-            if ($(this).attr('data-itemId') == "0") {
-                $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800, function () {
-                    $(this).remove();
-                });
-            }
-        });
+        $(document).on('click',
+            'a.deleteItem',
+            function(e) {
+                e.preventDefault();
+                var $self = $(this);
+                if ($(this).attr('data-itemId') == "0") {
+                    $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800,
+                        function() {
+                            $(this).remove();
+                        });
+                }
+            });
+
         //After Click Save Button Pass All Data View To Controller For Save Database
         function saveSupplierOrder(data) {
             return $.ajax({
@@ -379,30 +452,31 @@
                 type: 'POST',
                 url: "/SupplierOrder/SaveSupplierOrder",
                 data: data,
-                success: function (result) {
+                success: function(result) {
                     alert(result);
                     location.reload();
                 },
-                error: function () {
+                error: function() {
                     alert("Error!");
                 }
             });
         };
 
         //Collect Multiple Order List For Pass To Controller
-        $("#saveSupplierOrder").click(function (e) {
+        $("#saveSupplierOrder").click(function(e) {
             e.preventDefault();
 
             var ingredientsArr = [];
             ingredientsArr.length = 0;
 
-            $.each($("#detailsTable tbody tr"), function () {
-                ingredientsArr.push({
-                    ingredientId: $(this).find('td:eq(0)').html(),
-                    amount: $(this).find('td:eq(2)').html(),
+            $.each($("#detailsTable tbody tr"),
+                function() {
+                    ingredientsArr.push({
+                        ingredientId: $(this).find('td:eq(0)').html(),
+                        amount: $(this).find('td:eq(2)').html(),
 
+                    });
                 });
-            });
 
 
             var data = JSON.stringify({
@@ -410,9 +484,9 @@
                 ingredients: ingredientsArr
             });
 
-            $.when(saveSupplierOrder(data)).then(function (response) {
+            $.when(saveSupplierOrder(data)).then(function(response) {
                 console.log(response);
-            }).fail(function (err) {
+            }).fail(function(err) {
                 console.log(err);
             });
         });

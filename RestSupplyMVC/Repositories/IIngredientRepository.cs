@@ -6,5 +6,6 @@ namespace RestSupplyMVC.Repositories
     public interface IIngredientRepository : IRepository<Ingredients>
     {
         IEnumerable<Ingredients> GetIngredientsBySupplierId(int id);
+        List<Ingredients> GetIngredientsByKitchenId(int kitchenId);
     }
 }

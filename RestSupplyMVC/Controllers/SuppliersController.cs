@@ -8,6 +8,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using RestSupplyDB.Models.Ingredient;
 using RestSupplyDB.Models.Menu;
 
@@ -67,6 +68,7 @@ namespace RestSupplyMVC.Controllers
                 return HttpNotFound();
             }
 
+            var currentUserId = User.Identity.GetUserId();
             // Get all supplier details and orders
             var supplierDetailsVm = new SupplierOrderViewModel
             {
@@ -87,6 +89,12 @@ namespace RestSupplyMVC.Controllers
                     IngredientId = i.Id,
                     Name = i.Name,
                     Unit = i.Unit
+                }).ToList(),
+                UserKitchens = _unitOfWork.Kitchens.GetKitchensByUserId(currentUserId).Select(k => new KitchenViewModel
+                {
+                    KitchenId = k.Id,
+                    KitchenAddress = k.Address,
+                    KitchenName = k.Name
                 }).ToList()
             };
 

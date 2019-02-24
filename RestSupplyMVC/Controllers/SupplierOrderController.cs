@@ -204,15 +204,16 @@ namespace RestSupplyMVC.Controllers
             }
         }
 
-        public ActionResult SaveSupplierOrder(int supplierId, SupplierOrderIngredientsViewModel[] ingredients)
+        public ActionResult SaveSupplierOrder(int supplierId, int kitchenId, SupplierOrderIngredientsViewModel[] ingredients)
         {
             string result = "Error! Saving supplier process Is Not Complete!";
-            if (supplierId > 0 && ingredients != null)
+            if (supplierId > 0 && ingredients != null && kitchenId > 0)
             {
                 var supplierOrder = new SupplierOrders
                 {
                     SupplierId = supplierId,
-                    Date = DateTime.Today
+                    KitchenId = kitchenId,
+                    Date = DateTime.Now
                 };
                 foreach (var ingredientItem in ingredients)
                 {

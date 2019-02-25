@@ -41,11 +41,8 @@ namespace RestSupplyMVC.Repositories
             _context.IngredientsSet.Add(item);
         }
 
-        public void Remove<TKey>(TKey id)
+        public void Remove(Ingredients item)
         {
-            // Get the item...
-            var item = _context.IngredientsSet.Find(id);
-
             // Remove the entry
             _context.IngredientsSet.Remove(item);
         }

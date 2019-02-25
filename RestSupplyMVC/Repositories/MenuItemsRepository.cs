@@ -30,11 +30,8 @@ namespace RestSupplyMVC.Repositories
             _context.MenuItemsSet.Add(item);
         }
 
-        public void Remove<TKey>(TKey id)
+        public void Remove(MenuItems item)
         {
-            // Get the item...
-            var item = _context.MenuItemsSet.Find(id);
-
             // Remove the entry
             _context.MenuItemsSet.Remove(item);
         }

@@ -30,11 +30,8 @@ namespace RestSupplyMVC.Repositories
             _context.SuppliersSet.Add(supplier);
         }
         
-        public void Remove<TKey>(TKey id)
+        public void Remove(Supplier item)
         {
-            // Get the item...
-            var item = _context.SuppliersSet.Find(id);
-
             // Remove the entry
             _context.SuppliersSet.Remove(item);
         }

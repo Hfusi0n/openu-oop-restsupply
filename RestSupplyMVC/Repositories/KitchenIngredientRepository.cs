@@ -32,7 +32,7 @@ namespace RestSupplyMVC.Repositories
             _context.KitchenIngredientsSet.Add(item);
         }
         
-        public void Remove<TKey>(TKey id)
+        public void Remove(KitchenIngredients item)
         {
             throw new System.NotImplementedException();
         }

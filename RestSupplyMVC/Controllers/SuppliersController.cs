@@ -229,8 +229,9 @@ namespace RestSupplyMVC.Controllers
             Supplier supplier = context.SuppliersSet.Find(id);
             if (supplier != null)
             {
-                context.SuppliersSet.Remove(supplier);
-                _unitOfWork.Complete();
+                var result = context.SuppliersSet.Remove(supplier);
+                context.SaveChanges();
+                //_unitOfWork.Complete();
             }    
         
         return RedirectToAction("Index");

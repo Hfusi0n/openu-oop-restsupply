@@ -11,6 +11,6 @@ namespace RestSupplyMVC.Repositories
         IEnumerable<T> GetAll();
         T GetById<TKey>(TKey id);
         void Add(T item);
-        void Remove<TKey>(TKey id);
+        void Remove(T item);
     }
 }

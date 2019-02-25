@@ -74,17 +74,17 @@ namespace RestSupplyDB
             modelBuilder.Entity<Kitchens>()
                 .HasMany(e => e.KitchenIngredientsSet)
                 .WithRequired(e => e.KitchensSet)
-                .HasForeignKey(e => e.KitchenId).WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.KitchenId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Kitchens>()
                 .HasMany(e => e.CustomerOrdersSet)
                 .WithRequired(e => e.Kitchens)
-                .HasForeignKey(e => e.KitchenId);
+                .HasForeignKey(e => e.KitchenId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Kitchens>()
                 .HasMany(e => e.KitchenUsers)
                 .WithRequired(e => e.Kitchen)
-                .HasForeignKey(e => e.KitchenId);
+                .HasForeignKey(e => e.KitchenId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Kitchens>()
                 .HasMany(e => e.SupplierOrders)

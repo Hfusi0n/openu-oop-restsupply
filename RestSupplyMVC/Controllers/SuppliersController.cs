@@ -255,6 +255,19 @@ namespace RestSupplyMVC.Controllers
         }
 
         [HttpPost]
+        public ActionResult RemoveIngredientFromSupplier(int ingredientId, int supplierId)
+        {
+            string result = "Error when removing ingredient from supplier!";
+            if (ingredientId > 0 && supplierId > 0)
+            {
+                _unitOfWork.Suppliers.RemoveSupplierIngredient(supplierId, ingredientId);
+                _unitOfWork.Complete();
+                result = "Success";
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public ActionResult SaveSupplier(string supplierName, string supplierAddress, string supplierPhone,
             IngredientViewModel[] ingredients)
         {

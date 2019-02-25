@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Supplier Info";
 }
+<style type="text/css">.delbtn { }</style>
 
 <h2>Supplier Info</h2>
 
@@ -12,33 +13,41 @@
 
         <dd>
             <div class="panel-body">
-                <table class="table table-striped table-responsive" >
+                <table class="table table-striped table-responsive" id="supIng">
+                    @Html.HiddenFor(model => model.Id, new {id ="MainSupplierId"})
                     <tbody>
                     <tr>
                         <td><b>Supplier Name:</b> @Model.SupplierName </ td >
                         <td> <b>Address:</b>@Model.Address </ td >
                         <td><b>Phone:</b> @Model.Phone </ td >
-                        <td> @Html.ActionLink("Edit", "Edit", new { id = Model.Id })</ td >
+                        <td> @Html.ActionLink("Edit", "Edit", new {id = Model.Id})</ td >
 
-</tr>
+                    </tr>
                     <tr>
-                        <td colspan="2">
-                            <table class="table table-bordered">
-                                <tbody>
+                        <td colspan="3">
+                            <table class="table table-bordered" id="main-data">
+
                                 <tr>
+                                    <th>hiddenId</th>
                                     <th>Ingredient</th>
                                     <th>Unit</th>
+                                    <th style="width: 15%"> Actions</th>
+
                                 </tr>
-                                        
+                                <tbody>
                                 @foreach (var ingredient in Model.AllSupplierIngredientsList)
                                 {
                                     <tr>
+                                        <td class="nr">@ingredient.IngredientId</td>
                                         <td>@ingredient.Name</td>
                                         <td>@ingredient.Unit</td>
+
+                                        <td><button type="button" class="delbtn">Remove</button></td>
+
                                     </tr>
                                 }
                                 </tbody>
-                                
+                                <div id="res"></div>
                             </table>
                         </td>
                     </tr>
@@ -110,8 +119,9 @@
                             <thead>
                                 <tr>
                                     <th style="width:5%"></th> @*hidden IngredientId column*@
-                                    <th style="width: 35%">Ingredient</th>
-                                    <th style="width: 25%"> Unit</th>
+                                    <th style="width: 25%">Ingredient</th>
+                                    <th style="width: 15%"> Unit</th>
+
 
                                     <th style="width: 10%"></th>
                                 </tr>
@@ -229,6 +239,36 @@
 </div>
 @section scripts{
     <script>
+        // hid InredientId column upon page load
+        $( document ).ready(function() {
+            $('table#main-data td:nth-child(1), table#main-data th:nth-child(1)').hide();
+
+        });
+        // Remove ingredient from supplier 
+        $(".delbtn").click(function () {
+            //var id = $("#supIng").find(".nr:first").text();
+            var $item = $(this).closest("tr")   // Finds the closest row <tr> 
+                .find(".nr")     // Gets a descendent with class="nr"
+                .text(); 
+             
+            $("#res").append($item); // Testing: append the contents of the td to a div
+
+            return $.ajax({
+                url: "/Suppliers/RemoveIngredientFromSupplier",
+                data: { 'ingredientId': $item, 'supplierId': $("#MainSupplierId").val() },
+                type: 'POST',
+                dataType: "json",
+                cache: false,
+                success: function(result) {
+                        alert(result);
+                        location.reload();
+                },
+                error: function () {
+                    alert("Error finding unit for ingredient!");
+                }
+            });
+        });
+
         // Get unit for selected ingredient (New Order Modal)
         $("#ingredient").change(function() {
             return $.ajax({

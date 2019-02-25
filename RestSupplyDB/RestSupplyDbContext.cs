@@ -104,7 +104,7 @@ namespace RestSupplyDB
             modelBuilder.Entity<SupplierOrders>()
                 .HasMany(e => e.SupplierOrderDetails)
                 .WithRequired(e => e.OrdersSet)
-                .HasForeignKey(e => e.OrderId).WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.OrderId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Supplier>()
                 .HasMany(e => e.SuppliersIngredients)

@@ -18,26 +18,33 @@ namespace RestSupplyMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult IsMenuOrderInStock(CustomerOrderDetailViewModel[] customers)
+        public ActionResult IsMenuOrderInStock(CustomerOrderDetailViewModel[] orderVm, int kitchenId)
         {
             // here we also need to pass the KitchenId in order to get a result. 
             // Get kitchenId from currentUser?
+
+
+            // step 1: foreach ingredient - make sure amount in current kitchen is listed. if not - not in stock
+            // step 2: foreach ingredient - calculate the amount ordered
+
             return Json(true);
         }
         [Authorize]
-        public ActionResult Create()
+        public ActionResult Create(int kitchenId)
         {
             var dbMenuItems = _unitOfWork.MenuItems.GetAll();
-            var model = new CreateCustomerOrderViewModel
+            var vm = new CreateCustomerOrderViewModel
             {
                 AllMenuItemsToQuantityMap = dbMenuItems.ToDictionary(mi => new MenuItemViewModel
                 {
                     Id = mi.Id,
                     Name = mi.Name
-                }, q => 0)
+                }, q => 0),
+                KitchenId = kitchenId,
+                KitchenName = _unitOfWork.Kitchens.GetById(kitchenId).Name
             };
 
-            return View(model);
+            return View(vm);
         }
 
         [Authorize]
@@ -48,5 +55,9 @@ namespace RestSupplyMVC.Controllers
             return View();
         }
 
+        public ActionResult Index()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

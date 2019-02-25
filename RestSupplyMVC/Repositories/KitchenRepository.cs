@@ -31,11 +31,8 @@ namespace RestSupplyMVC.Repositories
             _context.KitchensSet.Add(kitchen);
         }
 
-        public void Remove<TKey>(TKey id)
+        public void Remove(Kitchens item)
         {
-            // Get the object from the database by id
-            var item = _context.KitchensSet.Find(id);
-
             // Delete the entry
             _context.KitchensSet.Remove(item);
         }

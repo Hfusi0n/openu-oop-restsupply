@@ -150,6 +150,10 @@
     <Compile Include="Migrations\201902252139204_update_9_cascade_del_migration.Designer.cs">
       <DependentUpon>201902252139204_update_9_cascade_del_migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902252141192_update_10_cascade_del_migration.cs" />
+    <Compile Include="Migrations\201902252141192_update_10_cascade_del_migration.Designer.cs">
+      <DependentUpon>201902252141192_update_10_cascade_del_migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppUser\AppRoleStore.cs" />
     <Compile Include="Models\AppUser\AppUserStore.cs" />
@@ -238,6 +242,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902252139204_update_9_cascade_del_migration.resx">
       <DependentUpon>201902252139204_update_9_cascade_del_migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902252141192_update_10_cascade_del_migration.resx">
+      <DependentUpon>201902252141192_update_10_cascade_del_migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

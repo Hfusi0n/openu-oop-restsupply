@@ -48,23 +48,23 @@ namespace RestSupplyDB
             modelBuilder.Entity<AppUser>()
                 .HasMany(e => e.UserKitchens)
                 .WithRequired(e => e.AppUser)
-                .HasForeignKey(e => e.UserId).WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.UserId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Ingredients>()
                 .HasMany(e => e.KitchenIngredients)
                 .WithRequired(e => e.IngredientsSet)
                 .HasForeignKey(e => e.IngredientId)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Ingredients>()
                 .HasMany(e => e.MenuIngredients)
                 .WithRequired(e => e.IngredientsSet)
-                .HasForeignKey(e => e.IngredientId).WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.IngredientId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Ingredients>()
                 .HasMany(e => e.IngredientListOrders)
                 .WithRequired(e => e.IngredientsSet)
-                .HasForeignKey(e => e.IngredientId).WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.IngredientId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Ingredients>()
                 .HasMany(e => e.SuppliersIngredients)

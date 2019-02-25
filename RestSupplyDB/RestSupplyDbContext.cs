@@ -99,7 +99,7 @@ namespace RestSupplyDB
             modelBuilder.Entity<MenuItems>()
                 .HasMany(e => e.CustomerDetailOrdersSet)
                 .WithRequired(e => e.MenuItems)
-                .HasForeignKey(e => e.MenuItemId).WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.MenuItemId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<SupplierOrders>()
                 .HasMany(e => e.SupplierOrderDetails)

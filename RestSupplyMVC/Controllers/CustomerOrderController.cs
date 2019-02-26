@@ -20,15 +20,77 @@ namespace RestSupplyMVC.Controllers
         [HttpPost]
         public ActionResult IsMenuOrderInStock(CustomerOrderDetailViewModel[] orderVm, int kitchenId)
         {
-            // here we also need to pass the KitchenId in order to get a result. 
-            // Get kitchenId from currentUser?
+            var ingredientsNotInKitchen = new List<IngredientViewModel>();
+            var ingredientsNotInStock = new List<IngredientViewModel>();
 
+            var ingredientIdToQuantity = GetOrderedIngredientsToQuantityMap(orderVm);
+            // foreach ingredient - make sure amount in current kitchen is listed. if not - not in stock
+            foreach (var orderedIngredientId in ingredientIdToQuantity.Keys)
+            {
+                var orderedQuantity = ingredientIdToQuantity[orderedIngredientId];
 
-            // step 1: foreach ingredient - make sure amount in current kitchen is listed. if not - not in stock
-            // step 2: foreach ingredient - calculate the amount ordered
+                var kitchenIngredient =
+                    _unitOfWork.KitchenIngredient.GetByKitchenAndIngredientIds(kitchenId, orderedIngredientId);
 
-            return Json(true);
+                // if ingredient is not listed in the current kitchen
+                if (kitchenIngredient == null)
+                {
+                    ingredientsNotInKitchen.Add(new IngredientViewModel
+                    {
+                        IngredientId = orderedIngredientId,
+                        Name = _unitOfWork.Ingredients.GetById(orderedIngredientId).Name
+                    });
+                    continue;
+                }
+
+                // check if the ordered amount is not in stock
+                var kitchenIngredientCurrentQuantity = kitchenIngredient.CurrentQuantity;
+                if (orderedQuantity > kitchenIngredientCurrentQuantity)
+                    ingredientsNotInStock.Add(new IngredientViewModel
+                    {
+                        IngredientId = orderedIngredientId,
+                        Name = _unitOfWork.Ingredients.GetById(orderedIngredientId).Name
+                    });
+            }
+
+            // Order is in stock iff all ingredients are in stock & listed in the kitchen
+            bool isInStock = !ingredientsNotInStock.Any() && !ingredientsNotInKitchen.Any();
+
+            var response = new
+            {
+                isInStock,
+                ingredientsNotInStock,
+                ingredientsNotInKitchen
+            };
+        
+
+        return Json(response);
         }
+
+        private Dictionary<int, double> GetOrderedIngredientsToQuantityMap(CustomerOrderDetailViewModel[] customerOrderVm)
+        {
+            var ingredientIdToQuantity = new Dictionary<int, double>();
+            // Arrange all the ingredients and their amount in a dictionary
+            // And for each ingredient - calculate the amount ordered
+            foreach (var orderDetail in customerOrderVm.Where(o => o.Quantity > 0).ToList())
+            {
+                var orderIngredients = _unitOfWork.MenuItems.GetById(orderDetail.Id).MenuIngredientsSet.ToList();
+                foreach (var ingredient in orderIngredients)
+                {
+                    if (ingredientIdToQuantity.ContainsKey(ingredient.Id))
+                    {
+                        ingredientIdToQuantity[ingredient.Id] += ingredient.Quantity;
+                    }
+                    else
+                    {
+                        ingredientIdToQuantity.Add(ingredient.Id, ingredient.Quantity);
+                    }
+                }
+            }
+
+            return ingredientIdToQuantity;
+        }
+
         [Authorize]
         public ActionResult Create(int kitchenId)
         {

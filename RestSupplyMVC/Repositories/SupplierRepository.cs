@@ -57,7 +57,8 @@ namespace RestSupplyMVC.Repositories
 
             var supplierIngredient =
                 dbSupplier.SuppliersIngredients.FirstOrDefault(i => i.IngredientId == ingredientId);
-            dbSupplier.SuppliersIngredients.Remove(supplierIngredient);
+
+            _context.SuppliersIngredientsSet.Remove(supplierIngredient);            
         }
     }
 }

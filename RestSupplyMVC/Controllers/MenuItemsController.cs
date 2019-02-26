@@ -46,7 +46,7 @@ namespace RestSupplyMVC.Controllers
             {
                 menuItemsListVm.Add(new MenuItemViewModel
                 {
-                    Id = dbMenuItem.Id,
+                    MenuItemId = dbMenuItem.Id,
                     Name = dbMenuItem.Name,
                     MenuItemIngredients = dbMenuItem.MenuIngredientsSet.Select(mi => new MenuItemIngredientViewModel
                     {
@@ -78,7 +78,7 @@ namespace RestSupplyMVC.Controllers
 
             var menuItemVm = new MenuItemViewModel
             {
-                Id = dbMenuItem.Id,
+                MenuItemId = dbMenuItem.Id,
                 Name = dbMenuItem.Name,
                 MenuItemIngredients = dbMenuItem.MenuIngredientsSet.Select(mi => new MenuItemIngredientViewModel
                 {

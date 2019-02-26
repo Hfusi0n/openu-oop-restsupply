@@ -38,7 +38,7 @@ namespace RestSupplyMVC.Controllers
                     ingredientsNotInKitchen.Add(new IngredientViewModel
                     {
                         IngredientId = orderedIngredientId,
-                        Name = _unitOfWork.Ingredients.GetById(orderedIngredientId).Name
+                        Name = _unitOfWork.Ingredients.GetById(orderedIngredientId)?.Name
                     });
                     continue;
                 }
@@ -72,18 +72,19 @@ namespace RestSupplyMVC.Controllers
             var ingredientIdToQuantity = new Dictionary<int, double>();
             // Arrange all the ingredients and their amount in a dictionary
             // And for each ingredient - calculate the amount ordered
-            foreach (var orderDetail in customerOrderVm.Where(o => o.Quantity > 0).ToList())
+            foreach (var menuItem in customerOrderVm.Where(o => o.Quantity > 0).ToList())
             {
-                var orderIngredients = _unitOfWork.MenuItems.GetById(orderDetail.Id).MenuIngredientsSet.ToList();
-                foreach (var ingredient in orderIngredients)
+                var orderIngredients = _unitOfWork.MenuItems.GetById(menuItem.MenuItemId).MenuIngredientsSet.ToList();
+                foreach (var menuItemIngredient in orderIngredients)
                 {
-                    if (ingredientIdToQuantity.ContainsKey(ingredient.Id))
+                    var totalIngredientQuantityInOrder = menuItemIngredient.Quantity * menuItem.Quantity;
+                    if (ingredientIdToQuantity.ContainsKey(menuItemIngredient.IngredientId))
                     {
-                        ingredientIdToQuantity[ingredient.Id] += ingredient.Quantity;
+                        ingredientIdToQuantity[menuItemIngredient.IngredientId] += totalIngredientQuantityInOrder;
                     }
                     else
                     {
-                        ingredientIdToQuantity.Add(ingredient.Id, ingredient.Quantity);
+                        ingredientIdToQuantity.Add(menuItemIngredient.IngredientId, totalIngredientQuantityInOrder);
                     }
                 }
             }
@@ -94,12 +95,12 @@ namespace RestSupplyMVC.Controllers
         [Authorize]
         public ActionResult Create(int kitchenId)
         {
-            var dbMenuItems = _unitOfWork.MenuItems.GetAll();
+            var dbMenuItems = _unitOfWork.MenuItems.GetAll().Where(mi => mi.MenuIngredientsSet.Any());
             var vm = new CreateCustomerOrderViewModel
             {
                 AllMenuItemsToQuantityMap = dbMenuItems.ToDictionary(mi => new MenuItemViewModel
                 {
-                    Id = mi.Id,
+                    MenuItemId = mi.Id,
                     Name = mi.Name
                 }, q => 0),
                 KitchenId = kitchenId,

@@ -34,7 +34,7 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Id, Model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Name, htmlAttributes: new {@class = "control-label col-md-2", style = "width: 200px;", id = "MenuItemId"})
+                            @Html.LabelFor(model => model.AllMenuItemsToQuantityMap.ElementAt(i).Key.MenuItemId, Model.AllMenuItemsToQuantityMap.ElementAt(i).Key.Name, htmlAttributes: new {@class = "control-label col-md-2", style = "width: 200px;", id = "MenuItemId"})
                         </div>
                     </td>
                     <td>
@@ -44,13 +44,20 @@
                                     <span class="glyphicon glyphicon-minus"></span>
                                 </button>
                             </span>
-                            <input type="text" id="quant[@i]" name="quant[@i]" class="form-control input-number" value="0" min="0" max="100">
+                            <input type="text" id="quant[@i]" name="quant[@i]" class="form-control input-number" value="0" min="0" max="1000">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[@i]">
                                     <span class="glyphicon glyphicon-plus"></span>
                                 </button>
                             </span>
                         </div>
+                    </td>
+                    <td>
+                    <div>
+                        <label id="textLabel"></label>
+                    </div>
+                    <td>
+
                     </td>
                 </tr>
             }
@@ -95,7 +102,7 @@
                         $(this).attr('disabled', true);
                     }
 
-                // Add item to order
+                    // Add item to order
                 } else if (type == 'plus') {
                     if (currentVal < input.attr('max')) {
                         input.val(currentVal + 1).change();
@@ -109,10 +116,18 @@
                             type: 'POST',
                             url: "/CustomerOrder/IsMenuOrderInStock",
                             data: data,
-                            success: function (result) {
-                                alert(result);
+                            success: function(result) {
+                                if (!result.isInStock) {
+                                    input.val(currentVal + 1 - 1).change(); // if item not is stock, current value remains 
+                                    var lbl = $('#textlabel').text();
+                                    $('#textlabel').empty().append(lbl + result.ingredientsNotInKitchen.toString());
+                                    
+                                } else {
+                                    $('#createBtn').attr('disabled', false);
+
+                                }
                             },
-                            error: function () {
+                            error: function() {
                                 alert("Error!");
                             }
                         });
@@ -121,15 +136,15 @@
                     // Send all menuItems with their current quantity in order to check if ingredients are in stock
                     var customers = [];
                     customers.length = 0;
-                            var menuItems = @Html.Raw(Json.Encode(Model.AllMenuItemsToQuantityMap.Keys));
+                    var menuItems = @Html.Raw(Json.Encode(Model.AllMenuItemsToQuantityMap.Keys));
                     $.each(menuItems,
                         function(index, item) {
                             var selector = "" + index;
                             selector = "quant[" + selector + "]";
                             customers.push({
-                                id: item.Id, // menuItemId
+                                menuItemId: item.MenuItemId, 
                                 quantity: parseInt($('[id="quant[' + index + ']"]').val(), 10)
-                                
+
 
                             });
                         });
@@ -146,55 +161,55 @@
 
 
                     // TODO refactor this - there should not be a max value
-                    if (parseInt(input.val()) == input.attr('max')) {
-                        $(this).attr('disabled', true);
-                    }
+                    //if (parseInt(input.val()) == input.attr('max')) {
+                    //    $(this).attr('disabled', true);
+                    //}
 
                 }
             } else {
                 input.val(0);
             }
         });
-$('.input-number').focusin(function(){
-   $(this).data('oldValue', $(this).val());
-});
-$('.input-number').change(function() {
+        $('.input-number').focusin(function() {
+            $(this).data('oldValue', $(this).val());
+        });
+        $('.input-number').change(function() {
 
-    minValue =  parseInt($(this).attr('min'));
-    maxValue =  parseInt($(this).attr('max'));
-    valueCurrent = parseInt($(this).val());
+            minValue = parseInt($(this).attr('min'));
+            //maxValue = parseInt($(this).attr('max'));
+            valueCurrent = parseInt($(this).val());
 
-    name = $(this).attr('name');
-    if(valueCurrent >= minValue) {
-        $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
-    } else {
-        alert('Sorry, the minimum value was reached');
-        $(this).val($(this).data('oldValue'));
-    }
-    if(valueCurrent <= maxValue) {
-        $(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
-    } else {
-        alert('Sorry, the maximum value was reached');
-        $(this).val($(this).data('oldValue'));
-    }
+            name = $(this).attr('name');
+            if (valueCurrent >= minValue) {
+                $(".btn-number[data-type='minus'][data-field='" + name + "']").removeAttr('disabled')
+            } else {
+               // alert('Sorry, the minimum value was reached');
+                $(this).val($(this).data('oldValue'));
+            }
+            //if (valueCurrent <= maxValue) {
+            //    $(".btn-number[data-type='plus'][data-field='" + name + "']").removeAttr('disabled')
+           // } else {
+               // alert('Sorry, the maximum value was reached');
+             //   $(this).val($(this).data('oldValue'));
+            //}
 
 
-});
-$(".input-number").keydown(function (e) {
-        // Allow: backspace, delete, tab, escape, enter and .
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
-             // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) ||
-             // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) {
-                 // let it happen, don't do anything
-                 return;
-        }
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-});
+        });
+        $(".input-number").keydown(function(e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+                // Allow: Ctrl+A
+                (e.keyCode == 65 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
     </script>
 
 }

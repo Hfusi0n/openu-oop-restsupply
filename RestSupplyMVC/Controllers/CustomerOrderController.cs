@@ -67,6 +67,12 @@ namespace RestSupplyMVC.Controllers
         return Json(response);
         }
 
+        [HttpPost]
+        public ActionResult CreateCustomerOrder(CustomerOrderDetailViewModel[] orderVm, int kitchenId)
+        {
+            throw new NotImplementedException();
+        }
+
         private Dictionary<int, double> GetOrderedIngredientsToQuantityMap(CustomerOrderDetailViewModel[] customerOrderVm)
         {
             var ingredientIdToQuantity = new Dictionary<int, double>();

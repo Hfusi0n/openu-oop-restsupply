@@ -66,7 +66,7 @@
 
         <div class="col-md-offset-2 col-md-10" align="left">
             <hr />
-            <input type="submit" value="Create" class="btn btn-default" disabled="disabled" id="createBtn"/>
+            <input type="submit" value="Create" class="btn btn-default" disabled="disabled" id="createBtn" />
         </div>
     </div>
 
@@ -83,14 +83,17 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
-        $('.btn-number').click(function(e) {
+        $('.btn-number,.btn-default').click(function(e) {
             e.preventDefault();
+
 
             fieldName = $(this).attr('data-field');
             type = $(this).attr('data-type');
+            buttonType = $(this).attr('type');
+            debugger;
             var input = $("input[name='" + fieldName + "']");
             var currentVal = parseInt(input.val());
-            if (!isNaN(currentVal)) {
+            if (!isNaN(currentVal) || buttonType == 'submit') {
 
                 // Remove item from order
                 if (type == 'minus') {
@@ -103,9 +106,47 @@
                     }
 
                     // Add item to order
-                } else if (type == 'plus') {
-                    if (currentVal < input.attr('max')) {
-                        input.val(currentVal + 1).change();
+                } else if (type == 'plus' || buttonType == 'submit') {
+
+                    // Send all menuItems with their current quantity in order to check if ingredients are in stock
+                    var customers = [];
+                    customers.length = 0;
+                    var menuItems = @Html.Raw(Json.Encode(Model.AllMenuItemsToQuantityMap.Keys));
+                    $.each(menuItems,
+                        function(index, item) {
+                            var selector = "" + index;
+                            selector = "quant[" + selector + "]";
+                            customers.push({
+                                menuItemId: item.MenuItemId,
+                                quantity: parseInt($('[id="quant[' + index + ']"]').val(), 10)
+                            });
+                        });
+                    var data = JSON.stringify({
+                        orderVm: customers,
+                        kitchenId: $("#kitchenId").val()
+                    });
+
+
+                    if (type == 'plus') {
+                        if (currentVal < input.attr('max')) {
+                            input.val(currentVal + 1).change();
+                        }
+
+                        $.when(isMenuOrderInStock(data)).then(function(response) {
+                            console.log(response);
+                        }).fail(function(err) {
+                            console.log(err);
+                        });
+                    }
+
+                    if (buttonType == 'submit') {
+                        debugger;
+                        $.when(createCustomerOrder(data)).then(function(response) {
+                            console.log(response);
+                        }).fail(function(err) {
+                            console.log(err);
+                        });
+
                     }
 
                     // Ajax call that checks the restaurant has ingredients for all selected menuItems
@@ -117,14 +158,13 @@
                             url: "/CustomerOrder/IsMenuOrderInStock",
                             data: data,
                             success: function(result) {
-                                if (!result.isInStock) {
-                                    input.val(currentVal + 1 - 1).change(); // if item not is stock, current value remains 
+                                if (result.isInStock) {
+                                    $('#createBtn').attr('disabled', false);
+                                } else {
+                                    input.val(currentVal + 1 - 1)
+                                        .change(); // if item not is stock, current value remains 
                                     var lbl = $('#textlabel').text();
                                     $('#textlabel').empty().append(lbl + result.ingredientsNotInKitchen.toString());
-                                    
-                                } else {
-                                    $('#createBtn').attr('disabled', false);
-
                                 }
                             },
                             error: function() {
@@ -133,43 +173,31 @@
                         });
                     }
 
-                    // Send all menuItems with their current quantity in order to check if ingredients are in stock
-                    var customers = [];
-                    customers.length = 0;
-                    var menuItems = @Html.Raw(Json.Encode(Model.AllMenuItemsToQuantityMap.Keys));
-                    $.each(menuItems,
-                        function(index, item) {
-                            var selector = "" + index;
-                            selector = "quant[" + selector + "]";
-                            customers.push({
-                                menuItemId: item.MenuItemId, 
-                                quantity: parseInt($('[id="quant[' + index + ']"]').val(), 10)
-
-
-                            });
+                    function createCustomerOrder(data) {
+                        return $.ajax({
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            type: 'POST',
+                            url: "/CustomerOrder/CreateCustomerOrder",
+                            data: data,
+                            success: function(result) {
+                                alert(result);
+                                location.reload();
+                            },
+                            error: function() {
+                                alert("Error!");
+                            }
                         });
-                    var data = JSON.stringify({
-                        orderVm: customers,
-                        kitchenId: $("#kitchenId").val()
-                    });
+                    };
 
-                    $.when(isMenuOrderInStock(data)).then(function(response) {
-                        console.log(response);
-                    }).fail(function(err) {
-                        console.log(err);
-                    });
-
-
-                    // TODO refactor this - there should not be a max value
-                    //if (parseInt(input.val()) == input.attr('max')) {
-                    //    $(this).attr('disabled', true);
-                    //}
 
                 }
             } else {
                 input.val(0);
             }
         });
+
+
         $('.input-number').focusin(function() {
             $(this).data('oldValue', $(this).val());
         });
@@ -183,18 +211,13 @@
             if (valueCurrent >= minValue) {
                 $(".btn-number[data-type='minus'][data-field='" + name + "']").removeAttr('disabled')
             } else {
-               // alert('Sorry, the minimum value was reached');
+                // alert('Sorry, the minimum value was reached');
                 $(this).val($(this).data('oldValue'));
             }
-            //if (valueCurrent <= maxValue) {
-            //    $(".btn-number[data-type='plus'][data-field='" + name + "']").removeAttr('disabled')
-           // } else {
-               // alert('Sorry, the maximum value was reached');
-             //   $(this).val($(this).data('oldValue'));
-            //}
 
 
         });
+
         $(".input-number").keydown(function(e) {
             // Allow: backspace, delete, tab, escape, enter and .
             if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||

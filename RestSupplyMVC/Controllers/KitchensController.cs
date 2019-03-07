@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using RestSupplyDB;
 using RestSupplyDB.Models.Ingredient;
 using RestSupplyDB.Models.Kitchen;
@@ -113,13 +114,16 @@ namespace RestSupplyMVC.Controllers
                     Name = kitchenName,
                     Address = kitchenAddress
                 };
-                foreach (var user in users)
+                if (users != null && users.Length > 0)
                 {
-                    kitchen.KitchenUsers.Add(
-                        new KitchenUsers
-                        {
-                            UserId = user.Id,
-                        });
+                    foreach (var user in users)
+                    {
+                        kitchen.KitchenUsers.Add(
+                            new KitchenUsers
+                            {
+                                UserId = user.Id,
+                            });
+                    }
                 }
 
                 _unitOfWork.Kitchens.Add(kitchen);

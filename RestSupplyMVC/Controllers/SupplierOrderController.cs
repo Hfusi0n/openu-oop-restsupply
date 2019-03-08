@@ -80,9 +80,7 @@ namespace RestSupplyMVC.Controllers
         [Authorize]
         public ActionResult Index(int? modalOrderId, string modalString)
         {
-            OrdersViewModel viewModel = GetOrdersViewModel();
-
-            viewModel = GetOrdersViewModel();
+            var viewModel = GetOrdersViewModel();
 
             if (!string.IsNullOrEmpty(modalString))
             {

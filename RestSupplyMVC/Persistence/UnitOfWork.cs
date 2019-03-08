@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity.Validation;
+﻿using System.Data.Entity.Validation;
 using System.Diagnostics;
 using RestSupplyDB;
 using RestSupplyMVC.Repositories;
@@ -16,6 +15,7 @@ namespace RestSupplyMVC.Persistence
         public IKitchenRepository Kitchens { get; }
         public IAccountRepository Account { get; }
         public IKitchenIngredientRepository KitchenIngredient { get; }
+        public ICustomerOrderRepository CustomerOrder { get; }
 
         public UnitOfWork(RestSupplyDbContext context)
         {
@@ -27,6 +27,7 @@ namespace RestSupplyMVC.Persistence
             Account = new AccountRepository(context);
             Kitchens = new KitchenRepository(context);
             KitchenIngredient = new KitchenIngredientRepository(context);
+            CustomerOrder = new CustomerOrderRepository(context);
         }
 
         public void Complete()

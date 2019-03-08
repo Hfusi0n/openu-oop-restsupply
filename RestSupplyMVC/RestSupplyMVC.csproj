@@ -213,7 +213,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\CustomerOrderRepository.cs" />
     <Compile Include="Repositories\IAccountRepository.cs" />
+    <Compile Include="Repositories\ICustomerOrderRepository.cs" />
     <Compile Include="Repositories\IKitchenIngredientRepository.cs" />
     <Compile Include="Repositories\IKitchenRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
@@ -348,6 +350,7 @@
     <Content Include="Views\KitchenIngredients\Details.cshtml" />
     <Content Include="Views\KitchenIngredients\Edit.cshtml" />
     <Content Include="Views\KitchenIngredients\Index.cshtml" />
+    <Content Include="Views\CustomerOrder\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

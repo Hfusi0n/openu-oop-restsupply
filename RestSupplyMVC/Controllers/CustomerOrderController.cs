@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using RestSupplyDB;
+using RestSupplyDB.Models.Customer;
+using RestSupplyDB.Models.Menu;
 using RestSupplyMVC.Persistence;
 using RestSupplyMVC.ViewModels;
+using WebGrease.Css.Extensions;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -62,18 +65,38 @@ namespace RestSupplyMVC.Controllers
                 ingredientsNotInStock,
                 ingredientsNotInKitchen
             };
-        
 
-        return Json(response);
+
+            return Json(response);
         }
 
         [HttpPost]
         public ActionResult CreateCustomerOrder(CustomerOrderDetailViewModel[] orderVm, int kitchenId)
         {
-            throw new NotImplementedException();
-        }
+            string response = "Error! Saving Order Process Is Not Complete!";
 
-        private Dictionary<int, double> GetOrderedIngredientsToQuantityMap(CustomerOrderDetailViewModel[] customerOrderVm)
+            if (kitchenId > 0 && orderVm != null)
+            {
+                var menuItemsList = orderVm.Where(o => o.Quantity > 0).ToList();
+                _unitOfWork.CustomerOrder.Add(new CustomerOrders
+                {
+                    Date = DateTime.Now,
+                    CustomerDetailOrders = menuItemsList.Select(mi => new CustomerDetailOrders
+                    {
+                        MenuItemId = mi.MenuItemId,
+                        Quantity = mi.Quantity
+                    }).ToList(),
+                    KitchenId = kitchenId
+                });
+                _unitOfWork.Complete();
+                response = "Success! Order is saved!";
+            }
+
+            return Json(response);
+        }
+    
+
+    private Dictionary<int, double> GetOrderedIngredientsToQuantityMap(CustomerOrderDetailViewModel[] customerOrderVm)
         {
             var ingredientIdToQuantity = new Dictionary<int, double>();
             // Arrange all the ingredients and their amount in a dictionary
@@ -120,13 +143,43 @@ namespace RestSupplyMVC.Controllers
         [HttpPost]
         public ActionResult Create(CreateCustomerOrderViewModel model)
         {            
-            // TODO Create customerOrderRepository
             return View();
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int kitchenId)
         {
-            throw new NotImplementedException();
+            var customerOrderList = _unitOfWork.CustomerOrder.GetAllByKitchenId(kitchenId);
+            var vm = customerOrderList.Select(c => new CustomerOrderViewModel
+            {
+                KitchenId = c.KitchenId,
+                KitchenName = _unitOfWork.Kitchens.GetById(c.KitchenId).Name,
+                Date = c.Date
+                
+            }).ToList();
+            return View(vm);
+        }
+
+        public ActionResult Details(int id)
+        {
+            var customerOrder = _unitOfWork.CustomerOrder.GetById(id);
+            if (customerOrder != null)
+            {
+                var vm = new CustomerOrderViewModel
+                {
+                    KitchenId = customerOrder.KitchenId,
+                    KitchenName = _unitOfWork.Kitchens.GetById(customerOrder.KitchenId).Name,
+                    CustomerOrderDetailsList = customerOrder.CustomerDetailOrders.Select(d => new CustomerOrderDetailViewModel
+                    {
+                        CustomerOrderDetailId = d.Id,
+                        MenuItemId = d.MenuItemId,
+                        Name = _unitOfWork.MenuItems.GetById(d.MenuItemId).Name,
+                        Quantity = d.Quantity
+                    })
+                };
+                return View(vm);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

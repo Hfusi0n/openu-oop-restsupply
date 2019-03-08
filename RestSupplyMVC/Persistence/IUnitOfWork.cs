@@ -11,6 +11,7 @@ namespace RestSupplyMVC.Persistence
         IKitchenRepository Kitchens { get; }
         IAccountRepository Account { get; }
         IKitchenIngredientRepository KitchenIngredient { get; }
+        ICustomerOrderRepository CustomerOrder { get; }
 
         void Complete();
     }

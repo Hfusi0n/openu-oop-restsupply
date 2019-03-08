@@ -231,8 +231,9 @@ namespace RestSupplyMVC.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             MenuItems menuItems = _unitOfWork.MenuItems.GetById(id);
-            /*db.MenuItemsSet.Remove(menuItems);
-            db.SaveChanges();*/
+            _unitOfWork.MenuItems.Remove(menuItems);
+            _unitOfWork.Complete();
+            
             return RedirectToAction("Index");
         }
         public ActionResult SaveOrder(string menuItemName, MenuItemIngredientViewModel[] ingredients)

@@ -1,13 +1,11 @@
-﻿using System;
+﻿using RestSupplyDB;
+using RestSupplyDB.Models.Customer;
+using RestSupplyMVC.Persistence;
+using RestSupplyMVC.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using RestSupplyDB;
-using RestSupplyDB.Models.Customer;
-using RestSupplyDB.Models.Menu;
-using RestSupplyMVC.Persistence;
-using RestSupplyMVC.ViewModels;
-using WebGrease.Css.Extensions;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -77,17 +75,39 @@ namespace RestSupplyMVC.Controllers
 
             if (kitchenId > 0 && orderVm != null)
             {
-                var menuItemsList = orderVm.Where(o => o.Quantity > 0).ToList();
+                var orderedMenuItems = orderVm.Where(o => o.Quantity > 0).ToList();
                 _unitOfWork.CustomerOrder.Add(new CustomerOrders
                 {
                     Date = DateTime.Now,
-                    CustomerDetailOrders = menuItemsList.Select(mi => new CustomerDetailOrders
+                    CustomerDetailOrders = orderedMenuItems.Select(mi => new CustomerDetailOrders
                     {
                         MenuItemId = mi.MenuItemId,
                         Quantity = mi.Quantity
                     }).ToList(),
                     KitchenId = kitchenId
                 });
+
+                foreach (var orderedMenuItem in orderedMenuItems)
+                {
+                    var orderedMenuItemIngredientList = _unitOfWork.MenuItems.GetById(orderedMenuItem.MenuItemId).MenuIngredientsSet.ToList();
+                    foreach (var orderedMenuItemIngredient in orderedMenuItemIngredientList)
+                    {
+                        // calculate amount of each ingredient in the order and reduce the amount from current kitchen
+                        var kitchenIngredient =
+                            _unitOfWork.KitchenIngredient.GetByKitchenAndIngredientIds(kitchenId,
+                                orderedMenuItemIngredient.IngredientId);
+                        if (kitchenIngredient != null)
+                        {
+                            kitchenIngredient.CurrentQuantity -= orderedMenuItem.Quantity * orderedMenuItemIngredient.Quantity;
+                        }
+                        else
+                        {
+                            response = "Error! Unable to update ingredient quantity for selected kitchen!";
+                            return Json(response, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                }
+
                 _unitOfWork.Complete();
                 response = "Success! Order is saved!";
             }
@@ -142,7 +162,9 @@ namespace RestSupplyMVC.Controllers
         [Authorize]
         [HttpPost]
         public ActionResult Create(CreateCustomerOrderViewModel model)
-        {            
+        {
+            
+            
             return View();
         }
 

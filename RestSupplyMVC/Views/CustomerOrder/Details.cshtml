@@ -1,0 +1,58 @@
+﻿@model RestSupplyMVC.ViewModels.CustomerOrderViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Customer Order Details</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.KitchenName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KitchenName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <table class="table table-striped table-responsive" id="supIng">
+            <hr />
+            <h5> <b>Menu Items:</b></h5>
+    @foreach (var item in Model.CustomerOrderDetailsList)
+    {
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => item.Quantity)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+
+            @Html.DisplayFor(model => item.Quantity)
+            </td>
+            </tr>
+
+    }
+        </table>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", new { kitchenId = Model.KitchenId})
+</p>

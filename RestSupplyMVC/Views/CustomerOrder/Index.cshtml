@@ -3,13 +3,14 @@
 @{
     ViewBag.Title = "Customer Orders";
 }
-
+<hr/>
     <h4>Customer Orders</h4>
 @if (Model.Any())
 {
     foreach (var item in Model)
     {
-        @Html.HiddenFor(modelItem => item.KitchenId)
+        @Html.HiddenFor(modelItem => item.CustomerOrderId)
+
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayNameFor(modelItem => item.KitchenName)
@@ -28,10 +29,20 @@
             </dd>
             <dd>
 
-                @Html.ActionLink("Details", "Details", "SupplierOrder", new { id = item.CustomerOrderId }, new { @id = "display-link" }) @*|
-                @Html.ActionLink("Delete", "Delete", "SupplierOrder", new { id = item.CustomerOrderId }, new { @id = "delete-link" })*@
+                @Html.ActionLink("Details", "Details", "CustomerOrder", new { customerOrderId = item.CustomerOrderId }, new { @id = "display-link" }) 
             </dd>
         </dl>
     }
 }
+else
+{
+    <tr>
+        <td>
+            <div class="panel-body">
+                <h3 style="color:red;">No available orders!</h3>
+            </div>
+        </td>
+    </tr>
+}
+
 

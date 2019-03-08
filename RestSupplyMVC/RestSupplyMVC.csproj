@@ -351,6 +351,7 @@
     <Content Include="Views\KitchenIngredients\Edit.cshtml" />
     <Content Include="Views\KitchenIngredients\Index.cshtml" />
     <Content Include="Views\CustomerOrder\Index.cshtml" />
+    <Content Include="Views\CustomerOrder\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

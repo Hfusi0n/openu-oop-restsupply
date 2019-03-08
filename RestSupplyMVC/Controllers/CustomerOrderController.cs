@@ -153,21 +153,23 @@ namespace RestSupplyMVC.Controllers
             {
                 KitchenId = c.KitchenId,
                 KitchenName = _unitOfWork.Kitchens.GetById(c.KitchenId).Name,
-                Date = c.Date
+                Date = c.Date,
+                CustomerOrderId = c.Id
                 
             }).ToList();
             return View(vm);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int customerOrderId)
         {
-            var customerOrder = _unitOfWork.CustomerOrder.GetById(id);
+            var customerOrder = _unitOfWork.CustomerOrder.GetById(customerOrderId);
             if (customerOrder != null)
             {
                 var vm = new CustomerOrderViewModel
                 {
                     KitchenId = customerOrder.KitchenId,
                     KitchenName = _unitOfWork.Kitchens.GetById(customerOrder.KitchenId).Name,
+                    Date = customerOrder.Date,
                     CustomerOrderDetailsList = customerOrder.CustomerDetailOrders.Select(d => new CustomerOrderDetailViewModel
                     {
                         CustomerOrderDetailId = d.Id,

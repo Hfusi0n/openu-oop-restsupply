@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,16 +13,19 @@ namespace RestSupplyMVC.ViewModels
         public int MenuItemId { get; set; }
         public string Name { get; set; }
         public IEnumerable<MenuItemIngredientViewModel> MenuItemIngredients { get; set; }
+        public List<IngredientViewModel> NotAssociatedIngredients
+        {
+            get { return AllIngredients.Where(i => MenuItemIngredients.All(si => si.IngredientId != i.IngredientId)).ToList(); }
+
+        }
+        public IEnumerable<IngredientViewModel> AllIngredients { get; set; }
+
     }
 
     public class MenuItemIndexViewModel
     {
         public IEnumerable<MenuItemViewModel> MenuItemViewModels { get; set; }
-        public CreateMenuItemViewModel CreateMenuItemViewModel { get; set; }
+        public MenuItemViewModel MenuItemToCreate { get; set; }
     }
 
-    public class CreateMenuItemViewModel : MenuItemViewModel
-    {
-        public IEnumerable<IngredientViewModel> AllIngredients { get; set; }
-    }
 }

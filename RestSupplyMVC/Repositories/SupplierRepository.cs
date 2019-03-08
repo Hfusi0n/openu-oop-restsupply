@@ -53,12 +53,10 @@ namespace RestSupplyMVC.Repositories
         {
             var dbSupplier = _context.SuppliersSet.Find(supplierId);
 
-            if (dbSupplier == null) return;
-
             var supplierIngredient =
-                dbSupplier.SuppliersIngredients.FirstOrDefault(i => i.IngredientId == ingredientId);
+                dbSupplier?.SuppliersIngredients.FirstOrDefault(i => i.IngredientId == ingredientId);
 
-            _context.SuppliersIngredientsSet.Remove(supplierIngredient);            
+            if (supplierIngredient != null) _context.SuppliersIngredientsSet.Remove(supplierIngredient);
         }
     }
 }

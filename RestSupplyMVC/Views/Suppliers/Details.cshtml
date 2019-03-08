@@ -96,7 +96,7 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                הוסף חומר גלם
+                                Add ingredient
                             </label>
                             <div class="col-md-4">
                                 
@@ -246,7 +246,6 @@
         });
         // Remove ingredient from supplier 
         $(".delbtn").click(function () {
-            //var id = $("#supIng").find(".nr:first").text();
             var $item = $(this).closest("tr")   // Finds the closest row <tr> 
                 .find(".nr")     // Gets a descendent with class="nr"
                 .text(); 

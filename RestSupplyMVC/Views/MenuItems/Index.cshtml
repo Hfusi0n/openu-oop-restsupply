@@ -75,7 +75,7 @@
                                 Product Name
                             </label>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.CreateMenuItemViewModel.AllIngredients, new SelectList(Model.CreateMenuItemViewModel.AllIngredients, "IngredientId", "Name"), "", new { @id = "ingredientName" , @class = "form-control" })
+                                @Html.DropDownListFor(model => model.MenuItemToCreate.AllIngredients, new SelectList(Model.MenuItemToCreate.AllIngredients, "IngredientId", "Name"), "", new { @id = "ingredientName" , @class = "form-control" })
                             </div>
                             <label class="control-label col-md-2">
                                 Quantity

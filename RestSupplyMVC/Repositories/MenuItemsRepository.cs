@@ -35,5 +35,26 @@ namespace RestSupplyMVC.Repositories
             // Remove the entry
             _context.MenuItemsSet.Remove(item);
         }
+
+        public void RemoveMenuItemIngredient(int menuItemId, int ingredientId)
+        {
+            var dbMenuItem = _context.MenuItemsSet.Find(menuItemId);
+
+            var menuItemIngredient =
+                dbMenuItem?.MenuIngredientsSet.FirstOrDefault(i => i.IngredientId == ingredientId);
+
+            if (menuItemIngredient != null) _context.MenuIngredientsSet.Remove(menuItemIngredient);
+        }
+
+        public void AddMenuItemIngredients(int menuItemId, List<MenuItemIngredients> menuItemIngredients)
+        {
+            var dbMenuItem = _context.MenuItemsSet.Find(menuItemId);
+            foreach (var menuItemIngredient in menuItemIngredients)
+            {
+                dbMenuItem?.MenuIngredientsSet.Add(
+                    menuItemIngredient);
+
+            }
+        }
     }
 }

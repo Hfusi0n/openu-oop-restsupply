@@ -10,37 +10,46 @@
     <h4>MenuItems</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
         <dd>
             <div class="panel-body">
                 <table class="table table-striped table-responsive">
+                    @Html.HiddenFor(model => model.MenuItemId, new { id = "MenuItemId" })
+
                     <tbody>
                         <tr>
-                            <td>Dish Name: @Model.Name </ td >
+                            <td><b>Menu Item Name: @Model.Name </b></td>
+                            <td> @Html.ActionLink("Rename", "Edit", new { id = Model.MenuItemId })</td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered" id="main-data">
                                     <tbody>
+                                    <tr>
+                                        <th>hiddenId</th>
+                                        <th>Ingredient Name</th>
+                                        <th>Quantity</th>
+                                        <th>Unit</th>
+                                        <th>Actions</th>
+
+                                    </tr>
+
+                                    @foreach (var menuItemIngredient in Model.MenuItemIngredients)
+                                    {
                                         <tr>
-                                            <th>Ingredient Name</th>
-                                            <th>Quantity</th>
-                                            <th>Unit</th>
+                                            <td class="nr">@menuItemIngredient.IngredientId</td>
+                                            <td>@menuItemIngredient.Name</td>
+                                            <td>@menuItemIngredient.Quantity</td>
+                                            <td>@menuItemIngredient.Unit</td>
+                                            <td><button type="button" class="delbtn">Remove</button></td>
                                         </tr>
-                                        
-                                        @foreach (var menuItemIngredient in Model.MenuItemIngredients)
-                                        {
-                                            <tr>
-                                                <td>@menuItemIngredient.Name</td>
-                                                <td>@menuItemIngredient.Quantity</td>
-                                                <td>@menuItemIngredient.Unit</td>
-                                            </tr>
-                                        }
+                                    }
                                     </tbody>
+                                    <div id="res"></div>
                                 </table>
+                                
+                                <p>
+                                    <button style="margin-right:10px" class="btn btn-primary " onclick="addIngredient()">Add Ingredients</button>
+                                </p>
                             </td>
                         </tr>
                     </tbody>
@@ -53,4 +62,238 @@
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.MenuItemId }) |
     @Html.ActionLink("Back to List", "Index")
+
+    <div class="modal fade" id="newIngredientModal">
+        <div class="modal-dialog modal-lg" style=" width: 900px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h4>Add Ingredients For Menu Item</h4>
+                </div>
+                <form id="NewOrderForm">
+                    <div class="modal-body">
+                        <h5 style="color:#112247">Pick ingredients</h5>
+                        <hr />
+                        <div class="form-horizontal">
+
+                            @Html.HiddenFor(model => model.MenuItemId, new { id = "MenuItemId1" })
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", disabled = "disabled", @Value = Model.Name })
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Select Ingredient*@
+                        <h5 style="margin-top:10px;color:#112247">Order Details</h5>
+                        <hr />
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Add ingredient
+                                </label>
+                                <div class="col-md-4">
+
+                                    @Html.DropDownListFor(model => model.NotAssociatedIngredients, new SelectList(Model.NotAssociatedIngredients, "IngredientId", "Name"), "", new { @id = "ingredient1", @class = "form-control" })
+                                </div>
+                                <label class="control-label col-md-2">
+                                    Unit
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" id="unit1" name="unit" placeholder="Unit" class="form-control" disabled="disabled" />
+                                </div>
+                                <label class="control-label col-md-2">
+                                    Quantity
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" id="quantity" name="quantity" placeholder="quantity" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-1 col-lg-offset-1">
+                                    <a id="addIngToList" class="btn btn-primary">Add Item</a>
+                                </div>
+
+                            </div>
+                            <table id="ingTable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5%"></th> @*hidden IngredientId column*@
+                                        <th style="width: 20%">Ingredient</th>
+                                        <th style="width: 10%"> Unit</th>
+                                        <th style="width: 10%"> Quantity</th>
+
+
+
+                                        <th style="width: 10%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="addIngredients" type="submit" class="btn btn-danger">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </p>
+@section scripts{
+    <script>
+        // hid InredientId column upon page load
+        $(document).ready(function() {
+            $('table#main-data td:nth-child(1), table#main-data th:nth-child(1)').hide();
+
+        });
+        // Remove ingredient from menu item
+        $(".delbtn").click(function() {
+            //var id = $("#supIng").find(".nr:first").text();
+            var $item = $(this).closest("tr") // Finds the closest row <tr>
+                .find(".nr") // Gets a descendent with class="nr"
+                .text();
+
+            $("#res").append($item); // Testing: append the contents of the td to a div
+
+            return $.ajax({
+                url: "/MenuItems/RemoveIngredientFromMenuItem",
+                data: { 'ingredientId': $item, 'menuItemId': $("#MenuItemId").val() },
+                type: 'POST',
+                dataType: "json",
+                cache: false,
+                success: function(result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function() {
+                    alert("Error finding unit for ingredient!");
+                }
+            });
+        });
+
+        // Get unit for selected ingredient (New ingredient Modal)
+        $("#ingredient1").change(function () {
+            return $.ajax({
+                url: "/Ingredients/GetUnitByIngredientId",
+                data: { 'id': $("#ingredient1 option:selected").val() },
+                type: 'GET',
+                dataType: "json",
+                cache: false,
+                success: function (response) {
+                    $("#unit1").val(response);
+                },
+                error: function () {
+                    alert("Error finding unit for ingredient!");
+                }
+            });
+        });
+
+        // ------Show Add ingredient Modal-------
+        function addIngredient() {
+            $("#newIngredientModal").modal();
+            // Hiding the IngredientId column
+            $('table#ingTable td:nth-child(1), table#ingTable th:nth-child(1)').hide();
+        }
+
+        //Add Multiple Ingredients.
+        $("#addIngToList").click(function (e) {
+            e.preventDefault();
+
+            if ($.trim($("#ingredient1").val()) == "") return;
+
+            var id = $("#ingredient1 option:selected").val(),
+                name = $("#ingredient1 option:selected").text(),
+                unit = $("#unit1").val(),
+                quantity = $("#quantity").val();
+
+                detailsTableBody = $("#ingTable tbody");
+
+            var productItem = '<tr><td>' +
+                id +
+                '</td><td>' +
+                name +
+                '</td><td>' +
+                unit +
+                '</td><td>' +
+                quantity +
+                '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+            detailsTableBody.append(productItem);
+
+            // Hiding the IngredientId column
+            $('table#ingTable td:nth-child(1),table#ingTable th:nth-child(1)').hide();
+
+            clearIngItem();
+
+        });
+
+        //After Add A New Order In The List, Clear Clean The Form For Add More Order.
+        function clearIngItem() {
+            $("#name option:selected").remove();
+        }
+
+        // After Add A New Order In The List, If You Want, You Can Remove It.
+        $(document).on('click',
+            'a.deleteItem',
+            function (e) {
+                e.preventDefault();
+                var $self = $(this);
+                if ($(this).attr('data-itemId') == "0") {
+                    $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800,
+                        function () {
+                            $(this).remove();
+                        });
+                }
+            });
+
+        //After Click Save Button Pass All Data View To Controller For Save Database
+        function addMenuItemIngredients(data) {
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/MenuItems/AddMenuItemIngredients",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        };
+
+        //Collect Multiple Ingredient List For Pass To Controller
+        $("#addIngredients").click(function (e) {
+            e.preventDefault();
+
+            var ingredientsArr = [];
+            ingredientsArr.length = 0;
+
+            $.each($("#ingTable tbody tr"),
+                function () {
+                    ingredientsArr.push({
+                        ingredientId: $(this).find('td:eq(0)').html(),
+                        quantity: $(this).find('td:eq(3)').html()
+
+                    });
+                });
+
+
+            var data = JSON.stringify({
+                menuItemId: $("#MenuItemId1").val(),
+                ingredients: ingredientsArr
+
+            });
+
+            $.when(addMenuItemIngredients(data)).then(function (response) {
+                console.log(response);
+            }).fail(function (err) {
+                console.log(err);
+            });
+        });
+    </script>
+}

@@ -31,7 +31,7 @@ namespace RestSupplyMVC.Controllers
 
             var menuItemIndexVm = new MenuItemIndexViewModel();
             var menuItemsListVm = new List<MenuItemViewModel>();
-            var createMenuItemVm = new CreateMenuItemViewModel
+            var createMenuItemVm = new MenuItemViewModel
             {
                 AllIngredients = dbIngredients.Select(i => new IngredientViewModel
                 {
@@ -40,7 +40,7 @@ namespace RestSupplyMVC.Controllers
                     Unit = i.Unit
                 })
             };
-            menuItemIndexVm.CreateMenuItemViewModel = createMenuItemVm;
+            menuItemIndexVm.MenuItemToCreate = createMenuItemVm;
 
             foreach (var dbMenuItem in dbMenuItems)
             {
@@ -71,6 +71,7 @@ namespace RestSupplyMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             MenuItems dbMenuItem = _unitOfWork.MenuItems.GetById(id.Value);
+            var dbIngredients = _unitOfWork.Ingredients.GetAll();
             if (dbMenuItem == null)
             {
                 return HttpNotFound();
@@ -86,10 +87,39 @@ namespace RestSupplyMVC.Controllers
                     Name = _unitOfWork.Ingredients.GetById(mi.IngredientId).Name,
                     Quantity = mi.Quantity,
                     Unit = _unitOfWork.Ingredients.GetById(mi.IngredientId).Unit
+                }),
+                AllIngredients = dbIngredients.Select(i => new IngredientViewModel
+                {
+                    IngredientId = i.Id,
+                    Name = i.Name,
+                    Unit = i.Unit
                 })
             };
 
             return View(menuItemVm);
+        }
+
+        [HttpPost]
+        public ActionResult AddMenuItemIngredients(int menuItemId,
+            MenuItemIngredientViewModel[] ingredients)
+        {
+            string result = "Error! Unable to add ingredients!";
+            if (menuItemId > 0 && ingredients.Any())
+            {
+                var menuItemIngredients = ingredients.Select(i => new MenuItemIngredients
+                {
+                    IngredientId = i.IngredientId,
+                    Quantity = i.Quantity
+                }).Where(q => q.Quantity > 0).ToList();
+
+                _unitOfWork.MenuItems.AddMenuItemIngredients(menuItemId,
+                    menuItemIngredients);
+                _unitOfWork.Complete();
+
+                result = "Success! Ingredients were added!";
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         // GET: MenuItems/Create
@@ -229,6 +259,20 @@ namespace RestSupplyMVC.Controllers
                 _unitOfWork.Complete();
                 result = "Success! Menu Item is saved!";
             }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult RemoveIngredientFromMenuItem(int ingredientId, int menuItemId)
+        {
+            string result = "Error when removing ingredient from supplier!";
+            if (ingredientId > 0 && menuItemId > 0)
+            {
+                _unitOfWork.MenuItems.RemoveMenuItemIngredient(menuItemId, ingredientId);
+                _unitOfWork.Complete();
+                result = "Success";
+            }
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         protected override void Dispose(bool disposing)

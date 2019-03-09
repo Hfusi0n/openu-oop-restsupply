@@ -1,12 +1,27 @@
-﻿@{
-    /**/
+﻿@model RestSupplyMVC.ViewModels.NavigationViewModel
 
-    ViewBag.Title = "Home Page";
+@{
+    //ViewBag.Title = "title";
 }
 
-<div class="row">
-    <h2> Who are we?</h2>
-    <p>
-        Rest Supply was designed as a good solution to all of you restaurant owners out there.
-    </p>
-</div>
+<h2>title</h2>
+<table class="table">
+    <tr>
+
+        <th></th>
+    </tr>
+    @if (Model.ShowActions)
+    {
+        if (Model.IsSingleKitchen && Model.UserKitchensList.Any())
+        {
+            @Html.ActionLink("Customer Orders", "Index", "CustomerOrder", new { kitchenId = Model.UserKitchensList.First().KitchenId }, null)
+
+            @Html.ActionLink("Supplier Orders", "Index", "SupplierOrder", new { kitchenId = Model.UserKitchensList.First().KitchenId }, null)
+
+            @Html.ActionLink("Kitchen Ingredients", "Index", "KitchenIngredients", new { kitchenId = Model.UserKitchensList.First().KitchenId }, null)
+
+
+
+        }
+    }
+</table>

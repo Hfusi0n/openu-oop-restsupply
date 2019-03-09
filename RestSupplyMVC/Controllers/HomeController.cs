@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using RestSupplyDB;
 using RestSupplyMVC.Persistence;
+using RestSupplyMVC.ViewModels;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -22,7 +23,18 @@ namespace RestSupplyMVC.Controllers
             var currentUserId = User.Identity.GetUserId();
             var kitchens = _unitOfWork.Kitchens.GetKitchensByUserId(currentUserId);
 
-            return View();
+            var vm = new NavigationViewModel
+            {
+                UserKitchensList = kitchens.Select(k => new KitchenViewModel
+                {
+                    KitchenId = k.Id,
+                    KitchenName = k.Name,
+                    KitchenAddress = k.Address
+                }).ToList(),
+                ShowActions = User.Identity.IsAuthenticated,
+            };
+                
+            return View(vm);
         }
 
         public ActionResult About()

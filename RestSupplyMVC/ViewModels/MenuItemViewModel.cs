@@ -15,7 +15,8 @@ namespace RestSupplyMVC.ViewModels
         public IEnumerable<MenuItemIngredientViewModel> MenuItemIngredients { get; set; }
         public List<IngredientViewModel> NotAssociatedIngredients
         {
-            get { return AllIngredients.Where(i => MenuItemIngredients.All(si => si.IngredientId != i.IngredientId)).ToList(); }
+            get { if (AllIngredients.Any() && MenuItemIngredients.Any()) return AllIngredients.Where(i => MenuItemIngredients.All(si => si.IngredientId != i.IngredientId)).ToList();
+            return  new List<IngredientViewModel>();}
 
         }
         public IEnumerable<IngredientViewModel> AllIngredients { get; set; }

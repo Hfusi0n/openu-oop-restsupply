@@ -144,16 +144,27 @@ namespace RestSupplyMVC.Controllers
         [Authorize]
         public ActionResult Create(int kitchenId)
         {
-            var dbMenuItems = _unitOfWork.MenuItems.GetAll().Where(mi => mi.MenuIngredientsSet.Any());
+            var dbMenuItems = _unitOfWork.MenuItems.GetAll().Where(mi => mi.MenuIngredientsSet.Any()).ToList();
             var vm = new CreateCustomerOrderViewModel
             {
                 AllMenuItemsToQuantityMap = dbMenuItems.ToDictionary(mi => new MenuItemViewModel
                 {
                     MenuItemId = mi.Id,
-                    Name = mi.Name
+                    Name = mi.Name,
+                    AllIngredients = _unitOfWork.Ingredients.GetAll().Select(i => new IngredientViewModel
+                    {
+                        IngredientId = i.Id,
+                        Name = i.Name,
+                        Unit = i.Unit,
+                    }).ToList(),
+                    MenuItemIngredients = _unitOfWork.MenuItems.GetById(mi.Id).MenuIngredientsSet.Select(i => new MenuItemIngredientViewModel
+                    {
+                        IngredientId = i.IngredientId
+                    })
                 }, q => 0),
                 KitchenId = kitchenId,
                 KitchenName = _unitOfWork.Kitchens.GetById(kitchenId).Name
+                
             };
 
             return View(vm);

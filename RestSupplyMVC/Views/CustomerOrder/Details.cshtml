@@ -1,4 +1,5 @@
-﻿@model RestSupplyMVC.ViewModels.CustomerOrderViewModel
+﻿@using System.Runtime.ExceptionServices
+@model RestSupplyMVC.ViewModels.CustomerOrderViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -27,29 +28,35 @@
         </dd>
         <table class="table table-striped table-responsive" id="supIng">
             <hr />
-            <h5> <b>Menu Items:</b></h5>
-    @foreach (var item in Model.CustomerOrderDetailsList)
-    {
+            @if (Model.CustomerOrderDetailsList.Any())
+            {
+                <h5> <b>Menu Items:</b></h5>
+                <tr>
+                    <td>
+                        <b>@Html.DisplayNameFor(model => model.CustomerOrderDetailsList.First().Name)</b>
+                    </td>
+                    <td>
+                        <b>  @Html.DisplayNameFor(model => model.CustomerOrderDetailsList.First().Quantity)</b>
+                    </td>
+                </tr>
+                foreach (var item in Model.CustomerOrderDetailsList)
+                 {
+                     <tr>
+                         <td>
+                             @Html.DisplayFor(modelItem => item.Name)
+                         </td>
+                         <td>
 
-        <tr>
-            <td>
-                @Html.DisplayNameFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayNameFor(model => item.Quantity)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
+                             @Html.DisplayFor(model => item.Quantity)
+                         </td>
+                     </tr>
 
-            @Html.DisplayFor(model => item.Quantity)
-            </td>
-            </tr>
-
-    }
+                 }
+            }
+            else
+            {
+                     <h3> <b>No Menu Items!</b></h3>
+            }
         </table>
     </dl>
 </div>

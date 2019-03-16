@@ -171,15 +171,6 @@ namespace RestSupplyMVC.Controllers
             return View(vm);
         }
 
-        [Authorize]
-        [HttpPost]
-        public ActionResult Create(CreateCustomerOrderViewModel model)
-        {
-            
-            
-            return View();
-        }
-
         public ActionResult Index(int kitchenId)
         {
             var customerOrderList = _unitOfWork.CustomerOrder.GetAllByKitchenId(kitchenId);

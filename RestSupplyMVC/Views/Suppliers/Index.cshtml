@@ -4,16 +4,15 @@
     ViewBag.Title = "Suppliers";
 }
 
-<h2>Index</h2>
-
-<p>
-    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">Add New Supplier</button>
-
+<h2>Suppliers</h2>
+<h5>Here you can view and edit suppliers info, and assign ingredients to a selected supplier</h5>
+<hr/>
+<p align="right">
+    <button style="margin-right: 2px" class="btn btn-primary" onclick="addNewOrder()">Add New Supplier</button>
 </p>
 <table class="table">
     <tr>
 
-        <th></th>
     </tr>
     @if (Model.SuppliersList.Count() != 0)
     {
@@ -60,38 +59,38 @@
                         <input type="hidden" id="Id" />
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                שם ספק
+                                Supplier Name
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="supplier" name="name" placeholder="שם ספק" class="form-control" />
+                                <input type="text" id="supplier" name="name" placeholder="" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                כתובת
+                                Address
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="address" name="name" placeholder="כתובת" class="form-control" />
+                                <input type="text" id="address" name="name" placeholder="" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                טלפון
+                                Phone
                             </label>
                             <div class="col-md-4">
-                                <input type="text" id="phone" name="name" placeholder="טלפון" class="form-control" />
+                                <input type="text" id="phone" name="name" placeholder="" class="form-control" />
                             </div>
                         </div>
                     </div>
 
                     @*Order Details*@
-                    <h5 style="margin-top:10px;color:#112247">Order Details</h5>
+                    <h5 style="margin-top:10px;color:#112247">Assign Ingredients</h5>
                     <hr />
                     <div class="form-horizontal">
                         <input type="hidden" id="IngredientId" />
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                הוסף חומר גלם
+                                Select Ingredient
                             </label>
                             <div class="col-md-4">
                                 @Html.DropDownListFor(model => model.CreateSupplierViewModel.AllIngredients, new SelectList(Model.CreateSupplierViewModel.AllIngredients, "IngredientId", "Name"), "", new { @id = "name", @class = "form-control" })
@@ -105,7 +104,7 @@
                         </div>
                         <div class="form-group">
 
-                            <div class="col-md-1 col-lg-offset-1">
+                            <div class="col-md-2 col-lg-offset-2">
                                 <a id="addToList" class="btn btn-primary">Add To List</a>
                             </div>
 
@@ -114,8 +113,8 @@
                             <thead>
                                 <tr>
                                     <th style="width:5%"></th> @*hidden IngredientId column*@
-                                    <th style="width: 45%"> חומר גלם</th>
-                                    <th style="width: 40%"> יחידת מידה</th>
+                                    <th style="width: 45%"> Ingredient Name</th>
+                                    <th style="width: 40%"> Unit</th>
 
                                     <th style="width: 10%"></th>
                                 </tr>

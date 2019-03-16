@@ -201,13 +201,17 @@ namespace RestSupplyMVC.Controllers
                     Name = ingredientName,
                     Unit = unit
                 };
-                foreach (var supplier in suppliers)
+
+                if (suppliers != null && suppliers.Any())
                 {
-                    ingredient.SuppliersIngredients.Add(
-                        new SuppliersIngredients
-                        {
-                            SupplierId = supplier.Id,
-                        });
+                    foreach (var supplier in suppliers)
+                    {
+                        ingredient.SuppliersIngredients.Add(
+                            new SuppliersIngredients
+                            {
+                                SupplierId = supplier.Id,
+                            });
+                    }
                 }
 
                 _unitOfWork.Ingredients.Add(ingredient);

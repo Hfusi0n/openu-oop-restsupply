@@ -90,7 +90,6 @@
             fieldName = $(this).attr('data-field');
             type = $(this).attr('data-type');
             buttonType = $(this).attr('type');
-            debugger;
             var input = $("input[name='" + fieldName + "']");
             var currentVal = parseInt(input.val());
             if (!isNaN(currentVal) || buttonType == 'submit') {
@@ -126,10 +125,29 @@
                         kitchenId: $("#kitchenId").val()
                     });
 
-
+                    //
                     if (type == 'plus') {
                         if (currentVal < input.attr('max')) {
                             input.val(currentVal + 1).change();
+
+                            // Send all menuItems with their current quantity in order to check if ingredients are in stock
+
+                            customers = [];
+                            customers.length = 0;
+                            menuItems = @Html.Raw(Json.Encode(Model.AllMenuItemsToQuantityMap.Keys));
+                            $.each(menuItems,
+                                function(index, item) {
+                                    var selector = "" + index;
+                                    selector = "quant[" + selector + "]";
+                                    customers.push({
+                                        menuItemId: item.MenuItemId,
+                                        quantity: parseInt($('[id="quant[' + index + ']"]').val(), 10)
+                                    });
+                                });
+                            var data = JSON.stringify({
+                                orderVm: customers,
+                                kitchenId: $("#kitchenId").val()
+                            });
                         }
 
                         $.when(isMenuOrderInStock(data)).then(function(response) {
@@ -140,7 +158,6 @@
                     }
 
                     if (buttonType == 'submit') {
-                        debugger;
                         $.when(createCustomerOrder(data)).then(function(response) {
                             console.log(response);
                         }).fail(function(err) {

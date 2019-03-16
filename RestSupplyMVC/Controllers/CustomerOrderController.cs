@@ -121,7 +121,8 @@ namespace RestSupplyMVC.Controllers
             var ingredientIdToQuantity = new Dictionary<int, double>();
             // Arrange all the ingredients and their amount in a dictionary
             // And for each ingredient - calculate the amount ordered
-            foreach (var menuItem in customerOrderVm.Where(o => o.Quantity > 0).ToList())
+            var menuItemsWithQuantity = customerOrderVm.Where(o => o.Quantity > 0).ToList();
+            foreach (var menuItem in menuItemsWithQuantity)
             {
                 var orderIngredients = _unitOfWork.MenuItems.GetById(menuItem.MenuItemId).MenuIngredientsSet.ToList();
                 foreach (var menuItemIngredient in orderIngredients)
@@ -160,7 +161,7 @@ namespace RestSupplyMVC.Controllers
                     MenuItemIngredients = _unitOfWork.MenuItems.GetById(mi.Id).MenuIngredientsSet.Select(i => new MenuItemIngredientViewModel
                     {
                         IngredientId = i.IngredientId
-                    })
+                    }).ToList()
                 }, q => 0),
                 KitchenId = kitchenId,
                 KitchenName = _unitOfWork.Kitchens.GetById(kitchenId).Name
@@ -208,7 +209,15 @@ namespace RestSupplyMVC.Controllers
                         CustomerOrderDetailId = d.Id,
                         MenuItemId = d.MenuItemId,
                         Name = _unitOfWork.MenuItems.GetById(d.MenuItemId).Name,
-                        Quantity = d.Quantity
+                        Quantity = d.Quantity,
+                        AllIngredients = _unitOfWork.Ingredients.GetAll().Select(i => new IngredientViewModel
+                        {
+                            IngredientId = i.Id
+                        }),
+                        MenuItemIngredients = _unitOfWork.MenuItems.GetById(d.MenuItemId).MenuIngredientsSet.Select(mii => new MenuItemIngredientViewModel
+                        {
+                            IngredientId = mii.IngredientId
+                        }).ToList()
                     })
                 };
                 return View(vm);

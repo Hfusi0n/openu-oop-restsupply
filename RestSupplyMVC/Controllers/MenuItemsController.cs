@@ -54,7 +54,7 @@ namespace RestSupplyMVC.Controllers
                         Name = _unitOfWork.Ingredients.GetById(mi.IngredientId).Name,
                         Quantity = mi.Quantity,
                         Unit = _unitOfWork.Ingredients.GetById(mi.IngredientId).Unit
-                    })
+                    }).ToList()
                 });
             }
 
@@ -87,7 +87,7 @@ namespace RestSupplyMVC.Controllers
                     Name = _unitOfWork.Ingredients.GetById(mi.IngredientId).Name,
                     Quantity = mi.Quantity,
                     Unit = _unitOfWork.Ingredients.GetById(mi.IngredientId).Unit
-                }),
+                }).ToList(),
                 AllIngredients = dbIngredients.Select(i => new IngredientViewModel
                 {
                     IngredientId = i.Id,

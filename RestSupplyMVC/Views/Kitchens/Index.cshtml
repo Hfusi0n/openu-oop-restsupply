@@ -5,10 +5,10 @@
     ViewBag.Title = "Kitchens";
 }
 
-<h2>All Kitchens</h2>
+<h2>Your Kitchens</h2>
 
-<p>
-    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">Add New</button>
+<p align="right">
+    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">Add A New Kitchen (And assign users)</button>
 </p>
 <table class="table">
     @if (Model.KitchensList.Count() != 0)
@@ -20,7 +20,7 @@
                     @Html.DisplayFor(modelItem => item.KitchenName)
                 </td>
                 <td>
-                    @Html.ActionLink("Info & Actions", "Details", new { id = item.KitchenId }) |
+                    @Html.ActionLink("Info & Assigned Users", "Details", new { id = item.KitchenId }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.KitchenId })
                 </td>
             </tr>
@@ -40,7 +40,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="close" data-dismiss="modal">&times;</a>
-                <h4>Add New Kitchen</h4>
+                <h4>Add New Kitchen </h4>
             </div>
             <form id="NewOrderForm">
                 <div class="modal-body">

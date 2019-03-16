@@ -8,18 +8,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using RestSupplyDB;
 using RestSupplyMVC.ViewModels;
 
 namespace RestSupplyMVC.Controllers
 {
     public class UserDashboardController : Controller
     {
-        private readonly RestSupplyDB.RestSupplyDbContext _dbContext;
+        private readonly RestSupplyDbContext _dbContext;
         private readonly IUnitOfWork _unitOfWork;
 
         public UserDashboardController()
         {
-            _dbContext = new RestSupplyDB.RestSupplyDbContext();
+            _dbContext = new RestSupplyDbContext();
             _unitOfWork = new UnitOfWork(_dbContext);
         }
 
@@ -29,7 +30,6 @@ namespace RestSupplyMVC.Controllers
             // Get all roles from the database
             var user = _unitOfWork.Users.GetById(id);            
             var userRoles = user.Roles;
-
             UserViewModel model = new UserViewModel
             {
                 Id = user.Id,
@@ -48,18 +48,15 @@ namespace RestSupplyMVC.Controllers
             return View(model);
         }
 
-        //
         // POST: Update the user data
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> UpdateUserProfile(UserViewModel model)
+        public  ActionResult UpdateUserProfile(UserViewModel model)
         {
             if (!string.IsNullOrEmpty(model.Id))
             {
                 // Get the current application user
-                //AppUser user = _unitOfWork.Account.GetById(model.Id);
-                // Temporary
-                var user = _dbContext.Users.FirstOrDefault(u => u.Id == model.Id);
+                var user = _unitOfWork.Users.GetById(model.Id);
                 // Create a user manager
                 AppUserManager userManager = new AppUserManager(new AppUserStore(_dbContext));
 
@@ -68,7 +65,7 @@ namespace RestSupplyMVC.Controllers
                     // Add the new role if needed
                     if (user != null)
                     {
-                        var roleResult = userManager.AddToRole(user.Id, model.SelectedUserRole);
+                        userManager.AddToRole(user.Id, model.SelectedUserRole);
                     }
                 }
 
@@ -78,8 +75,7 @@ namespace RestSupplyMVC.Controllers
                     user.FirstName = model.PrivateName;
                     user.LastName = model.LastName;
 
-                    // TODO consider overriding UpdateAsync so it passes AppUserDTO and not AppUser
-                    var userResult = await userManager.UpdateAsync(user);
+                    userManager.Update(user);
                 }
             }
 
@@ -90,31 +86,18 @@ namespace RestSupplyMVC.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult _SystemUsersList()
         {
-            var users = _unitOfWork.Users.GetAll();
-            
-            UsersListViewModel usersListViewModel = 
-                new UsersListViewModel();
-            
-            List<UserViewModel> usersList = 
-                new List<UserViewModel>();
+            var users = _unitOfWork.Users.GetAll().ToList();
 
-            foreach (var user in users)
+            var usersListViewModel = new UsersListViewModel
             {
-                // Create a new view model for the user
-                // and push the user database data to the viewmodel
-                UserViewModel userViewModel =
-                    new UserViewModel
-                    {
-                        Id = user.Id,
-                        Email = user.Email,
-                        PrivateName = user.FirstName,
-                        LastName = user.LastName
-                };
-
-                usersList.Add(userViewModel);
-            }
-
-            usersListViewModel.UsersEnumerable = usersList;
+                UsersEnumerable = users.Select(u => new UserViewModel
+                {
+                    Id = u.Id,
+                    Email = u.Email,
+                    PrivateName = u.FirstName,
+                    LastName = u.LastName
+                }).ToList()
+            };
 
             return View(usersListViewModel);
         }
@@ -138,7 +121,14 @@ namespace RestSupplyMVC.Controllers
 
                 if (user != null)
                 {
-                    return RedirectToAction("Admin", new { id = user.Id });
+                    var userVm = new UserViewModel
+                    {
+                        Id = user.Id,
+                        Email = user.Email,
+                        PrivateName = user.FirstName,
+                        LastName = user.LastName
+                    };
+                    return View("_SystemUserEdit", userVm);
                 }
             }
 
@@ -154,7 +144,7 @@ namespace RestSupplyMVC.Controllers
             {
                 Id = id
             };
-
+            
             return View(model);
         }
     }

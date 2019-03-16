@@ -28,9 +28,9 @@ namespace RestSupplyMVC.Controllers
         // GET: Kitchens
         public ActionResult Index()
         {
-            var dbUsers = _unitOfWork.Account.GetAll();
+            var dbUsers = _unitOfWork.Users.GetAll();
             var dbKitchens = _unitOfWork.Kitchens.GetAll();
-            var dbRoles = _unitOfWork.Account.GetAppRoles();
+            var dbRoles = _unitOfWork.Roles.GetAll();
             var vm = new KitchenIndexViewModel
             {
                 KitchenToCreate = new CreateKitchenViewModel
@@ -38,13 +38,15 @@ namespace RestSupplyMVC.Controllers
                     AllUsersList = dbUsers.Select(
                         u => new UserViewModel
                         {
-                            Id = u.UserId,
+                            Id = u.Id,
                             Email = u.Email,
                             LastName = u.LastName,
                             PrivateName = u.FirstName,
-                            RoleName = (u.Role != null)
-                                ? dbRoles.FirstOrDefault(r => r.Id == u.Role.RoleId)?.Name
-                                : null
+                            UserRolesList = _unitOfWork.Roles.GetRolesByUserId(u.Id).Select(r => new RoleViewModel
+                            {
+                                RoleId = r.RoleId,
+                                RoleName = _unitOfWork.Roles.GetById(r.RoleId).Name
+                            })
 
                         }).ToList()
 
@@ -67,10 +69,10 @@ namespace RestSupplyMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var allUsers = _unitOfWork.Account.GetAll();
+            var allUsers = _unitOfWork.Users.GetAll();
             var kitchen = _unitOfWork.Kitchens.GetById(id.Value);
             // TODO add user role
-            var dbRoles = _unitOfWork.Account.GetAppRoles();
+            var dbRoles = _unitOfWork.Roles.GetAll();
             var kitchenVm = new CreateKitchenViewModel
             {
                 KitchenUsersList = kitchen.KitchenUsers.Select(u => new UserViewModel
@@ -81,7 +83,7 @@ namespace RestSupplyMVC.Controllers
                 }).ToList(),
                 AllUsersList = allUsers.Select(us => new UserViewModel
                 {
-                    Id = us.UserId,
+                    Id = us.Id,
                     Email = us.Email
                 }).ToList(),
                 KitchenName = kitchen.Name,

@@ -43,7 +43,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.SelectedUserRole, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownListFor(model => model.SelectedUserRole, new SelectList(Model.RoleList, "Name", "Name"), "", new { @id = "Id", @class = "form-control" })
+                                @Html.DropDownListFor(model => model.SelectedUserRole, new SelectList(Model.AllRolesList, "RoleName", "RoleName"), "", new { @id = "RoleId", @class = "form-control" })
                             </div>
                         </div>
                     </div>

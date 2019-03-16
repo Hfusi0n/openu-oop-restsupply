@@ -13,9 +13,10 @@ namespace RestSupplyMVC.Persistence
         public IMenuItemsRepository MenuItems { get; }
         public ISupplierOrderRepository SupplierOrders { get; }
         public IKitchenRepository Kitchens { get; }
-        public IAccountRepository Account { get; }
         public IKitchenIngredientRepository KitchenIngredient { get; }
         public ICustomerOrderRepository CustomerOrder { get; }
+        public IUserRepository Users { get; }
+        public IRoleRepository Roles { get; }
 
         public UnitOfWork(RestSupplyDbContext context)
         {
@@ -24,10 +25,11 @@ namespace RestSupplyMVC.Persistence
             Ingredients = new IngredientRepository(context);
             MenuItems = new MenuItemsRepository(context);
             SupplierOrders = new SupplierOrderRepository(context);
-            Account = new AccountRepository(context);
             Kitchens = new KitchenRepository(context);
             KitchenIngredient = new KitchenIngredientRepository(context);
             CustomerOrder = new CustomerOrderRepository(context);
+            Users = new UserRepository(context);
+            Roles = new RoleRepository(context);
         }
 
         public void Complete()

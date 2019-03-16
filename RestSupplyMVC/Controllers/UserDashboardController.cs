@@ -27,31 +27,23 @@ namespace RestSupplyMVC.Controllers
         public ActionResult _SystemUserEdit(string id)
         {
             // Get all roles from the database
-            var user = _unitOfWork.Account.GetById(id);            
-            AppUserRole userRole = user.Role;
+            var user = _unitOfWork.Users.GetById(id);            
+            var userRoles = user.Roles;
 
             UserViewModel model = new UserViewModel
             {
-                Id = user.UserId,
+                Id = user.Id,
                 Email = user.Email,
                 PrivateName = user.FirstName,
                 LastName = user.LastName                
             };
 
-            // Search if the user got an assigned role
-            var roleId = user.Role?.RoleId;
-
-            AppRole selectedRole = null;
-            if(roleId != null)
-            {
-               selectedRole = _dbContext.Roles.FirstOrDefault(x => x.Id == roleId);
-            }
-
-            // Get the user role if exist
-            model.SelectedUserRole = selectedRole?.Name;
-
             // Get all roles
-            model.RoleList = _unitOfWork.Account.GetAppRoles();
+            model.AllRolesList = _unitOfWork.Roles.GetAll().Select(r => new RoleViewModel
+            {
+                RoleId = r.Id,
+                RoleName = r.Name
+            });
 
             return View(model);
         }
@@ -98,7 +90,7 @@ namespace RestSupplyMVC.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult _SystemUsersList()
         {
-            var users = _unitOfWork.Account.GetAll();
+            var users = _unitOfWork.Users.GetAll();
             
             UsersListViewModel usersListViewModel = 
                 new UsersListViewModel();
@@ -113,7 +105,7 @@ namespace RestSupplyMVC.Controllers
                 UserViewModel userViewModel =
                     new UserViewModel
                     {
-                        Id = user.UserId,
+                        Id = user.Id,
                         Email = user.Email,
                         PrivateName = user.FirstName,
                         LastName = user.LastName

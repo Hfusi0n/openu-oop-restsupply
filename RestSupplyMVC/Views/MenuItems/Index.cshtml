@@ -6,14 +6,13 @@
 
 <h2>Menu</h2>
 
-<p>
+<p align="right">
     <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">Add Menu Item</button>
 
 </p>
 <table class="table">
     <tr>
 
-        <th></th>
     </tr>
     @if (Model.MenuItemViewModels.Count() != 0)
     {
@@ -24,8 +23,7 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new {id = item.MenuItemId}) |
-                    @Html.ActionLink("Details", "Details", new {id = item.MenuItemId}) |
+                    @Html.ActionLink("Details And Actions", "Details", new {id = item.MenuItemId}) |
                     @Html.ActionLink("Delete", "Delete", new {id = item.MenuItemId})
                 </td>
             </tr>

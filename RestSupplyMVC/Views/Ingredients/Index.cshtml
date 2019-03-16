@@ -4,16 +4,15 @@
     ViewBag.Title = "Ingredients";
 }
 
-<h2>Ingredients</h2>
+<h2>All Ingredients</h2>
 
-<p>
-    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">Add New</button>
+<p align="right">
+    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">Add A New Ingredient</button>
 
 </p>
 <table class="table">
     <tr>
 
-        <th></th>
     </tr>
     @if (Model.IngredientsList.Count() != 0)
     {

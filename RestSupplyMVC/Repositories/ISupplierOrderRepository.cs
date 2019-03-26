@@ -4,10 +4,11 @@ using RestSupplyDB.Models.Supplier;
 
 namespace RestSupplyMVC.Repositories
 {
-    public interface ISupplierOrderRepository
+    public interface ISupplierOrderRepository : IRepository<SupplierOrders>
     {
-        IEnumerable<SupplierOrders> GetAll();
-        SupplierOrders GetById(int id);
-        void Add(SupplierOrders order);
+        List<SupplierOrders> GetAllByKitchenId(int kitchenId);
+
+
+
     }
 }

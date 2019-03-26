@@ -20,14 +20,24 @@ namespace RestSupplyMVC.Repositories
             return _context.IngredientOrdersSet.ToList();
         }
 
-        public SupplierOrders GetById(int id)
+        public SupplierOrders GetById<TKey>(TKey id)
         {
             return _context.IngredientOrdersSet.Find(id);
+        }
+
+        public List<SupplierOrders> GetAllByKitchenId(int kitchenId)
+        {
+            return _context.IngredientOrdersSet.Where(c => c.KitchenId == kitchenId).ToList();
         }
 
         public void Add(SupplierOrders order)
         {
             _context.IngredientOrdersSet.Add(order);
+        }
+
+        public void Remove(SupplierOrders item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

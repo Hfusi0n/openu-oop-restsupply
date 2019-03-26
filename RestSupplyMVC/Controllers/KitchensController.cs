@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 using RestSupplyDB;
 using RestSupplyDB.Models.Ingredient;
 using RestSupplyDB.Models.Kitchen;
@@ -26,11 +27,10 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
         // GET: Kitchens
-        public ActionResult Index()
+        public ActionResult Index(string controllerRedirect = null)
         {
             var dbUsers = _unitOfWork.Users.GetAll();
-            var dbKitchens = _unitOfWork.Kitchens.GetAll();
-            var dbRoles = _unitOfWork.Roles.GetAll();
+            var dbKitchens = _unitOfWork.Kitchens.GetKitchensByUserId(User.Identity.GetUserId());
             var vm = new KitchenIndexViewModel
             {
                 KitchenToCreate = new CreateKitchenViewModel
@@ -57,7 +57,8 @@ namespace RestSupplyMVC.Controllers
                     KitchenAddress = k.Address,
                     KitchenId = k.Id,
                     
-                }).ToList()
+                }).ToList(),
+                ControllerRedirect = controllerRedirect
             };
             return View(vm);
         }

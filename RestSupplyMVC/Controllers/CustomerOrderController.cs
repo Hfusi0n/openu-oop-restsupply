@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -183,6 +184,23 @@ namespace RestSupplyMVC.Controllers
                 
             }).ToList();
             return View(vm);
+        }
+
+        /// <summary>
+        /// If user has more than one kitchen attached - redirected to Index with that kitchenId
+        /// Else - redirected to a page where user can select the kitchen first. After kitchen is selected, user is redirected to Index action with the selected kitchenId
+        /// </summary>
+        public ActionResult Navigation()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var kitchens = _unitOfWork.Kitchens.GetKitchensByUserId(currentUserId);
+            if (kitchens.Count == 1)
+            {
+                var kitchenId = kitchens.First().Id;
+                return RedirectToAction("Index", new {kitchenid = kitchenId});
+            }
+
+            return RedirectToAction("Index", "Kitchens", new {controllerRedirect = "CustomerOrder"});
         }
 
         public ActionResult Details(int customerOrderId)

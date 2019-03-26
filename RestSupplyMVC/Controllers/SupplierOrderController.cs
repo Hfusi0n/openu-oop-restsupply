@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using RestSupplyDB;
 using RestSupplyDB.Models.Ingredient;
 using RestSupplyDB.Models.Supplier;
@@ -20,9 +21,25 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
 
-        private OrdersViewModel GetOrdersViewModel()
+        /// <summary>
+        /// If user has more than one kitchen attached - redirected to Index with that kitchenId
+        /// Else - redirected to a page where user can select the kitchen first. After kitchen is selected, user is redirected to Index action with the selected kitchenId
+        /// </summary>
+        public ActionResult Navigation()
         {
-            var dbSupplierOrders = _unitOfWork.SupplierOrders.GetAll();
+            var currentUserId = User.Identity.GetUserId();
+            var kitchens = _unitOfWork.Kitchens.GetKitchensByUserId(currentUserId);
+            if (kitchens.Count == 1)
+            {
+                var kitchenId = kitchens.First().Id;
+                return RedirectToAction("Index", new { kitchenid = kitchenId });
+            }
+
+            return RedirectToAction("Index", "Kitchens", new { controllerRedirect = "SupplierOrder" });
+        }
+        private OrdersViewModel GetOrdersViewModel(int kitchenId)
+        {
+            var dbSupplierOrders = _unitOfWork.SupplierOrders.GetAllByKitchenId(kitchenId);
 
             var orderListViewModel = dbSupplierOrders.Select(s =>
             {
@@ -78,9 +95,9 @@ namespace RestSupplyMVC.Controllers
 
         // GET: SupplierOrder
         [Authorize]
-        public ActionResult Index(int? modalOrderId, string modalString)
+        public ActionResult Index(int? modalOrderId, string modalString, int kitchenId)
         {
-            var viewModel = GetOrdersViewModel();
+            var viewModel = GetOrdersViewModel(kitchenId);
 
             if (!string.IsNullOrEmpty(modalString))
             {
@@ -134,72 +151,6 @@ namespace RestSupplyMVC.Controllers
             */
             return RedirectToAction("Index",
                 new { modalOrderId = id, modalString ="ShowDetails" });
-        }
-
-        // GET: SupplierOrder/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: SupplierOrder/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SupplierOrder/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: SupplierOrder/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SupplierOrder/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: SupplierOrder/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         public ActionResult SaveSupplierOrder(int supplierId, int kitchenId, SupplierOrderIngredientsViewModel[] ingredients)

@@ -2,28 +2,43 @@
 @model RestSupplyMVC.ViewModels.KitchenIndexViewModel
 
 @{
-    ViewBag.Title = "Kitchens";
+    ViewBag.Title = Model.IsSelectKitchen ? "Please Select Kitchen" : "Kitchens";
 }
 
 <h2>Your Kitchens</h2>
 
-<p align="right">
-    <button style="margin-right:10px" class="btn btn-primary " onclick="addNewOrder()">Add A New Kitchen (And assign users)</button>
-</p>
+@if (!Model.IsSelectKitchen)
+{
+    <p align="right">
+        <button style="margin-right: 10px" class="btn btn-primary " onclick="addNewOrder()">Add A New Kitchen (And assign users)</button>
+    </p>
+}
 <table class="table">
     @if (Model.KitchensList.Count() != 0)
     {
         foreach (var item in Model.KitchensList)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.KitchenName)
-                </td>
-                <td>
-                    @Html.ActionLink("Info & Assigned Users", "Details", new { id = item.KitchenId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.KitchenId })
-                </td>
-            </tr>
+    <tr>
+
+        @if (Model.IsSelectKitchen && !Model.ControllerRedirect.IsEmpty())
+        {
+            <td>
+                @Html.ActionLink(item.KitchenName, "Index", Model.ControllerRedirect, new { kitchenId = item.KitchenId }, null)
+            </td>
+            
+                }
+        else
+        {
+            <td>@Html.DisplayFor(modelItem => item.KitchenName)</td>
+
+
+            <td>
+
+            @Html.ActionLink("Info & Assigned Users", "Details", new {id = item.KitchenId}) |
+            @Html.ActionLink("Delete", "Delete", new {id = item.KitchenId})
+            </td>
+        }
+        </tr>
         }
     }
     else

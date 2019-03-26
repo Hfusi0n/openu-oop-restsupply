@@ -238,7 +238,9 @@
     <Compile Include="ViewModels\Account\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\Account\SendCodeViewModel.cs" />
     <Compile Include="ViewModels\Account\VerifyCodeViewModel.cs" />
+    <Compile Include="ViewModels\CreateKitchenViewModel.cs" />
     <Compile Include="ViewModels\CustomerOrderViewModel.cs" />
+    <Compile Include="ViewModels\KitchenIndexViewModel.cs" />
     <Compile Include="ViewModels\KitchenIngredientViewModel.cs" />
     <Compile Include="ViewModels\KitchenViewModel.cs" />
     <Compile Include="ViewModels\Account\RegisterViewModel.cs" />

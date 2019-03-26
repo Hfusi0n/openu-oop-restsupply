@@ -1,14 +1,11 @@
 ﻿@using Microsoft.AspNet.Identity
 @using Microsoft.AspNet.Identity.Owin;
-@using RestSupplyDB.Models.AppUser;
 
 @if (Request.IsAuthenticated)
 {
     // Get the user current role
     var userManager = Request.GetOwinContext().GetUserManager<AppUserManager>();
-    var userRoles = userManager.GetRoles(User.Identity.GetUserId());
-    var userRole = userRoles.FirstOrDefault();
-
+    var userRoles = userManager.GetRoles(User.Identity.GetUserId()).ToList();
     // Get the current user 
     var user = userManager.FindById(User.Identity.GetUserId());
 
@@ -25,13 +22,13 @@
                 <li><a href="@Url.Action("Index", "Kitchens")">Branches</a></li>
                 <li><a href="@Url.Action("Index", "Ingredients")">Ingredients</a></li>
                 <li><a href="@Url.Action("Index", "MenuItems")">Menu</a></li>
-                <li><a href="@Url.Action("Index", "SupplierOrder")">Supplier Orders</a></li>
-                <li><a href="@Url.Action("Index", "CustomerOrder")">Customer Orders</a></li>
+                <li><a href="@Url.Action("Navigation", "SupplierOrder")">Supplier Orders</a></li>
+                <li><a href="@Url.Action("Navigation", "CustomerOrder")">Customer Orders</a></li>
 
 
                 @{
                     // Displaying the admin panel option only to admin...
-                    if (userRole == "Admin")
+                    if (userRoles.Any(r => r == "Admin"))
                     {
                         <li><a href="@Url.Action("Admin", "UserDashboard")">Admin Dashboard</a></li>
                     }
@@ -51,7 +48,7 @@
                         userName = user.FirstName + " " + user.LastName;
                     }
 
-                    string displayName = userName + "(" + userRole + ")";
+                    string displayName = userName + "(" + String.Join(", ", userRoles) + ")";
                 }
                 @displayName
             </a>

@@ -16,7 +16,9 @@ namespace RestSupplyMVC.Repositories
         }
         public IEnumerable<AppUser> GetAll()
         {
-            return _context.Users.ToList();
+            var dbUsers = _context.Users.ToList();
+            return dbUsers;
+            
         }
 
         public AppUser GetById<TKey>(TKey id)

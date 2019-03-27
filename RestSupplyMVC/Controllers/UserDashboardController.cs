@@ -87,18 +87,27 @@ namespace RestSupplyMVC.Controllers
         public ActionResult _SystemUsersList()
         {
             var users = _unitOfWork.Users.GetAll().ToList();
-
             var usersListViewModel = new UsersListViewModel
             {
-                UsersEnumerable = users.Select(u => new UserViewModel
-                {
-                    Id = u.Id,
-                    Email = u.Email,
-                    PrivateName = u.FirstName,
-                    LastName = u.LastName
-                }).ToList()
+                UsersList = new List<UserViewModel>()
             };
 
+            foreach (var user in users)
+            {
+                var userRolesVm = user.Roles.ToList().Select(r => new RoleViewModel
+                {
+                    RoleId = r.RoleId,
+                    RoleName = _unitOfWork.Roles.GetById(r.RoleId).Name
+                });
+                usersListViewModel.UsersList.Add(new UserViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    PrivateName = user.FirstName,
+                    LastName = user.LastName,
+                    UserRolesList = userRolesVm
+                });
+            }
             return View(usersListViewModel);
         }
 

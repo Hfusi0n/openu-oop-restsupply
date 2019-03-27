@@ -1,65 +1,67 @@
 ﻿@model RestSupplyMVC.ViewModels.UsersListViewModel
 
 
-<div class="modal fade modal-user-list" id="display-user-modal">
-    <div class="modal-dialog modal-lg" style=" width: 900px !important;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a href="#" class="close" data-dismiss="modal">&times;</a>
-                <h4>Edit User</h4>
-            </div>
-            <div class="modal-body">
-                <table class="table" width="100">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Private Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">EDIT</th>
-                    </tr>
-                    <tbody>
-                        @if (Model.UsersEnumerable.Any())
-                        {
-                            int count = 1;
-                            foreach (var item in Model.UsersEnumerable)
-                            {
-                                <tr>
-                                    <th scope="row">@count</th>
-                                    @{ count = count + 1;}
-                                    <td> @Html.DisplayFor(modelItem => item.Email) </td>
-                                    <td> @Html.DisplayFor(modelItem => item.PrivateName) </td>
-                                    <td> @Html.DisplayFor(modelItem => item.LastName) </td>
-                                    <td>
-                                        @Html.ActionLink("display-edit-user-link", "_SystemUserEdit", "UserDashboard", new { id = item.Id }, new { @id = "display-user-link" })
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                                <tr>
-                                    <td>
-                                        <div class="panel-body">
-                                            <h3 style="color:red;">No users were found</h3>
-                                        </div>
-                                    </td>
-                                </tr>
 
-                                }
-                        </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="reset" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+@*<div class="modal fade modal-user-list" id="display-user-modal">
+    <div class="modal-dialog modal-lg" style=" width: 900px !important;">*@
+@*<div class="modal-content">*@
+@*<div class="modal-header">*@
+@*<a href="#" class="close" data-dismiss="modal">&times;</a>*@
+<h2>Edit User</h2>
+@*</div>*@
+@*<div class="modal-body">*@
+<table class="table" width="100">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Email</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Roles</th>
 
-        </div>
-    </div>
-</div>
-@section scripts
-{
-    <script>
-        // Show the modal
-        $("#display-user-modal").modal('show');
-    </script>
-}
+        <th scope="col">EDIT</th>
+    </tr>
+    <tbody>
+        @if (Model.UsersList.Any())
+        {
+            int count = 1;
+            foreach (var item in Model.UsersList)
+            {
+                <tr>
+                    <th scope="row">@count</th>
+                    @{ count = count + 1;}
+                    <td> @Html.DisplayFor(modelItem => item.Email) </td>
+                    <td> @Html.DisplayFor(modelItem => item.PrivateName) </td>
+                    <td> @Html.DisplayFor(modelItem => item.LastName) </td>
+                    <td> @String.Join(", ", item.UserRolesList.Select(r => r.RoleName)) </td>
+
+                    <td>
+                        @Html.ActionLink("display-edit-user-link", "_SystemUserEdit", "UserDashboard", new { id = item.Id }, new { @id = "display-user-link" })
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>
+                    <div class="panel-body">
+                        <h3 style="color:red;">No users were found</h3>
+                    </div>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+@*</div>*@
+
+@*</div>*@
+@*</div>
+    </div>*@
+@*@section scripts
+    {
+        <script>
+            // Show the modal
+            $("#display-user-modal").modal('show');
+        </script>
+    }*@

@@ -22,6 +22,6 @@ namespace RestSupplyMVC.ViewModels
 
     public class UsersListViewModel
     {
-        public IEnumerable<UserViewModel> UsersEnumerable { get; set; }
+        public List<UserViewModel> UsersList { get; set; }
     }
 }

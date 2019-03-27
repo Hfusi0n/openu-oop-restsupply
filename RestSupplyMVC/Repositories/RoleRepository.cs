@@ -23,7 +23,7 @@ namespace RestSupplyMVC.Repositories
 
         public AppRole GetById<TKey>(TKey id)
         {
-            throw new System.NotImplementedException();
+            return _context.Roles.Find(id);
         }
 
         // OUT OF SCOPE
@@ -32,6 +32,7 @@ namespace RestSupplyMVC.Repositories
             throw new System.NotImplementedException();
         }
 
+        // OUT OF SCOPE
         public void Remove(AppRole item)
         {
             throw new System.NotImplementedException();

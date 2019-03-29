@@ -1,23 +1,27 @@
-﻿@model List<RestSupplyMVC.ViewModels.CustomerOrderViewModel>
+﻿@model RestSupplyMVC.ViewModels.CustomerOrderIndexViewModel
 
 @{
     ViewBag.Title = "Customer Orders";
 }
 <hr/>
-    <h4>Customer Orders</h4>
-@if (Model.Any())
+<h2>Customer Orders</h2>
+<p align="right">
+    @Html.ActionLink("Create New Customer Order", "Create", new { kitchenId = Model.KitchenId },new {@class= "btn btn-primary" })
+</p>
+
+@if (Model.CustomerOrdersList.Any())
 {
-    foreach (var item in Model)
+    foreach (var item in Model.CustomerOrdersList)
     {
         @Html.HiddenFor(modelItem => item.CustomerOrderId)
 
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(modelItem => item.KitchenName)
+                @Html.DisplayNameFor(modelItem => Model.KitchenName)
             </dt>
 
             <dd>
-                @Html.DisplayFor(modelItem => item.KitchenName)
+                @Html.DisplayFor(modelItem => Model.KitchenName)
             </dd>
 
             <dt>

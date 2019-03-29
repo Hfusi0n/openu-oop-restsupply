@@ -175,14 +175,18 @@ namespace RestSupplyMVC.Controllers
         public ActionResult Index(int kitchenId)
         {
             var customerOrderList = _unitOfWork.CustomerOrder.GetAllByKitchenId(kitchenId);
-            var vm = customerOrderList.Select(c => new CustomerOrderViewModel
+            var vm = new CustomerOrderIndexViewModel
             {
-                KitchenId = c.KitchenId,
-                KitchenName = _unitOfWork.Kitchens.GetById(c.KitchenId).Name,
-                Date = c.Date,
-                CustomerOrderId = c.Id
-                
-            }).ToList();
+                CustomerOrdersList = customerOrderList.Select(c => new CustomerOrderViewModel
+                {
+                    Date = c.Date,
+                    CustomerOrderId = c.Id
+
+                }).ToList(),
+                KitchenId = kitchenId,
+                KitchenName = _unitOfWork.Kitchens.GetById(kitchenId).Name
+
+            };
             return View(vm);
         }
 

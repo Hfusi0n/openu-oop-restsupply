@@ -8,13 +8,19 @@ namespace RestSupplyMVC.ViewModels
 {
     public class CustomerOrderViewModel
     {
-        public int CustomerOrderId { get; set; }
         public int KitchenId { get; set; }
         public string KitchenName { get; set; }
+        public int CustomerOrderId { get; set; }
         public DateTime Date { get; set; }
-
-
         public IEnumerable<CustomerOrderDetailViewModel> CustomerOrderDetailsList { get; set; }
+    }
+
+    public class CustomerOrderIndexViewModel
+    {
+        public int KitchenId { get; set; }
+        public string KitchenName { get; set; }
+
+        public List<CustomerOrderViewModel> CustomerOrdersList { get; set; }
     }
 
     public class CustomerOrderDetailViewModel : MenuItemViewModel

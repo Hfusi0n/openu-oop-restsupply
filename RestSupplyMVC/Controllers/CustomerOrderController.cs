@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using RestSupplyMVC.Helpers;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -20,6 +21,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         [HttpPost]
+        [AuthorizeRoles(Role.Waiter)]
         public ActionResult IsMenuOrderInStock(CustomerOrderDetailViewModel[] orderVm, int kitchenId)
         {
             var ingredientsNotInKitchen = new List<IngredientViewModel>();
@@ -70,6 +72,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         [HttpPost]
+        [AuthorizeRoles(Role.Waiter)]
         public ActionResult CreateCustomerOrder(CustomerOrderDetailViewModel[] orderVm, int kitchenId)
         {
             string response = "Error! Saving Order Process Is Not Complete!";
@@ -144,6 +147,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         [Authorize]
+        [AuthorizeRoles(Role.Waiter)]
         public ActionResult Create(int kitchenId)
         {
             var dbMenuItems = _unitOfWork.MenuItems.GetAll().Where(mi => mi.MenuIngredientsSet.Any()).ToList();
@@ -172,6 +176,7 @@ namespace RestSupplyMVC.Controllers
             return View(vm);
         }
 
+        [AuthorizeRoles(Role.BranchManager,Role.Waiter)]
         public ActionResult Index(int kitchenId)
         {
             var customerOrderList = _unitOfWork.CustomerOrder.GetAllByKitchenId(kitchenId);
@@ -207,6 +212,7 @@ namespace RestSupplyMVC.Controllers
             return RedirectToAction("Index", "Kitchens", new {controllerRedirect = "CustomerOrder"});
         }
 
+        [AuthorizeRoles(Role.BranchManager, Role.Waiter)]
         public ActionResult Details(int customerOrderId)
         {
             var customerOrder = _unitOfWork.CustomerOrder.GetById(customerOrderId);

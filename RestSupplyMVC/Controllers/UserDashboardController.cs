@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using RestSupplyMVC.Helpers;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -21,7 +22,7 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork = new UnitOfWork(_dbContext);
         }
 
-        [Authorize(Roles = "Admin")]
+        [AuthorizeRoles]
         public ActionResult Edit(string id)
         {
             // Get all roles from the database
@@ -51,7 +52,7 @@ namespace RestSupplyMVC.Controllers
 
         // POST: Update the user data
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [AuthorizeRoles]
         public ActionResult Edit(UserViewModel vm)
         {
             if (!ModelState.IsValid || string.IsNullOrEmpty(vm.Id))
@@ -76,7 +77,7 @@ namespace RestSupplyMVC.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [AuthorizeRoles]
         public ActionResult Index()
         {
             var users = _unitOfWork.Users.GetAll().ToList();
@@ -107,7 +108,7 @@ namespace RestSupplyMVC.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [AuthorizeRoles]
         [ActionName("SearchUsers")]
         public async Task<ActionResult> SearchUsers(UserViewModel model)
         {
@@ -161,6 +162,7 @@ namespace RestSupplyMVC.Controllers
 
         // GET: UserDashboard
         [Authorize(Roles = "Admin")]
+        [AuthorizeRoles]
         public ActionResult Admin(string id)
         {
             UserViewModel model = new UserViewModel

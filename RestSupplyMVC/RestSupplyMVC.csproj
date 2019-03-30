@@ -196,7 +196,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IngredientsController.cs" />
     <Compile Include="Controllers\KitchenIngredientsController.cs" />
     <Compile Include="Controllers\KitchensController.cs" />
@@ -299,8 +298,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Navigation\Index.cshtml" />
     <Content Include="Views\MenuItems\Index.cshtml" />
     <Content Include="Views\Suppliers\Create.cshtml" />
@@ -325,12 +322,6 @@
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\UsersSets\Create.cshtml" />
-    <Content Include="Views\UsersSets\Delete.cshtml" />
-    <Content Include="Views\UsersSets\Details.cshtml" />
-    <Content Include="Views\UsersSets\Edit.cshtml" />
-    <Content Include="Views\UsersSets\Index.cshtml" />
-    <Content Include="Views\Shared\MenuIngredients\_createPartial.cshtml" />
     <Content Include="Views\Ingredients\Create.cshtml" />
     <Content Include="Views\Ingredients\Delete.cshtml" />
     <Content Include="Views\Ingredients\Details.cshtml" />
@@ -357,13 +348,11 @@
     <Content Include="Views\KitchenIngredients\Index.cshtml" />
     <Content Include="Views\CustomerOrder\Index.cshtml" />
     <Content Include="Views\CustomerOrder\Details.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
     <Folder Include="Views\ChangePassword\" />
-    <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

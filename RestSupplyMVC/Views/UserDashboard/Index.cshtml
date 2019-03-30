@@ -7,7 +7,7 @@
 @*<div class="modal-content">*@
 @*<div class="modal-header">*@
 @*<a href="#" class="close" data-dismiss="modal">&times;</a>*@
-<h2>Edit User</h2>
+<h2>System Users</h2>
 @*</div>*@
 @*<div class="modal-body">*@
 <table class="table" width="100">
@@ -18,7 +18,7 @@
         <th scope="col">Last Name</th>
         <th scope="col">Roles</th>
 
-        <th scope="col">EDIT</th>
+        <th scope="col">Actions</th>
     </tr>
     <tbody>
         @if (Model.UsersList.Any())
@@ -32,10 +32,10 @@
                     <td> @Html.DisplayFor(modelItem => item.Email) </td>
                     <td> @Html.DisplayFor(modelItem => item.PrivateName) </td>
                     <td> @Html.DisplayFor(modelItem => item.LastName) </td>
-                    <td> @String.Join(", ", item.UserRolesList.Select(r => r.RoleName)) </td>
+                    <td>@Html.DisplayFor(modelItem => item.UserRolesAsString) </td>
 
                     <td>
-                        @Html.ActionLink("display-edit-user-link", "_SystemUserEdit", "UserDashboard", new { id = item.Id }, new { @id = "display-user-link" })
+                        @Html.ActionLink("Edit", "Edit", "UserDashboard", new { id = item.Id }, new { @id = "display-user-link" })
                     </td>
                 </tr>
             }

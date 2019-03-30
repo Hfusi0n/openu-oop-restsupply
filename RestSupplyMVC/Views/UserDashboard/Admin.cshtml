@@ -39,7 +39,7 @@
                     // Check if a user was posted to this view, if so display the user modal edit
                     if(!string.IsNullOrEmpty(Model.Id))
                     {
-                        @Html.Action("_SystemUserEdit", "UserDashboard", new { id = Model.Id })
+                        @Html.Action("Edit", "UserDashboard", new { id = Model.Id })
                     }
                 }
                 @using (Html.BeginForm())
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                         <p>
-                            @Html.ActionLink("Show all registered users", "_SystemUsersList")
+                            @Html.ActionLink("Show all registered users", "Index")
                         </p>
                         }
                     </div>

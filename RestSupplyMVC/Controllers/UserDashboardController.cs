@@ -25,25 +25,29 @@ namespace RestSupplyMVC.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult _SystemUserEdit(string id)
+        public ActionResult Edit(string id)
         {
             // Get all roles from the database
             var user = _unitOfWork.Users.GetById(id);            
-            var userRoles = user.Roles;
             UserViewModel model = new UserViewModel
             {
                 Id = user.Id,
                 Email = user.Email,
                 PrivateName = user.FirstName,
-                LastName = user.LastName                
+                LastName = user.LastName,
+                UserRolesList = _unitOfWork.Roles.GetRolesByUserId(user.Id).Select(r => new RoleViewModel
+                {
+                    RoleId = r.RoleId,
+                    RoleName = _unitOfWork.Roles.GetById(r.RoleId).Name
+                }).ToList(),
+                AllRolesList = _unitOfWork.Roles.GetAll().Select(r => new RoleViewModel
+                {
+                    RoleId = r.Id,
+                    RoleName = r.Name
+                }).ToList()
             };
 
-            // Get all roles
-            model.AllRolesList = _unitOfWork.Roles.GetAll().Select(r => new RoleViewModel
-            {
-                RoleId = r.Id,
-                RoleName = r.Name
-            });
+
 
             return View(model);
         }
@@ -51,45 +55,38 @@ namespace RestSupplyMVC.Controllers
         // POST: Update the user data
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public  ActionResult UpdateUserProfile(UserViewModel model)
+        public ActionResult Edit(UserViewModel vm)
         {
-            if (!string.IsNullOrEmpty(model.Id))
+            if (!ModelState.IsValid || string.IsNullOrEmpty(vm.Id))
             {
-                // Get the current application user
-                var user = _unitOfWork.Users.GetById(model.Id);
-                // Create a user manager
-                AppUserManager userManager = new AppUserManager(new AppUserStore(_dbContext));
+                return RedirectToAction("Index");
+            }
+            var userToUpdate = _unitOfWork.Users.GetById(vm.Id);
+            userToUpdate.FirstName = vm.PrivateName;
+            userToUpdate.LastName = vm.LastName;
 
-                if (!string.IsNullOrEmpty(model.SelectedUserRole))
-                {
-                    // Add the new role if needed
-                    if (user != null)
-                    {
-                        userManager.AddToRole(user.Id, model.SelectedUserRole);
-                    }
-                }
+            _unitOfWork.Complete();
 
-                // Update the user
-                if (user != null)
-                {
-                    user.FirstName = model.PrivateName;
-                    user.LastName = model.LastName;
+            //// Create a user manager
+            AppUserManager userManager = new AppUserManager(new AppUserStore(_dbContext));
 
-                    userManager.Update(user);
-                }
+            foreach (var roleName in vm.UpdatedUserRoleNamesArr)
+            {
+                userManager.AddToRole(userToUpdate.Id, roleName);
             }
 
-            return RedirectToAction("Admin");
+            return RedirectToAction("Index");
         }
 
 
         [Authorize(Roles = "Admin")]
-        public ActionResult _SystemUsersList()
+        public ActionResult Index()
         {
             var users = _unitOfWork.Users.GetAll().ToList();
             var usersListViewModel = new UsersListViewModel
             {
                 UsersList = new List<UserViewModel>()
+
             };
 
             foreach (var user in users)
@@ -98,7 +95,7 @@ namespace RestSupplyMVC.Controllers
                 {
                     RoleId = r.RoleId,
                     RoleName = _unitOfWork.Roles.GetById(r.RoleId).Name
-                });
+                }).ToList();
                 usersListViewModel.UsersList.Add(new UserViewModel
                 {
                     Id = user.Id,
@@ -137,7 +134,7 @@ namespace RestSupplyMVC.Controllers
                         PrivateName = user.FirstName,
                         LastName = user.LastName
                     };
-                    return View("_SystemUserEdit", userVm);
+                    return View("Edit", userVm);
                 }
             }
 

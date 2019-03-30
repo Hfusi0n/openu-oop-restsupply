@@ -46,7 +46,7 @@ namespace RestSupplyMVC.Controllers
                             {
                                 RoleId = r.RoleId,
                                 RoleName = _unitOfWork.Roles.GetById(r.RoleId).Name
-                            })
+                            }).ToList()
 
                         }).ToList()
 

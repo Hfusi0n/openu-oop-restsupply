@@ -337,7 +337,6 @@
     <Content Include="Views\UserDashboard\Index.cshtml" />
     <Content Include="Views\UserDashboard\Edit.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Kitchens\Create.cshtml" />
     <Content Include="Views\Kitchens\Delete.cshtml" />
     <Content Include="Views\Kitchens\Details.cshtml" />
     <Content Include="Views\Kitchens\Edit.cshtml" />

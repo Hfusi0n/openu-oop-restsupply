@@ -12,6 +12,7 @@ using RestSupplyDB;
 using RestSupplyDB.Models.Ingredient;
 using RestSupplyDB.Models.Kitchen;
 using RestSupplyDB.Models.Supplier;
+using RestSupplyMVC.Helpers;
 using RestSupplyMVC.Persistence;
 using RestSupplyMVC.ViewModels;
 
@@ -20,13 +21,13 @@ namespace RestSupplyMVC.Controllers
     public class KitchensController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private RestSupplyDbContext db = new RestSupplyDbContext();
-
         public KitchensController()
         {
             _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
+
         // GET: Kitchens
+        [AuthorizeRoles(Role.BranchManager,Role.Waiter,Role.Chef,Role.KitchenManager)]
         public ActionResult Index(string controllerRedirect = null)
         {
             var dbUsers = _unitOfWork.Users.GetAll();
@@ -64,6 +65,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: Kitchens/Details/5
+        [AuthorizeRoles(Role.BranchManager)]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -107,6 +109,8 @@ namespace RestSupplyMVC.Controllers
 
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+
+        [AuthorizeRoles]
         public ActionResult SaveKitchen(string kitchenName, string kitchenAddress, UserViewModel[] users)
         {
             string result = "Error! Saving Kitchen Process Is Not Complete!";
@@ -138,9 +142,10 @@ namespace RestSupplyMVC.Controllers
         }
 
         [HttpPost]
+        [AuthorizeRoles(Role.BranchManager)]
         public ActionResult AddUsersToKitchen(int kitchenId, UserViewModel[] users)
         {
-            string result = "Error! Unable to add ingredients!";
+            string result = "Error! Unable to add user!";
             if (kitchenId > 0 && users.Any())
             {
                 var userIds = users.Select(u => u.Id).ToList();
@@ -152,37 +157,17 @@ namespace RestSupplyMVC.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        // GET: Kitchens/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: Kitchens/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Address")] Kitchens kitchens)
-        {
-            if (ModelState.IsValid)
-            {
-                db.KitchensSet.Add(kitchens);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(kitchens);
-        }
 
         // GET: Kitchens/Edit/5
+        [AuthorizeRoles(Role.BranchManager)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Kitchens kitchens = db.KitchensSet.Find(id);
+            Kitchens kitchens = _unitOfWork.Kitchens.GetById(id);
             if (kitchens == null)
             {
                 return HttpNotFound();
@@ -195,25 +180,30 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Address")] Kitchens kitchens)
+        [AuthorizeRoles]
+        public ActionResult Edit([Bind(Include = "Id,Name,Address")] Kitchens kitchenVm)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(kitchens).State = EntityState.Modified;
-                db.SaveChanges();
+                var kitchen = _unitOfWork.Kitchens.GetById(kitchenVm.Id);
+                kitchen.Name = kitchenVm.Name;
+                kitchen.Address = kitchenVm.Address;
+                
+                _unitOfWork.Complete();
                 return RedirectToAction("Index");
             }
-            return View(kitchens);
+            return View(kitchenVm);
         }
 
         // GET: Kitchens/Delete/5
+        [AuthorizeRoles]   
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Kitchens kitchens = db.KitchensSet.Find(id);
+            Kitchens kitchens = _unitOfWork.Kitchens.GetById(id.Value);
             if (kitchens == null)
             {
                 return HttpNotFound();
@@ -224,11 +214,12 @@ namespace RestSupplyMVC.Controllers
         // POST: Kitchens/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles]
         public ActionResult DeleteConfirmed(int id)
         {
-            Kitchens kitchens = db.KitchensSet.Find(id);
-            db.KitchensSet.Remove(kitchens);
-            db.SaveChanges();
+            Kitchens kitchens = _unitOfWork.Kitchens.GetById(id);
+            _unitOfWork.Kitchens.Remove(kitchens);
+            _unitOfWork.Complete();
             return RedirectToAction("Index");
         }
 
@@ -236,7 +227,7 @@ namespace RestSupplyMVC.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
             }
             base.Dispose(disposing);
         }

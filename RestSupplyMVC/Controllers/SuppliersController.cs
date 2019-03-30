@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using RestSupplyDB.Models.Ingredient;
 using RestSupplyDB.Models.Menu;
+using RestSupplyMVC.Helpers;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -23,6 +24,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: Suppliers
+        [AuthorizeRoles(Role.BranchManager, Role.KitchenManager)]
         public ActionResult Index()
         {
             var dbIngredients = _unitOfWork.Ingredients.GetAll();
@@ -55,6 +57,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: Suppliers/Details/5
+        [AuthorizeRoles(Role.BranchManager, Role.KitchenManager)]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -102,47 +105,8 @@ namespace RestSupplyMVC.Controllers
             return View(supplierDetailsVm);
         }
 
-        public ActionResult Create()
-        {
-            var viewModel = new CreateSupplierViewModel
-            {
-                AllIngredients = _unitOfWork.Ingredients.GetAll().Select(i => new IngredientViewModel
-                {
-                    IngredientId = i.Id,
-                    Name = i.Name,
-                    Unit = i.Unit
-                }).ToList()
-            };
-            return View(viewModel);
-        }
-
-        // POST: Suppliers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(SupplierViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var supplier = new Supplier
-                {
-                    Name = viewModel.SupplierName,
-                    Address = viewModel.Address,
-                    //IngredientsSet = new List<Ingredients>() TODO
-                    Phone = viewModel.Phone
-                };
-
-                _unitOfWork.Suppliers.Add(supplier);
-                _unitOfWork.Complete();
-
-                return RedirectToAction("Index");
-            }
-
-            return View(viewModel);
-        }
-
         // GET: Suppliers/Edit/5
+        [AuthorizeRoles]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -171,13 +135,13 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles]
         public ActionResult Edit(SupplierViewModel supplierVm)
         {
             if (ModelState.IsValid)
             {
                 var dbSupplier = _unitOfWork.Suppliers.GetById(supplierVm.Id);
 
-                // TODO - should this be in an update method in the repo??
                 dbSupplier.Address = supplierVm.Address;
                 dbSupplier.Name = supplierVm.SupplierName;
                 dbSupplier.Phone = supplierVm.Phone;
@@ -190,6 +154,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: Suppliers/Delete/5
+        [AuthorizeRoles]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -223,6 +188,7 @@ namespace RestSupplyMVC.Controllers
         // POST: Suppliers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles]
         public ActionResult DeleteConfirmed(int id)
         {
             var context = new RestSupplyDbContext();
@@ -256,6 +222,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         [HttpPost]
+        [AuthorizeRoles]
         public ActionResult RemoveIngredientFromSupplier(int ingredientId, int supplierId)
         {
             string result = "Error when removing ingredient from supplier!";
@@ -268,7 +235,9 @@ namespace RestSupplyMVC.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
+        [AuthorizeRoles]
         public ActionResult SaveSupplier(string supplierName, string supplierAddress, string supplierPhone,
             IngredientViewModel[] ingredients)
         {

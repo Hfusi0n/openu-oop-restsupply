@@ -24,7 +24,7 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
 
-        [AuthorizeRoles(Role.Waiter)]
+        [AuthorizeRoles(Role.Chef,Role.Waiter)]
         public ActionResult Index()
         {
             var dbMenuItems = _unitOfWork.MenuItems.GetAll();
@@ -123,60 +123,9 @@ namespace RestSupplyMVC.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: MenuItems/Create
-        public ActionResult Create()
-        {
-            var menuItemIngredientsVm = new List<MenuItemIngredientViewModel>();
-            var menuItemVm = new MenuItemViewModel();
-
-            var dbIngredients = _unitOfWork.Ingredients.GetAll();
-
-            foreach (var ingredient in dbIngredients)
-            {
-                menuItemIngredientsVm.Add(new MenuItemIngredientViewModel
-                {
-                    Name = ingredient.Name,
-                    IngredientId = ingredient.Id,
-                    Unit = ingredient.Unit
-                });
-            }
-
-            menuItemVm.MenuItemIngredients = menuItemIngredientsVm;
-
-            return View(menuItemVm);
-        }
-
-        // POST: MenuItems/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(MenuItemViewModel vm)
-        {
-            
-
-            if (ModelState.IsValid)
-            {
-                var menuItem = new MenuItems
-                {
-                    Name = vm.Name,
-                    MenuIngredientsSet = (ICollection<MenuItemIngredients>) vm.MenuItemIngredients.Select(m =>
-                        new MenuItemIngredients
-                        {
-                            IngredientId = m.IngredientId,
-                            Quantity = m.Quantity,
-                        })
-
-                };
-                _unitOfWork.MenuItems.Add(menuItem);
-                _unitOfWork.Complete();
-                return RedirectToAction("Index");
-            }
-
-            return View(vm);
-        }
 
         // GET: MenuItems/Edit/5
+        [AuthorizeRoles(Role.Chef)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -192,10 +141,9 @@ namespace RestSupplyMVC.Controllers
         }
 
         // POST: MenuItems/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(Role.Chef)]
         public ActionResult Edit([Bind(Include = "Id,Name")] MenuItems model)
         {
             if (ModelState.IsValid)
@@ -212,6 +160,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: MenuItems/Delete/5
+        [AuthorizeRoles(Role.Chef)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -227,6 +176,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // POST: MenuItems/Delete/5
+        [AuthorizeRoles(Role.Chef)]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -237,7 +187,9 @@ namespace RestSupplyMVC.Controllers
             
             return RedirectToAction("Index");
         }
-        public ActionResult SaveOrder(string menuItemName, MenuItemIngredientViewModel[] ingredients)
+
+        [AuthorizeRoles(Role.Chef)]
+        public ActionResult SaveMenuItem(string menuItemName, MenuItemIngredientViewModel[] ingredients)
         {
             string result = "Error! Saving Menu Item Process Is Not Complete!";
             if (menuItemName != null && ingredients != null)
@@ -265,6 +217,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         [HttpPost]
+        [AuthorizeRoles(Role.Chef)]
         public ActionResult RemoveIngredientFromMenuItem(int ingredientId, int menuItemId)
         {
             string result = "Error when removing ingredient from supplier!";

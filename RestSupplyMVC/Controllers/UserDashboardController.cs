@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using RestSupplyDB;
 using RestSupplyDB.Models.AppUser;
 using RestSupplyMVC.Persistence;
-using System;
+using RestSupplyMVC.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using RestSupplyDB;
-using RestSupplyMVC.ViewModels;
 
 namespace RestSupplyMVC.Controllers
 {
@@ -28,7 +25,7 @@ namespace RestSupplyMVC.Controllers
         public ActionResult Edit(string id)
         {
             // Get all roles from the database
-            var user = _unitOfWork.Users.GetById(id);            
+            var user = _unitOfWork.Users.GetById(id);
             UserViewModel model = new UserViewModel
             {
                 Id = user.Id,
@@ -127,12 +124,32 @@ namespace RestSupplyMVC.Controllers
 
                 if (user != null)
                 {
+                    var dbRoles = _unitOfWork.Roles.GetAll();
+                    var userRoles = user.Roles.ToList();
+
+                    List<RoleViewModel> userRolesViewModel =
+                        userRoles.Select(x => new RoleViewModel()
+                        {
+                            RoleId = x.RoleId,
+                            RoleName = dbRoles.FirstOrDefault(s => s.Id == x.RoleId).Name
+                        }).ToList();
+
+                    List<RoleViewModel> allRolesViewModel = dbRoles.Select(x => new RoleViewModel()
+                    {
+                        RoleId = x.Id,
+                        RoleName = x.Name
+                    }).ToList();
+
+
+
                     var userVm = new UserViewModel
                     {
                         Id = user.Id,
                         Email = user.Email,
                         PrivateName = user.FirstName,
-                        LastName = user.LastName
+                        LastName = user.LastName,
+                        AllRolesList = allRolesViewModel,
+                        UserRolesList = userRolesViewModel
                     };
                     return View("Edit", userVm);
                 }
@@ -150,7 +167,7 @@ namespace RestSupplyMVC.Controllers
             {
                 Id = id
             };
-            
+
             return View(model);
         }
     }

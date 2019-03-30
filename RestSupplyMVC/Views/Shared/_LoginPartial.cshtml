@@ -54,7 +54,8 @@
                 @displayName
             </a>
             <ul class="dropdown-menu">
-                <li><a href="@Url.Action("ChangePassword", "Account")">Change Password</a></li>
+                <li><a class="nav-stacked">@user.Email</a></li>
+                <li><a class="navbar-link" href="@Url.Action("ChangePassword", "Account")">Change Password</a></li>
             </ul>
         </li>
         <li>

@@ -4,14 +4,24 @@
     ViewBag.Title = "Suppliers Orders";
 }
 
-<h2>Index</h2>
+<h2>Supplier Orders</h2>
+<h4>For Kitchen: @Model.KitchenName</h4>
 
 <table class="table">
-    <tr>
-        <th>Orders</th>
-    </tr>
+
     @if (Model.Orders.Any())
     {
+        <tr>
+            
+                <td>
+                    <b>   @Html.DisplayNameFor(modelItem => modelItem.Orders.First().OrderDate)</b>
+                </td>
+                <td>
+                    <b> @Html.DisplayNameFor(modelItem => modelItem.Orders.First().SupplierName)</b>
+                </td>
+                <td></td>
+            
+        </tr>
         foreach (var item in Model.Orders)
         {
             <tr>
@@ -22,12 +32,8 @@
                     @Html.DisplayFor(modelItem => item.SupplierName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TotalAmount)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", "SupplierOrder", new { id = item.OrderId }, new { @id = "edit-link" }) |
-                    @Html.ActionLink("Details", "Details", "SupplierOrder", new { id = item.OrderId }, new { @id = "display-link" }) |
-                    @Html.ActionLink("Delete", "Delete", "SupplierOrder", new { id = item.OrderId }, new { @id = "delete-link" })
+                    @Html.ActionLink("Details", "Details", "SupplierOrder", new { kitchenId=Model.KitchenId, id = item.OrderId }, new { @id = "display-link" }) 
+
                 </td>
             </tr>
         }
@@ -47,11 +53,6 @@
 
 
 @{
-    // Check if an order was posted to this view, if so display the relevant modals
-    if (Model.DisplayEdit)
-    {
-        @Html.Partial("_DisplayOrderEdit")
-    }
 
     if (Model.DisplayDetails)
     {
@@ -60,7 +61,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <a href="#" class="close" data-dismiss="modal">&times;</a>
-                        <h4>Order Details</h4>
+                        <h4>Ordered Ingredients</h4>
                     </div>
                     <div class="modal-body">
                         @{
@@ -68,28 +69,35 @@
 
                             if (item.SupplierOrderIngredientsList.Any())
                             {
-                                <table class="table">
-                                    @foreach (var ingredientOrder in item.SupplierOrderIngredientsList)
-                                    {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => ingredientOrder.OrderIngredientId)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => ingredientOrder.Name)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => ingredientOrder.OrderDate)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => ingredientOrder.Unit)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => ingredientOrder.Amount)
-                                        </td>
-                                    </tr>
-                                    }
-                                </table>
+                        <table class="table">
+                            <b>
+                            <tr>
+                                <td>
+                                    <b>@Html.DisplayNameFor(modelItem => item.SupplierOrderIngredientsList.First().Name)</b>
+                                </td>
+                                <td>
+                                    <b>  @Html.DisplayNameFor(modelItem => item.SupplierOrderIngredientsList.First().Unit)</b>
+                                </td>
+                                <td>
+                                    <b>   @Html.DisplayNameFor(modelItem => item.SupplierOrderIngredientsList.First().Amount)</b>
+                                </td>
+                            </tr>
+                            </b>
+                            @foreach (var ingredientOrder in item.SupplierOrderIngredientsList)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ingredientOrder.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ingredientOrder.Unit)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => ingredientOrder.Amount)
+                                    </td>
+                                </tr>
+                            }
+                        </table>
                             }
                         }
                     </div>
@@ -107,10 +115,6 @@
         }
     }
 
-    if (Model.DisplayDelete)
-    {
-        @Html.Partial("_DisplayOrderDelete")
-    }
 }
 
 

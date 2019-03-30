@@ -343,7 +343,6 @@
     <Content Include="Views\Kitchens\Edit.cshtml" />
     <Content Include="Views\Kitchens\Index.cshtml" />
     <Content Include="Views\KitchenIngredients\Create.cshtml" />
-    <Content Include="Views\KitchenIngredients\Delete.cshtml" />
     <Content Include="Views\KitchenIngredients\Details.cshtml" />
     <Content Include="Views\KitchenIngredients\Edit.cshtml" />
     <Content Include="Views\KitchenIngredients\Index.cshtml" />

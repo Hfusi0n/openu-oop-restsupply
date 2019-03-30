@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using RestSupplyDB;
 using RestSupplyDB.Models.Kitchen;
+using RestSupplyMVC.Helpers;
 using RestSupplyMVC.Persistence;
 using RestSupplyMVC.ViewModels;
 
@@ -16,7 +17,6 @@ namespace RestSupplyMVC.Controllers
 {
     public class KitchenIngredientsController : Controller
     {
-        private RestSupplyDbContext db = new RestSupplyDbContext();
         private readonly IUnitOfWork _unitOfWork;
 
         public KitchenIngredientsController()
@@ -40,8 +40,9 @@ namespace RestSupplyMVC.Controllers
 
             return RedirectToAction("Index", "Kitchens", new { controllerRedirect = "KitchenIngredients" });
         }
-        // id param = kitchenId
+
         // getting all ingredients for specific kitchen
+        [AuthorizeRoles(Role.KitchenManager)]
         public ActionResult Index(int kitchenId)
 
         {
@@ -74,13 +75,14 @@ namespace RestSupplyMVC.Controllers
 
 
         // GET: KitchenIngredients/Details/5
+        [AuthorizeRoles(Role.KitchenManager)]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            KitchenIngredients kitchenIngredients = db.KitchenIngredientsSet.Find(id);
+            KitchenIngredients kitchenIngredients = _unitOfWork.KitchenIngredient.GetById(id);
             if (kitchenIngredients == null)
             {
                 return HttpNotFound();
@@ -89,6 +91,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: KitchenIngredients/Create
+        [AuthorizeRoles(Role.KitchenManager)]
         public ActionResult Create(int kitchenId, int ingredientId)
         {
             // Checking that KitchenIngredient doesn't already exist
@@ -114,10 +117,9 @@ namespace RestSupplyMVC.Controllers
         }
 
         // POST: KitchenIngredients/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(Role.KitchenManager)]
         public ActionResult Create(KitchenIngredientViewModel kitchenIngredientVm)
         {
             if (ModelState.IsValid)
@@ -140,6 +142,7 @@ namespace RestSupplyMVC.Controllers
 
         // GET: KitchenIngredients/Edit/5
         // @param id = KitchenIngredientId
+        [AuthorizeRoles(Role.KitchenManager)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -172,6 +175,7 @@ namespace RestSupplyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(Role.KitchenManager)]
         public ActionResult Edit(KitchenIngredientViewModel kitchenIngredientVm)
         {
             if (!ModelState.IsValid || kitchenIngredientVm.KitchenIngredientId == null)
@@ -191,38 +195,11 @@ namespace RestSupplyMVC.Controllers
 
         }
 
-        // GET: KitchenIngredients/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            KitchenIngredients kitchenIngredients = db.KitchenIngredientsSet.Find(id);
-            if (kitchenIngredients == null)
-            {
-                return HttpNotFound();
-            }
-            return View(kitchenIngredients);
-        }
-
-        // POST: KitchenIngredients/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            KitchenIngredients kitchenIngredients = db.KitchenIngredientsSet.Find(id);
-            db.KitchenIngredientsSet.Remove(kitchenIngredients);
-            db.SaveChanges();
-            var kitchenId = kitchenIngredients.KitchenId;
-            return RedirectToAction("Index", new{kitchenId});
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
             }
             base.Dispose(disposing);
         }

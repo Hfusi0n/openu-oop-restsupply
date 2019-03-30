@@ -11,7 +11,11 @@ namespace RestSupplyMVC.Helpers
     {
         public AuthorizeRolesAttribute(params string[] roles) : base()
         {
+            
             Roles = string.Join(",", roles);
+
+            // Admin and ChainManager Roles has permission to all authorized functions
+            Roles += "," + Role.Admin + "," + Role.ChainManager;
         }
 
         /// <summary>

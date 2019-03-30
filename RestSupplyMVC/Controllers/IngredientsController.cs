@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using RestSupplyDB;
 using RestSupplyDB.Models.Ingredient;
 using RestSupplyDB.Models.Supplier;
+using RestSupplyMVC.Helpers;
 using RestSupplyMVC.Persistence;
 using RestSupplyMVC.Repositories;
 using RestSupplyMVC.ViewModels;
@@ -87,36 +88,8 @@ namespace RestSupplyMVC.Controllers
             return View(ingredientVm);
         }
 
-        // GET: Ingredients/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Ingredients/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IngredientViewModel vm)
-        {
-            if (ModelState.IsValid)
-            {
-                var createdIngredient = new Ingredients
-                {
-                    Name = vm.Name,
-                    Unit = vm.Unit
-                };
-                _unitOfWork.Ingredients.Add(createdIngredient);
-                _unitOfWork.Complete();
-
-                return RedirectToAction("Index");
-            }
-
-            return View(vm);
-        }
-
         // GET: Ingredients/Edit/5
+        [AuthorizeRoles]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -131,10 +104,6 @@ namespace RestSupplyMVC.Controllers
                 Name = dbIngredient.Name,
                 Unit = dbIngredient.Unit
             };
-            if (dbIngredient == null)
-            {
-                return HttpNotFound();
-            }
             return View(ingredientVm);
         }
 
@@ -143,6 +112,7 @@ namespace RestSupplyMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles]
         public ActionResult Edit([Bind(Include = "IngredientId,Name,Unit")] IngredientViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -160,6 +130,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: Ingredients/Delete/5
+        [AuthorizeRoles]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -177,6 +148,7 @@ namespace RestSupplyMVC.Controllers
         // POST: Ingredients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles]
         public ActionResult DeleteConfirmed(int id)
         {
             Ingredients ingredients = _unitOfWork.Ingredients.GetById(id);
@@ -184,6 +156,8 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork.Complete();
             return RedirectToAction("Index");
         }
+
+
         [HttpGet]
         public ActionResult GetUnitByIngredientId(int id)
         {
@@ -191,6 +165,7 @@ namespace RestSupplyMVC.Controllers
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
+        [AuthorizeRoles]
         public ActionResult SaveIngredient(string ingredientName, string unit, SupplierViewModel[] suppliers)
         {
             string result = "Error! Saving ingredient Process Is Not Complete!";

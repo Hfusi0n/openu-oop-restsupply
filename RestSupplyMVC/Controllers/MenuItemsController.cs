@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using RestSupplyDB;
 using RestSupplyDB.Models.Menu;
+using RestSupplyMVC.Helpers;
 using RestSupplyMVC.Persistence;
 using RestSupplyMVC.ViewModels;
 
@@ -23,7 +24,7 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
 
-        // GET: MenuItems
+        [AuthorizeRoles(Role.Waiter)]
         public ActionResult Index()
         {
             var dbMenuItems = _unitOfWork.MenuItems.GetAll();

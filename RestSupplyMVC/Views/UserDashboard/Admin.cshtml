@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h4>
+<h2>
     User Dashboard
-</h4>
+</h2>
 
 
 <div class="panel-group" id="accordion">
@@ -18,11 +18,6 @@
                     Reports
                 </a>
             </h4>
-        </div>
-        <div id="collapse1" class="panel-collapse collapse">
-            <div class="panel-body">
-                Some text 2...
-            </div>
         </div>
     </div>
     <div class="panel panel-default">
@@ -54,28 +49,16 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-10">
-                            <button type="submit" class="btn btn-primary" formaction='@Url.Action("SearchUsers","UserDashboard")'>Search</button>
+                            <h3></h3>
+                            <button type="submit" class="btn btn-primary" formaction='@Url.Action("SearchUsers", "UserDashboard")'>Search</button>
                         </div>
                     </div>
-                        <p>
-                            @Html.ActionLink("Show all registered users", "Index")
-                        </p>
+                    <p>
+                        @Html.ActionLink("Show all registered users", "Index")
+                    </p>
                         }
                     </div>
                 </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                    Kitchens
-                </a>
-            </h4>
-        </div>
-        <div id="collapse3" class="panel-collapse collapse">
-            <div class="panel-body">
-                Some text 3...
-            </div>
-        </div>
-    </div>
+  
 </div>
 </div>

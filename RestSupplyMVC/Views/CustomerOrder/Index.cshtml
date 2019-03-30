@@ -5,6 +5,7 @@
 }
 <hr/>
 <h2>Customer Orders</h2>
+<h4>For Kitchen: @Model.KitchenName</h4>
 <p align="right">
     @Html.ActionLink("Create New Customer Order", "Create", new { kitchenId = Model.KitchenId },new {@class= "btn btn-primary" })
 </p>
@@ -16,14 +17,6 @@
         @Html.HiddenFor(modelItem => item.CustomerOrderId)
 
         <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(modelItem => Model.KitchenName)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(modelItem => Model.KitchenName)
-            </dd>
-
             <dt>
                 @Html.DisplayNameFor(model => item.Date)
             </dt>

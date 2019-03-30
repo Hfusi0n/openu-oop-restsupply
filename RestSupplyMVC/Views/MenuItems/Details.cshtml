@@ -152,8 +152,6 @@
                 .find(".nr") // Gets a descendent with class="nr"
                 .text();
 
-            $("#res").append($item); // Testing: append the contents of the td to a div
-
             return $.ajax({
                 url: "/MenuItems/RemoveIngredientFromMenuItem",
                 data: { 'ingredientId': $item, 'menuItemId': $("#MenuItemId").val() },

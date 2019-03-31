@@ -42,13 +42,10 @@ namespace RestSupplyMVC.Controllers
         }
 
         // getting all ingredients for specific kitchen
-        [AuthorizeRoles(Role.KitchenManager)]
+        [AuthorizeRoles(Role.KitchenManager,Role.BranchManager)]
         public ActionResult Index(int kitchenId)
 
         {
-            // TODO security: check that KitchenId belong to current user
-            // TODO GetIngredientIdToKitchenIngredientMap can return All ingredients in the keys
-            // TODo Add Kitchen Name 
             var ingredientToKitchenIngredientMap =
                _unitOfWork.KitchenIngredient.GetIngredientIdToKitchenIngredientMap(kitchenId);
             var allIngredients = _unitOfWork.Ingredients.GetAll();
@@ -75,7 +72,7 @@ namespace RestSupplyMVC.Controllers
 
 
         // GET: KitchenIngredients/Details/5
-        [AuthorizeRoles(Role.KitchenManager)]
+        [AuthorizeRoles(Role.KitchenManager, Role.BranchManager)]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -91,7 +88,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: KitchenIngredients/Create
-        [AuthorizeRoles(Role.KitchenManager)]
+        [AuthorizeRoles(Role.KitchenManager, Role.BranchManager)]
         public ActionResult Create(int kitchenId, int ingredientId)
         {
             // Checking that KitchenIngredient doesn't already exist
@@ -119,7 +116,7 @@ namespace RestSupplyMVC.Controllers
         // POST: KitchenIngredients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeRoles(Role.KitchenManager)]
+        [AuthorizeRoles(Role.KitchenManager, Role.BranchManager)]
         public ActionResult Create(KitchenIngredientViewModel kitchenIngredientVm)
         {
             if (ModelState.IsValid)
@@ -142,7 +139,7 @@ namespace RestSupplyMVC.Controllers
 
         // GET: KitchenIngredients/Edit/5
         // @param id = KitchenIngredientId
-        [AuthorizeRoles(Role.KitchenManager)]
+        [AuthorizeRoles(Role.KitchenManager, Role.BranchManager)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -171,11 +168,9 @@ namespace RestSupplyMVC.Controllers
         }
 
         // POST: KitchenIngredients/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeRoles(Role.KitchenManager)]
+        [AuthorizeRoles(Role.KitchenManager, Role.BranchManager)]
         public ActionResult Edit(KitchenIngredientViewModel kitchenIngredientVm)
         {
             if (!ModelState.IsValid || kitchenIngredientVm.KitchenIngredientId == null)

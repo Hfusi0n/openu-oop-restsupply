@@ -8,8 +8,5 @@ namespace RestSupplyMVC.Repositories
     {
         List<AppUserRole> GetRolesByUserId(string userId);
         string GetRolesNamesAsStringByUserId(string userId);
-
-
-
     }
 }

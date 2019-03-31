@@ -199,7 +199,6 @@
     <Compile Include="Controllers\IngredientsController.cs" />
     <Compile Include="Controllers\KitchenIngredientsController.cs" />
     <Compile Include="Controllers\KitchensController.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MenuIngredientsController.cs" />
     <Compile Include="Controllers\MenuItemsController.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
@@ -310,11 +309,8 @@
     <Content Include="Views\MenuIngredients\Details.cshtml" />
     <Content Include="Views\MenuIngredients\Edit.cshtml" />
     <Content Include="Views\MenuIngredients\Index.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Ingredients\Delete.cshtml" />
     <Content Include="Views\Ingredients\Details.cshtml" />

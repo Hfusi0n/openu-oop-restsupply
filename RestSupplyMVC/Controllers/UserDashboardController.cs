@@ -63,15 +63,12 @@ namespace RestSupplyMVC.Controllers
             userToUpdate.FirstName = vm.PrivateName;
             userToUpdate.LastName = vm.LastName;
 
-            _unitOfWork.Complete();
-
-            //// Create a user manager
-            AppUserManager userManager = new AppUserManager(new AppUserStore(_dbContext));
 
             foreach (var roleName in vm.UpdatedUserRoleNamesArr)
             {
-                userManager.AddToRole(userToUpdate.Id, roleName);
+                _unitOfWork.Users.AddRoleToUser(userToUpdate.Id, roleName);
             }
+            _unitOfWork.Complete();
 
             return RedirectToAction("Index");
         }

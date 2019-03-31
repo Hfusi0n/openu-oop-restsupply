@@ -5,5 +5,6 @@ namespace RestSupplyMVC.Repositories
 {
     public interface IUserRepository : IRepository<AppUser>
     {
+        void AddRoleToUser(string userId, string roleName);
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNet.Identity
 @using Microsoft.AspNet.Identity.Owin;
+@using RestSupplyMVC.Helpers
 
 @if (Request.IsAuthenticated)
 {
@@ -29,7 +30,7 @@
 
                 @{
                     // Displaying the admin panel option only to admin...
-                    if (userRoles.Any(r => r == "Admin"))
+                    if (userRoles.Any(r => r == Role.Admin))
                     {
                         <li><a href="@Url.Action("Admin", "UserDashboard")">Users Dashboard</a></li>
                     }

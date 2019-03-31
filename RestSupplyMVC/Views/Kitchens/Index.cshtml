@@ -2,7 +2,7 @@
 @model RestSupplyMVC.ViewModels.KitchenIndexViewModel
 
 @{
-    ViewBag.Title = Model.IsSelectKitchen ? "Please Select Kitchen" : "Kitchens";
+    ViewBag.Title = Model.IsSelectKitchen ? "Please Select Branch" : "Branch";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,7 +10,7 @@
 @if (!Model.IsSelectKitchen)
 {
     <p align="right">
-        <button style="margin-right: 10px" class="btn btn-primary " onclick="addNewOrder()">Add A New Kitchen (And assign users)</button>
+        <button style="margin-right: 10px" class="btn btn-primary " onclick="addNewOrder()">Add A New Branch (And assign users)</button>
     </p>
 }
 <table class="table">
@@ -44,7 +44,7 @@
     else
     {
         <div class="panel-body">
-            <h3 style="color:red;">No Kitchens!</h3>
+            <h3 style="color:red;">No Branches!</h3>
         </div>
     }
 
@@ -59,13 +59,13 @@
             </div>
             <form id="NewOrderForm">
                 <div class="modal-body">
-                    <h5 style="color:#112247"> Kitchen</h5>
+                    <h5 style="color:#112247"> Branch</h5>
                     <hr />
                     <div class="form-horizontal">
                         <input type="hidden" id="Id" />
                         <div class="form-group">
                             <label class="control-label col-md-2">
-                                Kitchen Name
+                                Branch Name
                             </label>
                             <div class="col-md-4">
                                 <input type="text" id="kitchenName" name="kitchenName" placeholder="" class="form-control" />

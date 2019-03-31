@@ -5,6 +5,7 @@ using System.Web;
 using RestSupplyDB;
 using RestSupplyDB.Migrations;
 using RestSupplyDB.Models.Kitchen;
+using RestSupplyMVC.Helpers;
 
 namespace RestSupplyMVC.Repositories
 {
@@ -29,6 +30,15 @@ namespace RestSupplyMVC.Repositories
         public void Add(Kitchens kitchen)
         {
             _context.KitchensSet.Add(kitchen);
+
+            // Assign the new kitchen to all admins and chain managers
+            var adminRoleId = _context.Roles.First(r => r.Name == Role.Admin).Id;
+            var chainManagerRoleId = _context.Roles.First(r => r.Name == Role.ChainManager).Id;
+            var usersToAddKitchen = _context.Users
+                .Where(u => u.Roles.Any(r => r.RoleId == adminRoleId || r.RoleId == chainManagerRoleId)).ToList();
+
+            AddUsersToKitchen(kitchen.Id, usersToAddKitchen.Select(u => u.Id).ToList());
+
         }
 
         public void Remove(Kitchens item)

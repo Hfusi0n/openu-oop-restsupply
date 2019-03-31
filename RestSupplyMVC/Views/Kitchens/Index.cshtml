@@ -93,12 +93,12 @@
                             <div class="col-md-4">
                                 @Html.DropDownListFor(model => model.KitchenToCreate.AllUsersList, new SelectList(Model.KitchenToCreate.AllUsersList,"Id", "Email"), "", new { @id = "email", @class = "form-control" })
                             </div>
-                            <label class="control-label col-md-2">
-                                User's Role
+                            <label class="control-label col-md-1">
+                                User Roles
                             </label>
                             <div class="col-md-4">
-                                <div class="col-md-4">
-                                    <input type="text" id="role" name="role" placeholder="" class="form-control", disabled="disabled" />
+                                <div class="col-md-12">
+                                    <input type="text" id="role" name="role" class="form-control col-xs-6", disabled="disabled" />
                                 </div>
                             </div>
 
@@ -117,7 +117,7 @@
                                     <th style="width: 65%">Email</th>
                                     @*<th style="width: 30%">First Name </th>
                                     <th style="width: 30%">Surname</th>*@
-                                    <th style="width: 35%">Role</th>
+                                    <th style="width: 35%">Roles</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -138,7 +138,7 @@
         // Get RoleName for selected user
         $("#email").change(function () {
             return $.ajax({
-                url: "/Account/GetRoleNameByUserId",
+                url: "/Account/GetRoleNamesByUserId",
                 data: { 'userId': $("#email option:selected").val() },
                 type: 'GET',
                 dataType: "json",

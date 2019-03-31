@@ -45,5 +45,13 @@ namespace RestSupplyMVC.Repositories
             return roles;
         }
 
+        public string GetRolesNamesAsStringByUserId(string userId)
+        {
+            var roleIdsList = GetRolesByUserId(userId);
+            var roleNames = _context.Roles.ToList().Where(r => roleIdsList.Any(rl => rl.RoleId == r.Id)).Select(r => r.Name)
+                .ToList();
+            return string.Join(",", roleNames);
+        }
+
     }
 }

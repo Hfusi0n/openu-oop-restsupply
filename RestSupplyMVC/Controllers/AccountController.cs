@@ -342,9 +342,9 @@ namespace RestSupplyMVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetRoleNameByUserId(string userId)
+        public ActionResult GetRoleNamesByUserId(string userId)
         {
-            var response = _unitOfWork.Roles.GetRolesByUserId(userId);
+            var response = _unitOfWork.Roles.GetRolesNamesAsStringByUserId(userId);
             return Json(response, JsonRequestBehavior.AllowGet);
 
         }

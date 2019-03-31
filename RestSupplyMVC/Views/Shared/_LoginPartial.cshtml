@@ -31,7 +31,7 @@
                     // Displaying the admin panel option only to admin...
                     if (userRoles.Any(r => r == "Admin"))
                     {
-                        <li><a href="@Url.Action("Admin", "UserDashboard")">Admin Dashboard</a></li>
+                        <li><a href="@Url.Action("Admin", "UserDashboard")">Users Dashboard</a></li>
                     }
                 }
             </ul>

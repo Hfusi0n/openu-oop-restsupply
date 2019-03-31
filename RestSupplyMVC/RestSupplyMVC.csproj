@@ -206,7 +206,6 @@
     <Compile Include="Controllers\SupplierOrderController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UserDashboardController.cs" />
-    <Compile Include="Controllers\UsersSetsController.cs" />
     <Compile Include="Controllers\CustomerOrderController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

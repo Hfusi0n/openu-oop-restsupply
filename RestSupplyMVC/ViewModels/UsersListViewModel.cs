@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -11,11 +12,14 @@ namespace RestSupplyMVC.ViewModels
     {
         public string Id { get; set; }
         public string Email { get; set; }
+        [Display(Name = "Private Name")]
         public string PrivateName { get; set; }
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
         public string SelectedUserRole { get; set; }
         public string RoleName  { get; set; }
         public List<RoleViewModel> UserRolesList { get; set; }
+        [Display(Name = "Select Roles")]
         public List<RoleViewModel> AllRolesList { get; set; }
         public string UserRolesAsString => (UserRolesList == null || !UserRolesList.Any()) ? "" : (string.Join(", ", UserRolesList.Select(r => r.RoleName)));
         public string[] UpdatedUserRoleNamesArr { get; set; }

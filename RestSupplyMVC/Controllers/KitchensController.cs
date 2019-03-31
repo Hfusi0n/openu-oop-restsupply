@@ -98,10 +98,11 @@ namespace RestSupplyMVC.Controllers
             return View(kitchenVm);
         }
 
-        public ActionResult GetIngredientsByKitchenId(int kitchenId)
+        public ActionResult GetIngredientsByKitchenIdAndSupplierId(int kitchenId, int supplierId)
         {
-            var ingredients = _unitOfWork.Ingredients.GetIngredientsByKitchenId(kitchenId);
-            var response = ingredients.Select(i => new IngredientViewModel
+            var kitchenIngredients = _unitOfWork.Ingredients.GetIngredientsByKitchenId(kitchenId);
+            var supplierIngredients = _unitOfWork.Ingredients.GetIngredientsBySupplierId(supplierId).ToList();
+            var response = kitchenIngredients.Intersect(supplierIngredients).Select(i => new IngredientViewModel
             {
                 IngredientId = i.Id,
                 Name = i.Name

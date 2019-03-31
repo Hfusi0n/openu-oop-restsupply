@@ -189,9 +189,6 @@
                                 Order Ingredients
                             </label>
                             <div class="col-md-4">
-                                @*
-        @Html.DropDownListFor(model => model.AllSupplierIngredientsList, new SelectList(""), "", new {@id = "ingredient", @class = "form-control"})
-                                *@
                                 <select class="form-control" id="ingredient" name="ingredient"></select>
                             </div>
                             <label class="control-label col-md-2">
@@ -237,299 +234,297 @@
     </div>
 </div>
 @section scripts{
-    <script>
-        // hid InredientId column upon page load
-        $( document ).ready(function() {
-            $('table#main-data td:nth-child(1), table#main-data th:nth-child(1)').hide();
+<script>
+    // hide InredientId column upon page load
+    $(document).ready(function () {
+        $('table#main-data td:nth-child(1), table#main-data th:nth-child(1)').hide();
 
-        });
-        // Remove ingredient from supplier 
-        $(".delbtn").click(function () {
-            var $item = $(this).closest("tr")   // Finds the closest row <tr> 
-                .find(".nr")     // Gets a descendent with class="nr"
-                .text(); 
-             
-            $("#res").append($item); // Testing: append the contents of the td to a div
+    });
+    // Remove ingredient from supplier
+    $(".delbtn").click(function () {
+        var $item = $(this).closest("tr")   // Finds the closest row <tr>
+            .find(".nr")     // Gets a descendent with class="nr"
+            .text();
 
-            return $.ajax({
-                url: "/Suppliers/RemoveIngredientFromSupplier",
-                data: { 'ingredientId': $item, 'supplierId': $("#MainSupplierId").val() },
-                type: 'POST',
-                dataType: "json",
-                cache: false,
-                success: function(result) {
-                        alert(result);
-                        location.reload();
-                },
-                error: function () {
-                    alert("Error finding unit for ingredient!");
-                }
-            });
-        });
-
-        // Get unit for selected ingredient (New Order Modal)
-        $("#ingredient").change(function() {
-            return $.ajax({
-                url: "/Ingredients/GetUnitByIngredientId",
-                data: { 'id': $("#ingredient option:selected").val() },
-                type: 'GET',
-                dataType: "json",
-                cache: false,
-                success: function(response) {
-                    $("#unit").val(response);
-                },
-                error: function() {
-                    alert("Error finding unit for ingredient!");
-                }
-            });
-        });
-
-
-        // Get ingredients for selected kitchen (New Order Modal)
-        $("#kitchen").change(function() {
-            if ($("#kitchen option:selected").val() === "") {
-                var s = '<option value="-1">No Kitchen Selected</option>';
-                $("#ingredient").html(s);
-                $("#unit").val("");
-                $("#amount").val("");
-            } else {
-                return $.ajax({
-                    url: "/Kitchens/GetIngredientsByKitchenId",
-                    data: { 'kitchenId': $("#kitchen option:selected").val() },
-                    type: 'GET',
-                    dataType: "json",
-                    cache: false,
-                    success: function(response) {
-                        if (response.length > 0) {
-                            var s = '<option value="-1">Select Ingredient</option>';
-                            for (var i = 0; i < response.length; i++) {
-                                s += '<option value="' +
-                                    response[i].IngredientId +
-                                    '">' +
-                                    response[i].Name +
-                                    '</option>';
-                            }
-                            $("#ingredient").html(s);
-                        } else {
-                            var n = '<option value="-1">No Ingredients</option>';
-                            $("#ingredient").html(n);
-
-                        }
-                    },
-                    error: function() {
-                        alert("Error finding ingredients for kitchen!");
-                    }
-                });
+        return $.ajax({
+            url: "/Suppliers/RemoveIngredientFromSupplier",
+            data: { 'ingredientId': $item, 'supplierId': $("#MainSupplierId").val() },
+            type: 'POST',
+            dataType: "json",
+            cache: false,
+            success: function (result) {
+                alert(result);
+                location.reload();
+            },
+            error: function () {
+                alert("Error finding unit for ingredient!");
             }
         });
+    });
+
+    // Get unit for selected ingredient (New Order Modal)
+    $("#ingredient").change(function () {
+        return $.ajax({
+            url: "/Ingredients/GetUnitByIngredientId",
+            data: { 'id': $("#ingredient option:selected").val() },
+            type: 'GET',
+            dataType: "json",
+            cache: false,
+            success: function (response) {
+                $("#unit").val(response);
+            },
+            error: function () {
+                alert("Error finding unit for ingredient!");
+            }
+        });
+    });
 
 
-        // Get unit for selected ingredient (New ingredient Modal)
-        $("#ingredient1").change(function() {
+    // Get ingredients for selected kitchen (New Order Modal)
+    $("#kitchen").change(function () {
+        if ($("#kitchen option:selected").val() === "") {
+            var s = '<option value="-1">No Kitchen Selected</option>';
+            $("#ingredient").html(s);
+            $("#unit").val("");
+            $("#amount").val("");
+        } else {
             return $.ajax({
-                url: "/Ingredients/GetUnitByIngredientId",
-                data: { 'id': $("#ingredient1 option:selected").val() },
+                url: "/Kitchens/GetIngredientsByKitchenIdAndSupplierId",
+                data: { 'kitchenId': $("#kitchen option:selected").val(), 'supplierId': $("#MainSupplierId").val() },
                 type: 'GET',
-                dataType: "json",
-                cache: false,
-                success: function(response) {
-                    $("#unit1").val(response);
-                },
-                error: function() {
-                    alert("Error finding unit for ingredient!");
-                }
-            });
-        });
+    dataType: "json",
+    cache: false,
+    success: function (response) {
+        if (response.length > 0) {
+            var s = '<option value="-1">Select Ingredient</option>';
+            for (var i = 0; i < response.length; i++) {
+                s += '<option value="' +
+                    response[i].IngredientId +
+                    '">' +
+                    response[i].Name +
+                    '</option>';
+            }
+            $("#ingredient").html(s);
+        } else {
+            var n = '<option value="-1">No Ingredients</option>';
+            $("#ingredient").html(n);
 
-        // ------Show Add ingredient Modal-------
-        function addIngredient() {
-            $("#newIngredientModal").modal();
-            // Hiding the IngredientId column
-            $('table#ingTable td:nth-child(1), table#ingTable th:nth-child(1)').hide();
         }
+    },
+    error: function () {
+        alert("Error finding ingredients for kitchen!");
+    }
+});
+}
+});
 
-        //Add Multiple Ingredients.
-        $("#addIngToList").click(function(e) {
-            e.preventDefault();
 
-            if ($.trim($("#ingredient1").val()) == "") return;
+// Get unit for selected ingredient (New ingredient Modal)
+$("#ingredient1").change(function () {
+return $.ajax({
+url: "/Ingredients/GetUnitByIngredientId",
+data: { 'id': $("#ingredient1 option:selected").val() },
+type: 'GET',
+dataType: "json",
+cache: false,
+success: function (response) {
+    $("#unit1").val(response);
+},
+error: function () {
+    alert("Error finding unit for ingredient!");
+}
+});
+});
 
-            var id = $("#ingredient1 option:selected").val(),
-                name = $("#ingredient1 option:selected").text(),
-                unit = $("#unit1").val(),
+// ------Show Add ingredient Modal-------
+function addIngredient() {
+$("#newIngredientModal").modal();
+// Hiding the IngredientId column
+$('table#ingTable td:nth-child(1), table#ingTable th:nth-child(1)').hide();
+}
 
-                detailsTableBody = $("#ingTable tbody");
+//Add Multiple Ingredients.
+$("#addIngToList").click(function (e) {
+e.preventDefault();
 
-            var productItem = '<tr><td>' +
-                id +
-                '</td><td>' +
-                name +
-                '</td><td>' +
-                unit +
-                '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
-            detailsTableBody.append(productItem);
+if ($.trim($("#ingredient1").val()) == "") return;
 
-            // Hiding the IngredientId column
-            $('table#ingTable td:nth-child(1),table#ingTable th:nth-child(1)').hide();
+var id = $("#ingredient1 option:selected").val(),
+name = $("#ingredient1 option:selected").text(),
+unit = $("#unit1").val(),
 
-            clearIngItem();
+detailsTableBody = $("#ingTable tbody");
 
+var productItem = '<tr><td>' +
+id +
+'</td><td>' +
+name +
+'</td><td>' +
+unit +
+'</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+detailsTableBody.append(productItem);
+
+// Hiding the IngredientId column
+$('table#ingTable td:nth-child(1),table#ingTable th:nth-child(1)').hide();
+
+clearIngItem();
+
+});
+
+//After Add A New Order In The List, Clear Clean The Form For Add More Order.
+function clearIngItem() {
+$("#name option:selected").remove();
+}
+
+//After Click Save Button Pass All Data View To Controller For Save Database
+function addSupplierIngredients(data) {
+return $.ajax({
+contentType: 'application/json; charset=utf-8',
+dataType: 'json',
+type: 'POST',
+url: "/Suppliers/AddSupplierIngredients",
+data: data,
+success: function (result) {
+    alert(result);
+    location.reload();
+},
+error: function () {
+    alert("Error!");
+}
+});
+};
+
+//Collect Multiple Ingredient List For Pass To Controller
+$("#addIngredients").click(function (e) {
+e.preventDefault();
+
+var ingredientsArr = [];
+ingredientsArr.length = 0;
+
+$.each($("#ingTable tbody tr"),
+function () {
+    ingredientsArr.push({
+        ingredientId: $(this).find('td:eq(0)').html()
+    });
+});
+
+
+var data = JSON.stringify({
+supplierId: $("#SupplierId1").val(),
+ingredients: ingredientsArr
+
+});
+
+$.when(addSupplierIngredients(data)).then(function (response) {
+console.log(response);
+}).fail(function (err) {
+console.log(err);
+});
+});
+
+//-----------------------Show New Supplier Order Modal---------------------
+function addNewOrder() {
+$("#newOrderModal").modal();
+// Hiding the IngredientId column
+$('table#detailsTable td:nth-child(1), table#detailsTable th:nth-child(1)').hide();
+}
+
+//Add Multiple Ingredients.
+$("#addToList").click(function (e) {
+e.preventDefault();
+
+if ($.trim($("#ingredient").val()) == "" || $.trim($("#amount").val()) == "") return;
+
+var id = $("#ingredient option:selected").val(),
+name = $("#ingredient option:selected").text(),
+amount = $("#amount").val(),
+unit = $("#unit").val(),
+
+detailsTableBody = $("#detailsTable tbody");
+
+var productItem = '<tr><td>' +
+id +
+'</td><td>' +
+name +
+'</td><td>' +
+amount +
+'</td><td>' +
+unit +
+'</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+detailsTableBody.append(productItem);
+
+// Hiding the IngredientId column
+$('table#detailsTable td:nth-child(1),table#detailsTable th:nth-child(1)').hide();
+
+clearItem();
+
+});
+
+//After Add A New Order In The List, Clear Clean The Form For Add More Order.
+function clearItem() {
+$("#name option:selected").remove();
+}
+
+// After Add A New Order In The List, If You Want, You Can Remove It.
+$(document).on('click',
+'a.deleteItem',
+function (e) {
+e.preventDefault();
+var $self = $(this);
+if ($(this).attr('data-itemId') == "0") {
+    $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800,
+        function () {
+            $(this).remove();
         });
+}
+});
 
-        //After Add A New Order In The List, Clear Clean The Form For Add More Order.
-        function clearIngItem() {
-            $("#name option:selected").remove();
-        }
+//After Click Save Button Pass All Data View To Controller For Save Database
+function saveSupplierOrder(data) {
+return $.ajax({
+contentType: 'application/json; charset=utf-8',
+dataType: 'json',
+type: 'POST',
+url: "/SupplierOrder/SaveSupplierOrder",
+data: data,
+success: function (result) {
+    alert(result);
+    location.reload();
+},
+error: function () {
+    alert("Error!");
+}
+});
+};
 
-        //After Click Save Button Pass All Data View To Controller For Save Database
-        function addSupplierIngredients(data) {
-            return $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: 'POST',
-                url: "/Suppliers/AddSupplierIngredients",
-                data: data,
-                success: function(result) {
-                    alert(result);
-                    location.reload();
-                },
-                error: function() {
-                    alert("Error!");
-                }
-            });
-        };
+//Collect Multiple Order List For Pass To Controller
+$("#saveSupplierOrder").click(function (e) {
+e.preventDefault();
 
-        //Collect Multiple Ingredient List For Pass To Controller
-        $("#addIngredients").click(function(e) {
-            e.preventDefault();
+var ingredientsArr = [];
+ingredientsArr.length = 0;
 
-            var ingredientsArr = [];
-            ingredientsArr.length = 0;
+$.each($("#detailsTable tbody tr"),
+function () {
+    ingredientsArr.push({
+        ingredientId: $(this).find('td:eq(0)').html(),
+        amount: $(this).find('td:eq(2)').html(),
 
-            $.each($("#ingTable tbody tr"),
-                function() {
-                    ingredientsArr.push({
-                        ingredientId: $(this).find('td:eq(0)').html()
-                    });
-                });
-
-
-            var data = JSON.stringify({
-                supplierId: $("#SupplierId1").val(),
-                ingredients: ingredientsArr
-
-            });
-
-            $.when(addSupplierIngredients(data)).then(function(response) {
-                console.log(response);
-            }).fail(function(err) {
-                console.log(err);
-            });
-        });
-
-        //-----------------------Show New Supplier Order Modal---------------------
-        function addNewOrder() {
-            $("#newOrderModal").modal();
-            // Hiding the IngredientId column
-            $('table#detailsTable td:nth-child(1), table#detailsTable th:nth-child(1)').hide();
-        }
-
-        //Add Multiple Ingredients.
-        $("#addToList").click(function(e) {
-            e.preventDefault();
-
-            if ($.trim($("#ingredient").val()) == "" || $.trim($("#amount").val()) == "") return;
-
-            var id = $("#ingredient option:selected").val(),
-                name = $("#ingredient option:selected").text(),
-                amount = $("#amount").val(),
-                unit = $("#unit").val(),
-
-                detailsTableBody = $("#detailsTable tbody");
-
-            var productItem = '<tr><td>' +
-                id +
-                '</td><td>' +
-                name +
-                '</td><td>' +
-                amount +
-                '</td><td>' +
-                unit +
-                '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
-            detailsTableBody.append(productItem);
-
-            // Hiding the IngredientId column
-            $('table#detailsTable td:nth-child(1),table#detailsTable th:nth-child(1)').hide();
-
-            clearItem();
-
-        });
-
-        //After Add A New Order In The List, Clear Clean The Form For Add More Order.
-        function clearItem() {
-            $("#name option:selected").remove();
-        }
-
-        // After Add A New Order In The List, If You Want, You Can Remove It.
-        $(document).on('click',
-            'a.deleteItem',
-            function(e) {
-                e.preventDefault();
-                var $self = $(this);
-                if ($(this).attr('data-itemId') == "0") {
-                    $(this).parents('tr').css("background-color", "#ff6347").fadeOut(800,
-                        function() {
-                            $(this).remove();
-                        });
-                }
-            });
-
-        //After Click Save Button Pass All Data View To Controller For Save Database
-        function saveSupplierOrder(data) {
-            return $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: 'POST',
-                url: "/SupplierOrder/SaveSupplierOrder",
-                data: data,
-                success: function(result) {
-                    alert(result);
-                    location.reload();
-                },
-                error: function() {
-                    alert("Error!");
-                }
-            });
-        };
-
-        //Collect Multiple Order List For Pass To Controller
-        $("#saveSupplierOrder").click(function(e) {
-            e.preventDefault();
-
-            var ingredientsArr = [];
-            ingredientsArr.length = 0;
-
-            $.each($("#detailsTable tbody tr"),
-                function() {
-                    ingredientsArr.push({
-                        ingredientId: $(this).find('td:eq(0)').html(),
-                        amount: $(this).find('td:eq(2)').html(),
-
-                    });
-                });
+    });
+});
 
 
-            var data = JSON.stringify({
-                supplierId: $("#SupplierId").val(),
-                kitchenId: $("#kitchen").val(),
-                ingredients: ingredientsArr
-            });
+var data = JSON.stringify({
+supplierId: $("#SupplierId").val(),
+kitchenId: $("#kitchen").val(),
+ingredients: ingredientsArr
+});
 
-            $.when(saveSupplierOrder(data)).then(function(response) {
-                console.log(response);
-            }).fail(function(err) {
-                console.log(err);
-            });
-        });
-    </script>
+$.when(saveSupplierOrder(data)).then(function (response) {
+console.log(response);
+}).fail(function (err) {
+console.log(err);
+});
+});
+</script>
 }

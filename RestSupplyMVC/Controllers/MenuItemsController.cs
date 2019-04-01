@@ -24,7 +24,7 @@ namespace RestSupplyMVC.Controllers
             _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }
 
-        [AuthorizeRoles(Role.Chef,Role.Waiter)]
+        [AuthorizeRoles(Role.Chef, Role.BranchManager, Role.KitchenManager)]
         public ActionResult Index()
         {
             var dbMenuItems = _unitOfWork.MenuItems.GetAll();
@@ -65,6 +65,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: MenuItems/Details/5
+        [AuthorizeRoles(Role.Chef, Role.BranchManager, Role.KitchenManager)]
         public ActionResult Details(int? id)
         {
             if (id == null)

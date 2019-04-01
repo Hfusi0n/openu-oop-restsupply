@@ -30,7 +30,6 @@ namespace RestSupplyMVC.Controllers
 
         public AccountController()
         {
-            // TODO Remove _context
             _context = new RestSupplyDB.RestSupplyDbContext();
             _unitOfWork = new UnitOfWork(new RestSupplyDbContext());
         }

@@ -4,7 +4,6 @@ namespace RestSupplyMVC.ViewModels
 {
     public class LoginViewModel
     {
-        // TODO make sure fields match UserSet table
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

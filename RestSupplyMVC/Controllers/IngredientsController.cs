@@ -26,6 +26,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: Ingredients
+        [AuthorizeRoles]
         public ActionResult Index()
         {
             var dbIngredients = _unitOfWork.Ingredients.GetAll();
@@ -59,6 +60,7 @@ namespace RestSupplyMVC.Controllers
         }
 
         // GET: Ingredients/Details/5
+        [AuthorizeRoles]
         public ActionResult Details(int? id)
         {
             if (id == null)
